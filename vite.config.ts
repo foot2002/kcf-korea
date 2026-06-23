@@ -7,18 +7,21 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 const isGitHubPages = process.env.GITHUB_PAGES === "true";
-const pagesBasePath = "/kcf-korea";
+/** Custom domain (www.kcf-korea.org) uses "/". Set SITE_BASE_PATH=kcf-korea for user.github.io/repo URLs. */
+const siteBasePath = (process.env.SITE_BASE_PATH ?? "").replace(/^\/|\/$/g, "");
+const assetBase = siteBasePath ? `/${siteBasePath}/` : "/";
+const routerBasepath = siteBasePath ? `/${siteBasePath}` : "/";
 
 export default defineConfig({
   vite: {
-    base: isGitHubPages ? `${pagesBasePath}/` : "/",
+    base: isGitHubPages ? assetBase : "/",
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
     router: {
-      basepath: isGitHubPages ? pagesBasePath : "/",
+      basepath: isGitHubPages ? routerBasepath : "/",
     },
     prerender: {
       enabled: isGitHubPages,
