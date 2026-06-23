@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import heroPrivacy from "@/assets/hero-privacy.jpg";
 import { PrivacyInquiryForm } from "@/components/privacy/PrivacyInquiryForm";
+import { privacyOffice } from "@/data/kcf";
 
 
 export const Route = createFileRoute("/privacy-center")({
@@ -49,7 +50,7 @@ export const Route = createFileRoute("/privacy-center")({
       {
         property: "og:description",
         content:
-          "국민의 개인정보를 지키는 공익 플랫폼 — 서비스 추천 기준, 신고 안내, 정책연구, 포럼 운영.",
+          "국민의 개인정보를 지키는 신뢰 플랫폼 — 서비스 추천 기준, 신고 안내, 정책연구, 포럼 운영.",
       },
       { property: "og:url", content: "/privacy-center" },
     ],
@@ -105,7 +106,7 @@ function PrivacyHero() {
           </div>
           <div className="mt-4 text-[14px] font-medium text-white/70">국민 개인정보 안심센터</div>
           <h1 className="mt-3 text-white">
-            국민의 개인정보를<br />지키는 공익 플랫폼
+            국민의 개인정보를<br />지키는 신뢰 플랫폼
           </h1>
           <p className="mt-7 max-w-xl text-[17px] leading-[1.8] text-white/80">
             한국컨설팅산업재단 개인정보보호진흥원은 개인정보보호 서비스 추천,
@@ -127,7 +128,7 @@ function PrivacyHero() {
 
           <div className="mt-10 flex flex-wrap gap-2">
             {[
-              "공익재단 기반 개인정보보호 진흥사업",
+              "재단 기반 개인정보보호 진흥사업",
               "개인정보보호 컨설팅·교육·정책연구",
               "국민 권리 보호 중심",
               "기업·공공기관·개인 대상 지원",
@@ -1128,7 +1129,7 @@ function PrivacyBusinessPillars() {
             </div>
 
             <div className="mt-5 rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-5 py-6 text-center text-[13px] text-text-muted">
-              공익 추천 기준 기반 서비스 DB 준비 중
+              신뢰 기반 추천 기준 서비스 DB 준비 중
             </div>
           </PillarCard>
 
@@ -1144,7 +1145,7 @@ function PrivacyBusinessPillars() {
               개인정보보호진흥원은 공식 행정처분 기관이 아니며, 공식 신고와
               조사는 개인정보보호위원회 및 KISA 개인정보침해신고센터를 통해
               진행됩니다. 진흥원은 신고 안내, 사전 상담, 위험 모니터링,
-              제도 개선 의견 수렴을 지원하는 공익 창구 역할을 합니다.
+              제도 개선 의견 수렴을 지원하는 상담 창구 역할을 합니다.
             </div>
 
             <div className="mt-5 text-[13px] font-semibold uppercase tracking-wider text-trust-blue">
@@ -1440,7 +1441,7 @@ function PrivacySelfCheck() {
           </h2>
           <p className="mt-5 text-text-secondary leading-[1.8]">
             아래 항목 중 하나라도 해당하면 개인정보보호 점검이 필요합니다.
-            본 자가점검은 법률 판단이 아닌 참고용 공익 안내입니다.
+            본 자가점검은 법률 판단이 아닌 참고용 안내입니다.
           </p>
         </div>
 
@@ -1502,7 +1503,7 @@ function PrivacySelfCheck() {
             </div>
             <div className="rounded-xl border border-[#E5E7EB] bg-white p-5 text-[13px] text-text-secondary leading-relaxed">
               <Info className="inline h-4 w-4 mr-1 -mt-0.5 text-trust-blue" />
-              본 자가점검은 공익적 안내를 목적으로 제공되며, 정확한 법률 해석과
+              본 자가점검은 참고 안내를 목적으로 제공되며, 정확한 법률 해석과
               사안별 적용은 개인정보보호위원회·KISA 및 전문 자문이 필요합니다.
             </div>
           </div>
@@ -1654,7 +1655,7 @@ function PrivacyLawChangeSection() {
 
         <div className="mt-6 rounded-xl border border-[#E5E7EB] bg-[#F5F8FC] p-5 text-[13.5px] text-text-secondary leading-relaxed">
           <Info className="inline h-4 w-4 mr-1 -mt-0.5 text-trust-blue" />
-          본 비교표는 첨부자료를 토대로 제도 변화 방향을 정리한 공익 안내이며,
+          본 비교표는 첨부자료를 토대로 제도 변화 방향을 정리한 참고 안내이며,
           구체적인 적용·해석은 개인정보보호위원회 및 전문 자문을 통해 확인하시기 바랍니다.
         </div>
       </div>
@@ -1763,11 +1764,11 @@ function PrivacyFAQ() {
     },
     {
       q: "공식 신고는 어디에서 하나요?",
-      a: "공식 행정 신고는 개인정보보호위원회 및 KISA 개인정보침해신고센터(국번 없이 118)를 통해 접수됩니다. 개인정보보호진흥원은 공익 사전 상담·안내 창구 역할을 합니다.",
+      a: "공식 행정 신고는 개인정보보호위원회 및 KISA 개인정보침해신고센터(국번 없이 118)를 통해 접수됩니다. 개인정보보호진흥원은 사전 상담·안내 창구 역할을 합니다.",
     },
     {
       q: "개인정보보호진흥원은 어떤 도움을 제공하나요?",
-      a: "공익 추천 기준 안내, 신고·모니터링 사전 상담, 정책연구 및 제도 개선 의견 수렴, 포럼·교육 운영 등을 통해 국민·기업·공공기관의 개인정보보호 역량 강화를 지원합니다.",
+      a: "신뢰 기반 추천 기준 안내, 신고·모니터링 사전 상담, 정책연구 및 제도 개선 의견 수렴, 포럼·교육 운영 등을 통해 국민·기업·공공기관의 개인정보보호 역량 강화를 지원합니다.",
     },
     {
       q: "좋은 개인정보보호 서비스를 고르는 기준은 무엇인가요?",
@@ -1802,7 +1803,7 @@ function PrivacyFAQ() {
         </Accordion>
         <div className="mt-6 rounded-xl border border-[#E5E7EB] bg-[#F5F8FC] p-5 text-[13.5px] text-text-secondary leading-relaxed">
           <Info className="inline h-4 w-4 mr-1 -mt-0.5 text-trust-blue" />
-          본 Q&amp;A는 공익 안내를 목적으로 작성되었으며, 공식 법률 해석은
+          본 Q&amp;A는 참고 안내를 목적으로 작성되었으며, 공식 법률 해석은
           관련 기관 또는 전문가 상담이 필요합니다.
         </div>
       </div>
@@ -1829,7 +1830,7 @@ function PrivacyResources() {
           <div className="label-eyebrow mb-4">Resources</div>
           <h2 className="text-navy">개인정보보호 자료실</h2>
           <p className="mt-5 text-text-secondary leading-[1.8]">
-            공익 자료실에서 제공될 가이드와 보고서 목록입니다. 자료 등록 후
+            자료실에서 제공될 가이드와 보고서 목록입니다. 자료 등록 후
             순차적으로 다운로드가 제공됩니다.
           </p>
         </div>
@@ -1933,20 +1934,39 @@ function PrivacyContactCTA() {
               </div>
             </div>
 
-            <Link
-              to="/contact"
-              className="block rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur hover:bg-white/10 transition"
-            >
-              <div className="text-[12px] font-semibold uppercase tracking-wider text-white/60">
-                재단 대표 문의
+            <div className="rounded-2xl border border-[#5EEAD4]/30 bg-privacy-green/10 p-6">
+              <div className="text-[12px] font-semibold uppercase tracking-wider text-[#5EEAD4]">
+                개인정보보호진흥원 연락처
               </div>
               <div className="mt-2 text-[17px] font-bold text-white">
-                한국컨설팅산업재단 본부 연락처
+                {privacyOffice.name}
               </div>
-              <div className="mt-3 text-[14px] text-white/70">
-                전화 02-555-9091 · 팩스 02-455-0090
-              </div>
-            </Link>
+              <ul className="mt-4 space-y-3 text-[14px] text-white/85">
+                <li className="flex items-start gap-2">
+                  <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                  <span>{privacyOffice.address}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                  <span className="text-white/70">등록 주소: {privacyOffice.addressRegistered}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                  <span>
+                    전화 {privacyOffice.tel} · 팩스 {privacyOffice.fax}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                  <a
+                    href={`mailto:${privacyOffice.email}`}
+                    className="transition hover:text-white"
+                  >
+                    {privacyOffice.email}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

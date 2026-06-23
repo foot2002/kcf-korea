@@ -6,16 +6,25 @@ export const foundation = {
   nameEn: "Korea Consultancy Foundation",
   abbr: "KCF",
   founded: "2010년 4월 1일",
-  chair: "정옥래",
   bizNo: "206-82-10927",
   tel: "02-555-9091",
   fax: "02-455-0090",
-  status: "지식경제부 산하 비영리 법정기부금단체",
+  /** 재단 공식 주소 (footer 등 최소 노출) */
+  addressOfficial: "서울 송파구 올림픽로 362 (방이동) 4층 401호",
+};
+
+export const privacyOffice = {
+  name: "개인정보보호진흥원",
+  addressRegistered: "서울시 강남구 봉은사로 57길 13",
+  address: "서울시 강남구 언주로 309 기성빌딩 3층",
+  tel: "02-558-5144",
+  fax: "02-558-5146",
+  email: "wiseon@wiseinc.co.kr",
 };
 
 export const heroBadges = [
   "Since 2010",
-  "비영리 법정기부금단체",
+  "비영리 재단",
   "컨설팅·교육·개인정보보호 진흥",
   "NBO 사무국 운영",
   "26만명 이상 교육수료",
@@ -28,9 +37,9 @@ export const coreValues = [
     desc: "컨설팅·교육·개인정보보호 분야 전문 네트워크와 실무 경험을 기반으로 합니다.",
   },
   {
-    title: "공익성",
-    en: "Public Interest",
-    desc: "비영리 공익기관으로서 사회적 책임을 다하며 공공의 이익에 기여합니다.",
+    title: "사회적 책임",
+    en: "Responsibility",
+    desc: "비영리 재단으로서 사회적 책임을 다하며 지식서비스 산업 발전에 기여합니다.",
   },
   {
     title: "혁신",
@@ -101,7 +110,7 @@ export const historyFull = [
   {
     year: "2010.04",
     title: "재단 설립",
-    detail: "재단법인 한국컨설팅산업재단 설립, 지식경제부 산하 비영리 법정기부금단체로 출범.",
+    detail: "재단법인 한국컨설팅산업재단 설립.",
   },
   {
     year: "2011",
@@ -313,7 +322,6 @@ export const youthPartners = [
 
 export const generalInfo: { label: string; value: string }[] = [
   { label: "업체명", value: "재단법인 한국컨설팅산업재단" },
-  { label: "대표자", value: "정옥래" },
   { label: "사업자 번호", value: "206-82-10927" },
   { label: "업종", value: "서비스/컨설팅 및 교육" },
   { label: "전화번호", value: "02-555-9091" },
@@ -322,38 +330,11 @@ export const generalInfo: { label: string; value: string }[] = [
     label: "면허/허가/등록증",
     value: "재단법인설립허가증 · 산업통상자원부 장관 · 2010년",
   },
+  { label: "재단 공식 주소", value: "서울 송파구 올림픽로 362 (방이동) 4층 401호" },
+  { label: "개인정보보호진흥원 (등록)", value: "서울시 강남구 봉은사로 57길 13" },
   {
-    label: "본사(삼성)",
-    value: "서울시 강남구 봉은사로 57길 13 프로스원 빌딩 2,3층",
-  },
-  { label: "교육본부(잠실)", value: "송파구 올림픽로 362, 401호" },
-  {
-    label: "공식 등록 주소",
-    value: "서울특별시 송파구 양재대로 71길 20-30, 2층",
-  },
-  {
-    label: "사무 공간 주소",
-    value: "서울특별시 송파구 올림픽로 362 삼성빌딩 4층 401호",
-  },
-];
-
-export const executives = [
-  {
-    role: "초대 이사장",
-    name: "김영태",
-    career: [
-      "전 기획재정부 차관",
-      "전 한국산업은행 총재",
-      "현 한국컨설팅산업재단 고문",
-    ],
-  },
-  {
-    role: "현 이사장",
-    name: "정옥래",
-    career: [
-      "엑스퍼트소사이어티홀딩스 이사회 의장",
-      "서비스산업총연합회 상근임원협의회장",
-    ],
+    label: "개인정보보호진흥원 (연락)",
+    value: "서울시 강남구 언주로 309 기성빌딩 3층 · 02-558-5144 · wiseon@wiseinc.co.kr",
   },
 ];
 

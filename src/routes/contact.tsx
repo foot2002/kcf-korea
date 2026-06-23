@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { foundation } from "@/data/kcf";
-import { Phone, Printer, MapPin, Train, Bus, Car, Building2 } from "lucide-react";
+import { foundation, privacyOffice } from "@/data/kcf";
+import { Phone, Printer, MapPin, Train, Bus, Car, Building2, Mail } from "lucide-react";
 import heroContact from "@/assets/hero-contact.jpg";
 
 export const Route = createFileRoute("/contact")({
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "한국컨설팅산업재단의 위치, 연락처, 교통편 안내 및 사무실·교육본부·본사 주소 정보입니다.",
+          "한국컨설팅산업재단 및 개인정보보호진흥원의 위치, 연락처, 교통편 안내입니다.",
       },
       { property: "og:title", content: "오시는 길 | 한국컨설팅산업재단" },
       { property: "og:url", content: "/contact" },
@@ -23,19 +23,19 @@ export const Route = createFileRoute("/contact")({
 
 const addresses = [
   {
-    label: "공식 등록 주소",
-    address: "서울특별시 송파구 양재대로 71길 20-30, 2층",
+    label: "재단 공식 주소",
+    address: foundation.addressOfficial,
     sub: "방이동",
   },
   {
-    label: "사무 공간 / 교육본부 (잠실)",
-    address: "서울특별시 송파구 올림픽로 362 삼성빌딩 4층 401호",
-    sub: "방이동",
+    label: "개인정보보호진흥원 (연락)",
+    address: privacyOffice.address,
+    sub: `전화 ${privacyOffice.tel} · 팩스 ${privacyOffice.fax}`,
   },
   {
-    label: "본사 (삼성)",
-    address: "서울시 강남구 봉은사로 57길 13 프로스원 빌딩 2, 3층",
-    sub: "강남구 삼성동",
+    label: "개인정보보호진흥원 (등록)",
+    address: privacyOffice.addressRegistered,
+    sub: privacyOffice.email,
   },
 ];
 
@@ -59,26 +59,24 @@ function ContactPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {[
               { k: "기관명", v: foundation.nameKo },
-              { k: "대표자", v: `${foundation.chair} 이사장` },
               { k: "사업자등록번호", v: foundation.bizNo },
               { k: "설립일", v: foundation.founded },
-              { k: "소속", v: foundation.status },
-              { k: "전화", v: foundation.tel, icon: Phone },
-              { k: "팩스", v: foundation.fax, icon: Printer },
+              { k: "재단 전화", v: foundation.tel, icon: Phone },
+              { k: "재단 팩스", v: foundation.fax, icon: Printer },
+              { k: "진흥원 이메일", v: privacyOffice.email, icon: Mail },
             ].map((c) => {
-              const Icon = (c as any).icon;
+              const Icon = (c as { icon?: typeof Phone }).icon;
               return (
                 <div key={c.k} className="kcf-stat-card">
                   <div className="kcf-stat-label">
                     {Icon && <Icon className="h-3.5 w-3.5" />}
                     {c.k}
                   </div>
-                  <div className="kcf-stat-value">{c.v}</div>
+                  <div className="kcf-stat-value break-all">{c.v}</div>
                 </div>
               );
             })}
           </div>
-
         </div>
       </section>
 
@@ -89,8 +87,7 @@ function ContactPage() {
             <div className="label-eyebrow">주소</div>
             <h2 className="text-navy">주소</h2>
             <p className="mt-4 text-text-secondary">
-              재단은 공식 등록 주소, 사무 공간·교육본부, 본사 등 복수의 운영
-              주소를 보유하고 있습니다.
+              재단 공식 주소와 개인정보보호진흥원 연락·등록 주소를 안내합니다.
             </p>
           </div>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
@@ -112,7 +109,6 @@ function ContactPage() {
               </div>
             ))}
           </div>
-
         </div>
       </section>
 
@@ -140,8 +136,6 @@ function ContactPage() {
             ))}
           </div>
 
-
-          {/* 지도 */}
           <div className="mt-10 space-y-6">
             {addresses.map((a, i) => (
               <div
@@ -190,11 +184,11 @@ function ContactPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a href={`tel:${foundation.tel}`} className="btn-hero-light">
               <Phone className="inline h-4 w-4 mr-2 -mt-0.5" />
-              {foundation.tel}
+              재단 {foundation.tel}
             </a>
-            <div className="btn-hero-outline !cursor-default">
-              FAX {foundation.fax}
-            </div>
+            <a href={`tel:${privacyOffice.tel}`} className="btn-hero-outline">
+              진흥원 {privacyOffice.tel}
+            </a>
           </div>
         </div>
       </section>

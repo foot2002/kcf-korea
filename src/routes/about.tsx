@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { coreValues, executives, generalInfo, foundation } from "@/data/kcf";
-import { Building2, Target, Eye, Users } from "lucide-react";
+import { coreValues, generalInfo, foundation } from "@/data/kcf";
+import { Building2, Target, Eye } from "lucide-react";
 import heroAbout from "@/assets/hero-about.jpg";
-import cardAbout from "@/assets/card-about.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -12,7 +11,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "재단법인 한국컨설팅산업재단의 개요, 법적 설립근거, 설립목적, 비전·미션·핵심가치, 조직 및 임원, 일반현황 정보입니다.",
+          "재단법인 한국컨설팅산업재단의 개요, 법적 설립근거, 설립목적, 비전·미션·핵심가치, 일반현황 정보입니다.",
       },
       { property: "og:title", content: "재단 소개 | 한국컨설팅산업재단" },
       { property: "og:url", content: "/about" },
@@ -42,17 +41,16 @@ function AboutPage() {
           <div className="space-y-6">
             <p className="text-text-secondary leading-relaxed">
               재단법인 한국컨설팅산업재단은 2010년 4월 1일 설립된
-              지식경제부 산하 비영리 법정기부금단체입니다.
-              민법 제32조 및 「지식경제부장관 및 그 소속청장의 주관에 속하는
-              비영리사단법인의 설립 및 감독에 관한 규칙」 제4조에 의거하여
+              비영리 재단입니다.
+              민법 제32조 및 관련 비영리법인 설립·감독 규칙에 근거하여
               설립되었으며, 컨설팅을 통해 선도적 지식산업을 창출하고
               산업계의 지식고도화 및 지식시장 창출을 촉진하는 것을 목적으로 합니다.
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               <KeyFact label="법적 근거" value="민법 제32조" sub="비영리법인 설립 및 감독 규칙 제4조" />
-              <KeyFact label="설립일" value={foundation.founded} sub="지식경제부 산하" />
-              <KeyFact label="기관 성격" value="비영리 법정기부금단체" />
-              <KeyFact label="대표자" value={`${foundation.chair} 이사장`} />
+              <KeyFact label="설립일" value={foundation.founded} />
+              <KeyFact label="기관 성격" value="비영리 재단" />
+              <KeyFact label="문의 전화" value={foundation.tel} />
             </div>
           </div>
         </div>
@@ -99,7 +97,7 @@ function AboutPage() {
               <Eye className="h-7 w-7 text-accent-teal" strokeWidth={1.75} />
               <div className="mt-4 text-[13px] uppercase tracking-wider text-white/70 font-semibold">Vision</div>
               <div className="mt-2 text-[24px] font-bold leading-snug">
-                대한민국 지식서비스산업을<br />선도하는 공익재단
+                대한민국 지식서비스산업을<br />선도하는 재단
               </div>
             </div>
             <div className="kcf-card">
@@ -124,80 +122,6 @@ function AboutPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* 조직 및 임원 */}
-      <section id="organization" className="section-y bg-[#F5F8FC] border-y border-[#E5E7EB] scroll-mt-24">
-        <div className="container-page">
-          <div className="max-w-3xl">
-            <div className="label-eyebrow">조직 · 임원</div>
-            <h2 className="text-navy">조직 및 임원</h2>
-          </div>
-
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {executives.map((e) => (
-              <div
-                key={e.name}
-                className="relative overflow-hidden rounded-3xl border border-[#E5E7EB] bg-white shadow-[0_14px_36px_rgba(15,23,42,0.07)] transition hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(15,23,42,0.13)]"
-              >
-                <div
-                  className="relative px-7 pt-7 pb-6"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #0B1F3A 0%, #1D4ED8 130%)",
-                  }}
-                >
-                  <div
-                    className="absolute inset-0 opacity-20"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)",
-                      backgroundSize: "18px 18px",
-                    }}
-                  />
-                  <div className="relative flex items-center gap-4">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-white ring-1 ring-white/25 backdrop-blur">
-                      <Users className="h-7 w-7" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <div className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-[#93C5FD]">
-                        {e.role}
-                      </div>
-                      <div className="text-[24px] font-bold text-white leading-tight">
-                        {e.name}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ul className="px-7 py-6 space-y-2 text-text-secondary text-[15px]">
-                  {e.career.map((c) => (
-                    <li key={c} className="flex gap-2.5">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-trust-blue" />
-                      <span>{c}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-
-          {/* 조직도 placeholder */}
-          <div className="mt-10 kcf-media-card">
-            <div className="kcf-media" style={{ aspectRatio: "21 / 9" }}>
-              <img src={cardAbout} alt="" loading="lazy" width={1280} height={896} />
-              <div className="kcf-media-badge">Organization Chart</div>
-            </div>
-            <div className="kcf-body text-center !py-8">
-              <div className="text-[20px] font-bold text-navy">조직도</div>
-              <p className="mt-2 text-text-secondary max-w-xl mx-auto">
-                세부 조직도 이미지 및 부서별 정보는 추후 업데이트 예정입니다.
-                공식 조직 정보가 확정되는 대로 본 영역에 게재됩니다.
-              </p>
-            </div>
-          </div>
-
         </div>
       </section>
 

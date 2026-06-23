@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ShieldCheck, GraduationCap, Briefcase, Trophy, CheckCircle2, Calendar, Landmark, Sparkles, User } from "lucide-react";
+import { ArrowRight, ShieldCheck, GraduationCap, Briefcase, Trophy, CheckCircle2, Calendar, Landmark, Sparkles, Phone } from "lucide-react";
 import {
   heroBadges,
   coreValues,
@@ -18,16 +18,17 @@ import cardValue2 from "@/assets/card-value-2.jpg";
 import cardValue3 from "@/assets/card-value-3.jpg";
 import cardValue4 from "@/assets/card-value-4.jpg";
 import { CountUp } from "@/components/site/CountUp";
+import { KcfLogo } from "@/components/site/KcfLogo";
 import { SectionTitle } from "@/components/site/SectionTitle";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익재단" },
+      { title: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 재단" },
       {
         name: "description",
         content:
-          "재단법인 한국컨설팅산업재단(KCF)은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하는 비영리 공익재단입니다.",
+          "재단법인 한국컨설팅산업재단(KCF)은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하는 비영리 재단입니다.",
       },
       { property: "og:title", content: "한국컨설팅산업재단 (KCF)" },
       { property: "og:url", content: "/" },
@@ -65,9 +66,9 @@ function HomePage() {
         <div className="absolute inset-0 grid-bg opacity-15" />
         <div className="container-page relative grid gap-12 py-24 md:py-36 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
-            <div className="hero-eyebrow">공익재단 · Knowledge Service Industry</div>
+            <div className="hero-eyebrow">재단 · Knowledge Service Industry</div>
             <h1 className="mt-5 text-white">
-              대한민국 지식서비스산업을<br />선도하는 공익재단
+              대한민국 지식서비스산업을<br />선도하는 재단
             </h1>
             <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/82">
               한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화,
@@ -114,7 +115,7 @@ function HomePage() {
               desc={
                 <>
                   재단법인 한국컨설팅산업재단은 2010년 4월 1일 설립된
-                  지식경제부 산하 비영리 법정기부금단체입니다.
+                  비영리 재단입니다.
                   민법 제32조 및 관련 비영리법인 설립·감독 규칙에 근거하여
                   설립되었으며, 컨설팅을 통해 선도적 지식산업을 창출하고
                   산업계의 지식고도화 및 지식시장 창출을 촉진하는 것을
@@ -131,9 +132,9 @@ function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {[
               { k: "설립일", v: foundation.founded, icon: Calendar },
-              { k: "기관 성격", v: "비영리 법정기부금단체", icon: Landmark },
+              { k: "기관 성격", v: "비영리 재단", icon: Landmark },
               { k: "주요 분야", v: "컨설팅 · 교육 · 개인정보보호", icon: Sparkles },
-              { k: "대표자", v: `${foundation.chair} 이사장`, icon: User },
+              { k: "문의 전화", v: foundation.tel, icon: Phone },
             ].map((c) => {
               const Icon = c.icon;
               return (
@@ -188,7 +189,7 @@ function HomePage() {
             <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-white/80">
               데이터 경제 시대의 핵심 과제인 개인정보 보호를 위해
               컨설팅·교육·정책연구·포럼 활동을 종합적으로 수행하는
-              재단의 대표 중점 사업입니다.
+              재단의 핵심 중점 사업입니다.
             </p>
           </div>
 
@@ -238,7 +239,7 @@ function HomePage() {
         <div className="container-page">
           <SectionTitle
             eyebrow="핵심 가치"
-            title="전문성, 공익성, 혁신, 신뢰를 기반으로 합니다"
+            title="전문성, 사회적 책임, 혁신, 신뢰를 기반으로 합니다"
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {coreValues.map((v, i) => {
@@ -550,24 +551,17 @@ function HeroVisual() {
               <circle
                 cx="140"
                 cy="85"
-                r="18"
-                fill="#0B1F3A"
+                r="20"
+                fill="#FFFFFF"
                 stroke="#5EEAD4"
                 strokeWidth="1"
                 strokeOpacity="0.5"
               />
-              <text
-                x="140"
-                y="89"
-                textAnchor="middle"
-                fill="#FFFFFF"
-                fontSize="10"
-                fontWeight="700"
-                letterSpacing="1"
-                fontFamily="Pretendard, sans-serif"
-              >
-                KCF
-              </text>
+              <foreignObject x="120" y="65" width="40" height="40">
+                <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-white">
+                  <KcfLogo variant="mark" className="!h-8 !w-10 scale-110 origin-left" />
+                </div>
+              </foreignObject>
             </g>
           </svg>
         </div>

@@ -2,6 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 
+import { KcfLogo } from "@/components/site/KcfLogo";
+
 type NavChild = { label: string; hash?: string; to?: string };
 type NavItem = { label: string; to: string; children?: NavChild[] };
 
@@ -12,7 +14,7 @@ const NAV: NavItem[] = [
     children: [
       { label: "설립목적", hash: "purpose" },
       { label: "비전 및 미션", hash: "vision" },
-      { label: "조직 및 임원", hash: "organization" },
+      { label: "일반현황", hash: "status" },
       { label: "일반현황", hash: "status" },
     ],
   },
@@ -87,18 +89,11 @@ export function Header() {
         className="container-page flex items-center justify-between"
         style={{ height: "var(--header-height)" }}
       >
-        <Link to="/" className="group flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy text-sm font-bold text-white shadow-[0_4px_12px_rgba(11,31,58,0.2)] transition-transform group-hover:scale-[1.02]">
-            KCF
-          </div>
-          <div className="hidden leading-tight sm:block">
-            <div className="text-[15px] font-bold tracking-tight text-navy">
-              한국컨설팅산업재단
-            </div>
-            <div className="text-[11px] tracking-wide text-text-muted">
-              Korea Consultancy Foundation
-            </div>
-          </div>
+        <Link to="/" className="group flex shrink-0 items-center">
+          <KcfLogo
+            variant="header"
+            className="transition-transform group-hover:scale-[1.01]"
+          />
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">

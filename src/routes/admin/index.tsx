@@ -13,6 +13,7 @@ import {
 import { toast } from "sonner";
 
 import { formatBytes } from "@/lib/privacy-inquiry/config";
+import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import { formatUserError } from "@/lib/privacy-inquiry/errors";
 import type { PrivacyInquiryRecord } from "@/lib/privacy-inquiry/types";
 import {
@@ -69,6 +70,10 @@ function AdminPage() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    if (isStaticGitHubPages) {
+      toast.error("GitHub Pages에서는 관리자 기능을 사용할 수 없습니다.");
+      return;
+    }
     setLoading(true);
     try {
       const result = await verifyPrivacyAdmin({ data: { adminKey: inputKey } });
@@ -80,6 +85,8 @@ function AdminPage() {
       setAdminKey(inputKey);
       setAuthed(true);
       await load(inputKey);
+    } catch (err) {
+      toast.error(formatUserError(err));
     } finally {
       setLoading(false);
     }
@@ -150,6 +157,20 @@ function AdminPage() {
           <p className="mt-2 text-[14px] text-text-secondary">
             관리자 비밀번호를 입력하세요.
           </p>
+          {isStaticGitHubPages && (
+            <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13.5px] leading-relaxed text-amber-950">
+              <p className="font-semibold">GitHub Pages에서는 관리자 페이지를 사용할 수 없습니다.</p>
+              <p className="mt-1.5 text-amber-900/90">
+                문의 저장·비밀번호 확인은 서버가 필요합니다. 로컬에서{" "}
+                <code className="rounded bg-amber-100 px-1 py-0.5 text-[12px]">npm run dev</code>{" "}
+                실행 후{" "}
+                <code className="rounded bg-amber-100 px-1 py-0.5 text-[12px]">
+                  http://localhost:8080/admin
+                </code>
+                에 접속하거나, Cloudflare·Vercel 등 서버 호스팅에 배포해 주세요.
+              </p>
+            </div>
+          )}
           <input
             type="password"
             value={inputKey}
@@ -160,7 +181,7 @@ function AdminPage() {
           />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || isStaticGitHubPages}
             className="btn-primary-kcf mt-4 w-full disabled:opacity-60"
           >
             {loading ? "확인 중…" : "로그인"}
