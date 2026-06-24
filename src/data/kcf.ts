@@ -37,9 +37,9 @@ export const coreValues = [
     desc: "컨설팅·교육·개인정보보호 분야 전문 네트워크와 실무 경험을 기반으로 합니다.",
   },
   {
-    title: "사회적 책임",
-    en: "Responsibility",
-    desc: "비영리 재단으로서 사회적 책임을 다하며 지식서비스 산업 발전에 기여합니다.",
+    title: "공익성",
+    en: "Public Interest",
+    desc: "비영리 공익기관으로서 사회적 책임을 다하며 공공의 이익에 기여합니다.",
   },
   {
     title: "혁신",

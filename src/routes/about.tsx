@@ -97,7 +97,7 @@ function AboutPage() {
               <Eye className="h-7 w-7 text-accent-teal" strokeWidth={1.75} />
               <div className="mt-4 text-[13px] uppercase tracking-wider text-white/70 font-semibold">Vision</div>
               <div className="mt-2 text-[24px] font-bold leading-snug">
-                대한민국 지식서비스산업을<br />선도하는 재단
+                대한민국 지식서비스산업을<br />선도하는 공익재단
               </div>
             </div>
             <div className="kcf-card">

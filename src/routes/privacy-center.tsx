@@ -35,6 +35,8 @@ import {
 import heroPrivacy from "@/assets/hero-privacy.jpg";
 import safetyLogo from "@/assets/safety-logo.png";
 import safetyMark from "@/assets/safety-mark.png";
+import partnerServiceIndustry from "@/assets/partner-service-industry.gif";
+import partnerSwict from "@/assets/partner-swict.gif";
 import { PrivacyInquiryForm } from "@/components/privacy/PrivacyInquiryForm";
 import { privacyOffice } from "@/data/kcf";
 
@@ -52,7 +54,7 @@ export const Route = createFileRoute("/privacy-center")({
       {
         property: "og:description",
         content:
-          "국민의 개인정보를 지키는 신뢰 플랫폼 — 서비스 추천 기준, 신고 안내, 정책연구, 포럼 운영.",
+          "국민의 개인정보를 지키는 공익 플랫폼 — 서비스 추천 기준, 신고 안내, 정책연구, 포럼 운영.",
       },
       { property: "og:url", content: "/privacy-center" },
     ],
@@ -105,13 +107,13 @@ function PrivacyHero() {
           <img
             src={safetyLogo}
             alt="개인정보보호진흥원 GSAP — 개인정보보호 안심 설문"
-            className="h-12 w-auto max-w-[min(100%,340px)] rounded-xl bg-white px-3 py-2 object-contain object-left shadow-[0_8px_28px_rgba(2,20,26,0.35)] sm:h-14 md:h-[60px]"
-            width={340}
-            height={60}
+            className="h-16 w-auto max-w-[min(100%,480px)] rounded-xl bg-white px-4 py-2.5 object-contain object-left shadow-[0_8px_28px_rgba(2,20,26,0.35)] sm:h-[72px] md:h-20 lg:h-[88px]"
+            width={480}
+            height={88}
           />
           <div className="mt-4 text-[14px] font-medium text-white/70">국민 개인정보 안심센터</div>
           <h1 className="mt-3 text-white">
-            국민의 개인정보를<br />지키는 신뢰 플랫폼
+            국민의 개인정보를<br />지키는 공익 플랫폼
           </h1>
           <p className="mt-7 max-w-xl text-[17px] leading-[1.8] text-white/80">
             한국컨설팅산업재단 개인정보보호진흥원은 개인정보보호 서비스 추천,
@@ -133,7 +135,7 @@ function PrivacyHero() {
 
           <div className="mt-10 flex flex-wrap gap-2">
             {[
-              "재단 기반 개인정보보호 진흥사업",
+              "공익재단 기반 개인정보보호 진흥사업",
               "개인정보보호 컨설팅·교육·정책연구",
               "국민 권리 보호 중심",
               "기업·공공기관·개인 대상 지원",
@@ -212,105 +214,16 @@ function HeroShieldVisual() {
 
 /* ---------- Section 1B. Partner Logos Strip ---------- */
 function PartnerLogosStrip() {
-  const partners: Array<{
-    abbr: string;
-    name: string;
-    color: string;
-    mark: (c: string) => ReactNode;
-  }> = [
+  const partners = [
     {
-      abbr: "KDIA",
-      name: "Digital Industry Council",
-      color: "#1D4ED8",
-      mark: (c) => (
-        <g>
-          <circle cx="16" cy="16" r="13" fill="none" stroke={c} strokeWidth="2.5" />
-          <path d="M11 16 L15 20 L22 12" fill="none" stroke={c} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </g>
-      ),
+      name: "서비스산업총연합회",
+      logo: partnerServiceIndustry,
     },
     {
-      abbr: "KCSA",
-      name: "Consulting Services Alliance",
-      color: "#0F766E",
-      mark: (c) => (
-        <g>
-          <path d="M16 4 L27 9 V18 C27 24 22 27 16 29 C10 27 5 24 5 18 V9 Z" fill="none" stroke={c} strokeWidth="2.5" strokeLinejoin="round" />
-          <circle cx="16" cy="17" r="3.5" fill={c} />
-        </g>
-      ),
+      name: "SWICT총연합회",
+      logo: partnerSwict,
     },
-    {
-      abbr: "KIPA",
-      name: "Information Protection Assoc.",
-      color: "#0B2540",
-      mark: (c) => (
-        <g>
-          <rect x="6" y="14" width="20" height="14" rx="2" fill="none" stroke={c} strokeWidth="2.5" />
-          <path d="M10 14 V10 a6 6 0 0 1 12 0 V14" fill="none" stroke={c} strokeWidth="2.5" />
-        </g>
-      ),
-    },
-    {
-      abbr: "KSME",
-      name: "SME Federation",
-      color: "#B45309",
-      mark: (c) => (
-        <g>
-          <path d="M4 26 V14 L16 6 L28 14 V26 Z" fill="none" stroke={c} strokeWidth="2.5" strokeLinejoin="round" />
-          <rect x="13" y="18" width="6" height="8" fill={c} />
-        </g>
-      ),
-    },
-    {
-      abbr: "KDPF",
-      name: "Data Privacy Forum",
-      color: "#7C3AED",
-      mark: (c) => (
-        <g>
-          <ellipse cx="16" cy="9" rx="11" ry="3.5" fill="none" stroke={c} strokeWidth="2.5" />
-          <path d="M5 9 V23 C5 24.9 9.9 26.5 16 26.5 C22.1 26.5 27 24.9 27 23 V9" fill="none" stroke={c} strokeWidth="2.5" />
-          <path d="M5 16 C5 17.9 9.9 19.5 16 19.5 C22.1 19.5 27 17.9 27 16" fill="none" stroke={c} strokeWidth="2" />
-        </g>
-      ),
-    },
-    {
-      abbr: "KOSA",
-      name: "Online Survey Association",
-      color: "#0891B2",
-      mark: (c) => (
-        <g>
-          <rect x="6" y="6" width="20" height="20" rx="3" fill="none" stroke={c} strokeWidth="2.5" />
-          <path d="M11 12 H21 M11 16 H21 M11 20 H17" stroke={c} strokeWidth="2.2" strokeLinecap="round" />
-        </g>
-      ),
-    },
-    {
-      abbr: "KAII",
-      name: "AI Industry Institute",
-      color: "#DB2777",
-      mark: (c) => (
-        <g>
-          <circle cx="16" cy="16" r="4" fill={c} />
-          <circle cx="16" cy="16" r="11" fill="none" stroke={c} strokeWidth="2.2" />
-          <circle cx="6" cy="16" r="2" fill={c} />
-          <circle cx="26" cy="16" r="2" fill={c} />
-          <circle cx="16" cy="6" r="2" fill={c} />
-          <circle cx="16" cy="26" r="2" fill={c} />
-        </g>
-      ),
-    },
-    {
-      abbr: "KCRI",
-      name: "Consumer Rights Institute",
-      color: "#059669",
-      mark: (c) => (
-        <g>
-          <path d="M16 4 C20 11 26 13 26 19 C26 24 21.5 28 16 28 C10.5 28 6 24 6 19 C6 13 12 11 16 4 Z" fill="none" stroke={c} strokeWidth="2.5" strokeLinejoin="round" />
-        </g>
-      ),
-    },
-  ];
+  ] as const;
 
   return (
     <section className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
@@ -324,30 +237,22 @@ function PartnerLogosStrip() {
             협력 협단체와 함께 회원사의 안전한 온라인 조사·접수 환경을 지원합니다.
           </p>
         </div>
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-5 md:gap-8">
           {partners.map((p) => (
             <div
-              key={p.abbr}
-              title={`${p.abbr} · ${p.name}`}
-              aria-label={`${p.abbr} ${p.name} 로고`}
-              className="group flex h-20 flex-col items-center justify-center gap-1 rounded-xl border border-[#E5E7EB] bg-white px-2 grayscale transition hover:grayscale-0 hover:border-trust-blue hover:shadow-[0_8px_20px_rgba(15,23,42,0.06)]"
+              key={p.name}
+              title={p.name}
+              aria-label={`${p.name} 로고`}
+              className="flex h-24 w-[min(100%,280px)] flex-col items-center justify-center rounded-xl border border-[#E5E7EB] bg-white px-6 py-4 transition hover:border-trust-blue hover:shadow-[0_8px_20px_rgba(15,23,42,0.06)] sm:h-28 sm:w-[300px]"
             >
-              <svg viewBox="0 0 32 32" className="h-7 w-7" aria-hidden="true">
-                {p.mark(p.color)}
-              </svg>
-              <div className="flex items-baseline gap-1 leading-none">
-                <span className="text-[12.5px] font-extrabold tracking-tight" style={{ color: p.color }}>
-                  {p.abbr}
-                </span>
-              </div>
-              <span className="text-[9.5px] font-medium uppercase tracking-[0.08em] text-text-muted">
-                {p.name}
-              </span>
+              <img
+                src={p.logo}
+                alt={p.name}
+                className="max-h-14 w-full object-contain sm:max-h-16"
+              />
+              <span className="mt-2 text-[12px] font-semibold text-navy">{p.name}</span>
             </div>
           ))}
-        </div>
-        <div className="mt-5 text-center text-[12px] text-text-muted">
-          ※ 표시된 협단체 로고는 페이지 구성 예시이며, 실제 협력 협단체 로고는 등록 후 순차 게재됩니다.
         </div>
       </div>
     </section>
@@ -665,7 +570,7 @@ function TrustCardsThree() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-privacy-green to-[#0F766E] text-white">
                 <Award className="h-6 w-6" strokeWidth={1.75} />
               </div>
-              <SafeSurveyBadge size={80} />
+              <SafeSurveyBadge size={68} />
             </div>
             <div className="mt-5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-privacy-green">
               03 · Privacy Safe Survey Mark
@@ -738,8 +643,8 @@ function SafeSurveyMarkDetail() {
           <div className="flex flex-col items-center">
             <div className="relative">
               <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-accent-teal/35 via-trust-blue/20 to-privacy-green/25 blur-3xl" />
-              <div className="rounded-full bg-white p-4 shadow-[0_24px_60px_rgba(11,31,58,0.12)] ring-1 ring-border">
-                <SafeSurveyBadge size={280} />
+              <div className="flex h-[300px] w-[300px] items-center justify-center rounded-full bg-white p-8 shadow-[0_24px_60px_rgba(11,31,58,0.12)] ring-1 ring-border">
+                <SafeSurveyBadge size={220} />
               </div>
             </div>
             <div className="mt-6 rounded-full border border-[#0F766E]/30 bg-white px-4 py-2 text-[12.5px] font-bold text-[#0F766E]">
@@ -987,7 +892,7 @@ function PrivacyBusinessPillars() {
             </div>
 
             <div className="mt-5 rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-5 py-6 text-center text-[13px] text-text-muted">
-              신뢰 기반 추천 기준 서비스 DB 준비 중
+              공익 추천 기준 기반 서비스 DB 준비 중
             </div>
           </PillarCard>
 
@@ -1003,7 +908,7 @@ function PrivacyBusinessPillars() {
               개인정보보호진흥원은 공식 행정처분 기관이 아니며, 공식 신고와
               조사는 개인정보보호위원회 및 KISA 개인정보침해신고센터를 통해
               진행됩니다. 진흥원은 신고 안내, 사전 상담, 위험 모니터링,
-              제도 개선 의견 수렴을 지원하는 상담 창구 역할을 합니다.
+              제도 개선 의견 수렴을 지원하는 공익 창구 역할을 합니다.
             </div>
 
             <div className="mt-5 text-[13px] font-semibold uppercase tracking-wider text-trust-blue">
@@ -1299,7 +1204,7 @@ function PrivacySelfCheck() {
           </h2>
           <p className="mt-5 text-text-secondary leading-[1.8]">
             아래 항목 중 하나라도 해당하면 개인정보보호 점검이 필요합니다.
-            본 자가점검은 법률 판단이 아닌 참고용 안내입니다.
+            본 자가점검은 법률 판단이 아닌 참고용 공익 안내입니다.
           </p>
         </div>
 
@@ -1361,7 +1266,7 @@ function PrivacySelfCheck() {
             </div>
             <div className="rounded-xl border border-[#E5E7EB] bg-white p-5 text-[13px] text-text-secondary leading-relaxed">
               <Info className="inline h-4 w-4 mr-1 -mt-0.5 text-trust-blue" />
-              본 자가점검은 참고 안내를 목적으로 제공되며, 정확한 법률 해석과
+              본 자가점검은 공익적 안내를 목적으로 제공되며, 정확한 법률 해석과
               사안별 적용은 개인정보보호위원회·KISA 및 전문 자문이 필요합니다.
             </div>
           </div>
@@ -1513,7 +1418,7 @@ function PrivacyLawChangeSection() {
 
         <div className="mt-6 rounded-xl border border-[#E5E7EB] bg-[#F5F8FC] p-5 text-[13.5px] text-text-secondary leading-relaxed">
           <Info className="inline h-4 w-4 mr-1 -mt-0.5 text-trust-blue" />
-          본 비교표는 첨부자료를 토대로 제도 변화 방향을 정리한 참고 안내이며,
+          본 비교표는 첨부자료를 토대로 제도 변화 방향을 정리한 공익 안내이며,
           구체적인 적용·해석은 개인정보보호위원회 및 전문 자문을 통해 확인하시기 바랍니다.
         </div>
       </div>
@@ -1622,11 +1527,11 @@ function PrivacyFAQ() {
     },
     {
       q: "공식 신고는 어디에서 하나요?",
-      a: "공식 행정 신고는 개인정보보호위원회 및 KISA 개인정보침해신고센터(국번 없이 118)를 통해 접수됩니다. 개인정보보호진흥원은 사전 상담·안내 창구 역할을 합니다.",
+      a: "공식 행정 신고는 개인정보보호위원회 및 KISA 개인정보침해신고센터(국번 없이 118)를 통해 접수됩니다. 개인정보보호진흥원은 공익 사전 상담·안내 창구 역할을 합니다.",
     },
     {
       q: "개인정보보호진흥원은 어떤 도움을 제공하나요?",
-      a: "신뢰 기반 추천 기준 안내, 신고·모니터링 사전 상담, 정책연구 및 제도 개선 의견 수렴, 포럼·교육 운영 등을 통해 국민·기업·공공기관의 개인정보보호 역량 강화를 지원합니다.",
+      a: "공익 추천 기준 안내, 신고·모니터링 사전 상담, 정책연구 및 제도 개선 의견 수렴, 포럼·교육 운영 등을 통해 국민·기업·공공기관의 개인정보보호 역량 강화를 지원합니다.",
     },
     {
       q: "좋은 개인정보보호 서비스를 고르는 기준은 무엇인가요?",
@@ -1661,7 +1566,7 @@ function PrivacyFAQ() {
         </Accordion>
         <div className="mt-6 rounded-xl border border-[#E5E7EB] bg-[#F5F8FC] p-5 text-[13.5px] text-text-secondary leading-relaxed">
           <Info className="inline h-4 w-4 mr-1 -mt-0.5 text-trust-blue" />
-          본 Q&amp;A는 참고 안내를 목적으로 작성되었으며, 공식 법률 해석은
+          본 Q&amp;A는 공익 안내를 목적으로 작성되었으며, 공식 법률 해석은
           관련 기관 또는 전문가 상담이 필요합니다.
         </div>
       </div>
@@ -1688,7 +1593,7 @@ function PrivacyResources() {
           <div className="label-eyebrow mb-4">Resources</div>
           <h2 className="text-navy">개인정보보호 자료실</h2>
           <p className="mt-5 text-text-secondary leading-[1.8]">
-            자료실에서 제공될 가이드와 보고서 목록입니다. 자료 등록 후
+            공익 자료실에서 제공될 가이드와 보고서 목록입니다. 자료 등록 후
             순차적으로 다운로드가 제공됩니다.
           </p>
         </div>

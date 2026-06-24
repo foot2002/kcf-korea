@@ -24,11 +24,11 @@ import { SectionTitle } from "@/components/site/SectionTitle";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 재단" },
+      { title: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익재단" },
       {
         name: "description",
         content:
-          "재단법인 한국컨설팅산업재단(KCF)은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하는 비영리 재단입니다.",
+          "재단법인 한국컨설팅산업재단(KCF)은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하는 비영리 공익재단입니다.",
       },
       { property: "og:title", content: "한국컨설팅산업재단 (KCF)" },
       { property: "og:url", content: "/" },
@@ -66,9 +66,9 @@ function HomePage() {
         <div className="absolute inset-0 grid-bg opacity-15" />
         <div className="container-page relative grid gap-12 py-24 md:py-36 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
-            <div className="hero-eyebrow">재단 · Knowledge Service Industry</div>
+            <div className="hero-eyebrow">공익재단 · Knowledge Service Industry</div>
             <h1 className="mt-5 text-white">
-              대한민국 지식서비스산업을<br />선도하는 재단
+              대한민국 지식서비스산업을<br />선도하는 공익재단
             </h1>
             <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/82">
               한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화,
@@ -189,7 +189,7 @@ function HomePage() {
             <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-white/80">
               데이터 경제 시대의 핵심 과제인 개인정보 보호를 위해
               컨설팅·교육·정책연구·포럼 활동을 종합적으로 수행하는
-              재단의 핵심 중점 사업입니다.
+              재단의 대표 중점 사업입니다.
             </p>
           </div>
 
@@ -239,7 +239,7 @@ function HomePage() {
         <div className="container-page">
           <SectionTitle
             eyebrow="핵심 가치"
-            title="전문성, 사회적 책임, 혁신, 신뢰를 기반으로 합니다"
+            title="전문성, 공익성, 혁신, 신뢰를 기반으로 합니다"
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {coreValues.map((v, i) => {
