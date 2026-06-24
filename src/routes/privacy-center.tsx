@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useId, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -33,6 +33,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import heroPrivacy from "@/assets/hero-privacy.jpg";
+import safetyLogo from "@/assets/safety-logo.png";
+import safetyMark from "@/assets/safety-mark.png";
 import { PrivacyInquiryForm } from "@/components/privacy/PrivacyInquiryForm";
 import { privacyOffice } from "@/data/kcf";
 
@@ -100,10 +102,13 @@ function PrivacyHero() {
       <div className="absolute inset-0 opacity-15 grid-bg" />
       <div className="relative container-page py-20 md:py-28 grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:items-center">
         <div>
-          <div className="hero-eyebrow !border-accent-teal/30 !bg-privacy-green/20 !text-accent-teal">
-            <Shield className="h-3.5 w-3.5" />
-            개인정보보호진흥원
-          </div>
+          <img
+            src={safetyLogo}
+            alt="개인정보보호진흥원 GSAP — 개인정보보호 안심 설문"
+            className="h-12 w-auto max-w-[min(100%,340px)] rounded-xl bg-white px-3 py-2 object-contain object-left shadow-[0_8px_28px_rgba(2,20,26,0.35)] sm:h-14 md:h-[60px]"
+            width={340}
+            height={60}
+          />
           <div className="mt-4 text-[14px] font-medium text-white/70">국민 개인정보 안심센터</div>
           <h1 className="mt-3 text-white">
             국민의 개인정보를<br />지키는 신뢰 플랫폼
@@ -660,7 +665,7 @@ function TrustCardsThree() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-privacy-green to-[#0F766E] text-white">
                 <Award className="h-6 w-6" strokeWidth={1.75} />
               </div>
-              <SafeSurveyBadge size={64} />
+              <SafeSurveyBadge size={80} />
             </div>
             <div className="mt-5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-privacy-green">
               03 · Privacy Safe Survey Mark
@@ -700,170 +705,23 @@ function TrustCardsThree() {
   );
 }
 
-/* ---------- Privacy Safe Survey Mark — Logo/Badge SVG ---------- */
-function SafeSurveyBadge({ size = 160 }: { size?: number }) {
-  const uid = useId().replace(/:/g, "");
-  const g = (name: string) => `${uid}-${name}`;
-
+/* ---------- Privacy Safe Survey Mark — official badge image ---------- */
+function SafeSurveyBadge({
+  size = 160,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) {
   return (
-    <div
-      className="relative flex items-center justify-center"
+    <img
+      src={safetyMark}
+      alt="개인정보보호 안심마크 GSAP"
+      width={size}
+      height={size}
+      className={`object-contain ${className}`.trim()}
       style={{ width: size, height: size }}
-      role="img"
-      aria-label="개인정보 안심 조사 마크 — Privacy Safe Survey Mark by KCF 개인정보보호진흥원"
-    >
-      <svg viewBox="0 0 200 200" width={size} height={size} aria-hidden="true">
-        <defs>
-          <linearGradient id={g("ring")} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#14B8A6" />
-            <stop offset="30%" stopColor="#0F766E" />
-            <stop offset="55%" stopColor="#2563EB" />
-            <stop offset="80%" stopColor="#1E3A8A" />
-            <stop offset="100%" stopColor="#0F766E" />
-          </linearGradient>
-          <linearGradient id={g("shield")} x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#5EEAD4" />
-            <stop offset="35%" stopColor="#0D9488" />
-            <stop offset="100%" stopColor="#020617" />
-          </linearGradient>
-          <linearGradient id={g("inner")} x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="100%" stopColor="#ECFEFF" />
-          </linearGradient>
-          <radialGradient id={g("glow")} cx="50%" cy="38%" r="55%">
-            <stop offset="0%" stopColor="#2DD4BF" stopOpacity="0.55" />
-            <stop offset="55%" stopColor="#2563EB" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="#020617" stopOpacity="0" />
-          </radialGradient>
-          <filter id={g("shadow")} x="-25%" y="-25%" width="150%" height="150%">
-            <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#020617" floodOpacity="0.35" />
-          </filter>
-          <filter id={g("shield-glow")} x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <path id={g("arc-top")} d="M 32,100 A 68,68 0 0 1 168,100" fill="none" />
-        </defs>
-
-        {/* Ambient glow */}
-        <circle cx="100" cy="100" r="90" fill={`url(#${g("glow")})`} />
-
-        {/* Outer seal ring */}
-        <circle cx="100" cy="100" r="95" fill={`url(#${g("ring")})`} filter={`url(#${g("shadow")})`} />
-        <circle cx="100" cy="100" r="88" fill={`url(#${g("inner")})`} />
-        <circle cx="100" cy="100" r="88" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.55" />
-        <circle
-          cx="100"
-          cy="100"
-          r="82"
-          fill="none"
-          stroke="#0F766E"
-          strokeWidth="1"
-          strokeDasharray="2.5 3.5"
-          opacity="0.45"
-        />
-
-        {/* Accent ticks */}
-        {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
-          const rad = (deg * Math.PI) / 180;
-          const x1 = 100 + 90 * Math.cos(rad);
-          const y1 = 100 + 90 * Math.sin(rad);
-          const x2 = 100 + 94.5 * Math.cos(rad);
-          const y2 = 100 + 94.5 * Math.sin(rad);
-          const vivid = deg % 90 === 0;
-          return (
-            <line
-              key={deg}
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke={vivid ? "#2563EB" : "#2DD4BF"}
-              strokeWidth={vivid ? 2 : 1.5}
-              strokeLinecap="round"
-            />
-          );
-        })}
-
-        {/* Top curved label */}
-        <text fill="#020617" fontSize="10" fontWeight="800" letterSpacing="2.4">
-          <textPath href={`#${g("arc-top")}`} startOffset="50%" textAnchor="middle">
-            PRIVACY SAFE SURVEY MARK
-          </textPath>
-        </text>
-
-        {/* Shield */}
-        <g filter={`url(#${g("shield-glow")})`}>
-          <path
-            d="M100 52 L130 64 V90 C130 106 118 114 100 118 C82 114 70 106 70 90 V64 Z"
-            fill={`url(#${g("shield")})`}
-          />
-          <path
-            d="M100 52 L130 64 V90 C130 106 118 114 100 118 C82 114 70 106 70 90 V64 Z"
-            fill="none"
-            stroke="#99F6E4"
-            strokeWidth="1.5"
-          />
-        </g>
-
-        {/* Lock */}
-        <rect x="90" y="72" width="20" height="15" rx="2.5" fill="#020617" opacity="0.55" />
-        <path
-          d="M93.5 72 V68 C93.5 63 96.5 59.5 100 59.5 C103.5 59.5 106.5 63 106.5 68 V72"
-          fill="none"
-          stroke="#FFFFFF"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        <circle cx="100" cy="79.5" r="2.2" fill="#5EEAD4" />
-
-        {/* Check — bold dual stroke */}
-        <path
-          d="M86 94 L95 103 L116 80"
-          fill="none"
-          stroke="#2DD4BF"
-          strokeWidth="6.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M86 94 L95 103 L116 80"
-          fill="none"
-          stroke="#FFFFFF"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.7"
-        />
-
-        {/* Bottom labels — straight lines, clear vertical spacing */}
-        <text
-          x="100"
-          y="141"
-          textAnchor="middle"
-          fontSize="10.5"
-          fontWeight="900"
-          fill="#0F766E"
-          letterSpacing="0.2"
-        >
-          개인정보 · 안심 조사
-        </text>
-        <text
-          x="100"
-          y="158"
-          textAnchor="middle"
-          fontSize="7.2"
-          fontWeight="800"
-          fill="#1D4ED8"
-          letterSpacing="0.8"
-        >
-          by KCF · 개인정보보호진흥원
-        </text>
-      </svg>
-    </div>
+    />
   );
 }
 
@@ -880,8 +738,8 @@ function SafeSurveyMarkDetail() {
           <div className="flex flex-col items-center">
             <div className="relative">
               <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-accent-teal/35 via-trust-blue/20 to-privacy-green/25 blur-3xl" />
-              <div className="rounded-full bg-white p-6 shadow-[0_24px_60px_rgba(11,31,58,0.12)] ring-1 ring-border">
-                <SafeSurveyBadge size={260} />
+              <div className="rounded-full bg-white p-4 shadow-[0_24px_60px_rgba(11,31,58,0.12)] ring-1 ring-border">
+                <SafeSurveyBadge size={280} />
               </div>
             </div>
             <div className="mt-6 rounded-full border border-[#0F766E]/30 bg-white px-4 py-2 text-[12.5px] font-bold text-[#0F766E]">
