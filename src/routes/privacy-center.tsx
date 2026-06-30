@@ -33,12 +33,19 @@ import {
   Sparkles,
 } from "lucide-react";
 import heroPrivacy from "@/assets/hero-privacy.jpg";
-import safetyLogo from "@/assets/safety-logo.png";
-import safetyMark from "@/assets/safety-mark.png";
-import partnerServiceIndustry from "@/assets/partner-service-industry.gif";
-import partnerSwict from "@/assets/partner-swict.gif";
+import sureLogo from "@site-image/sure_logo.png";
+import sureMark from "@site-image/sure_mark.png";
+import sureDetail from "@site-image/sure_detail.png";
+import partnerServiceIndustry from "@site-image/logo_서비스산업총연합회.gif";
+import partnerSwict from "@site-image/logo_swict총연합회.gif";
 import { PrivacyInquiryForm } from "@/components/privacy/PrivacyInquiryForm";
 import { privacyOffice } from "@/data/kcf";
+import {
+  memberSupportPartners,
+  searchMemberSupportPartners,
+  formatSupportFlag,
+  type MemberSupportPartner,
+} from "@/data/member-support-partners";
 
 
 export const Route = createFileRoute("/privacy-center")({
@@ -68,13 +75,12 @@ function PrivacyCenterPage() {
     <>
       <PrivacyHero />
       <PartnerLogosStrip />
+      <SafeSurveyMarkDetail />
       <WiseOnTrustBanner />
       <TrustCardsThree />
-      <SafeSurveyMarkDetail />
       <PrivacyMissionSection />
       <PrivacyBusinessPillars />
       <PrivacySelfCheck />
-      <SafeSurveyPrinciples />
       <PrivacyLawChangeSection />
       <IncidentTypeSection />
       <PrivacyFAQ />
@@ -105,11 +111,11 @@ function PrivacyHero() {
       <div className="relative container-page py-20 md:py-28 grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:items-center">
         <div>
           <img
-            src={safetyLogo}
-            alt="개인정보보호진흥원 GSAP — 개인정보보호 안심 설문"
-            className="h-16 w-auto max-w-[min(100%,480px)] rounded-xl bg-white px-4 py-2.5 object-contain object-left shadow-[0_8px_28px_rgba(2,20,26,0.35)] sm:h-[72px] md:h-20 lg:h-[88px]"
-            width={480}
-            height={88}
+            src={sureLogo}
+            alt="SURE — 개인정보보호 안심마크 Secure User Response Environment Mark"
+            className="h-[120px] w-auto max-w-[min(100%,720px)] rounded-xl bg-white px-5 py-4 object-contain object-left shadow-[0_8px_28px_rgba(2,20,26,0.35)] sm:h-[140px] md:h-[160px] lg:h-[180px]"
+            width={720}
+            height={180}
           />
           <div className="mt-4 text-[14px] font-medium text-white/70">국민 개인정보 안심센터</div>
           <h1 className="mt-3 text-white">
@@ -260,20 +266,31 @@ function PartnerLogosStrip() {
 }
 
 /* ---------- Section 1C. WiseON Trust Banner + Search ---------- */
+function MemberSupportResultCard({ partner }: { partner: MemberSupportPartner }) {
+  return (
+    <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-5 text-[14px] text-white/90">
+      <div className="text-[16px] font-bold text-white">{partner.name}</div>
+      <ul className="mt-3 space-y-1.5 text-[13.5px] text-white/75">
+        <li>회원사 여부: {formatSupportFlag(partner.member)}</li>
+        <li>무료 지원 대상: {formatSupportFlag(partner.free, "대상", "비대상")}</li>
+        <li>할인 적용: {formatSupportFlag(partner.discount, "적용", "미적용")}</li>
+        <li>신청 가능 여부: {formatSupportFlag(partner.available, "가능", "문의 필요")}</li>
+      </ul>
+      <div className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#5EEAD4]">
+        지원 안내 보기 <ArrowRight className="h-3.5 w-3.5" />
+      </div>
+    </div>
+  );
+}
+
 function WiseOnTrustBanner() {
   const [query, setQuery] = useState("");
   const [searched, setSearched] = useState(false);
-  // 실제 DB 연결 전까지 결과 비어있음 (placeholder 구조)
-  const results: Array<{
-    org: string;
-    member: boolean;
-    free: boolean;
-    discount: boolean;
-    available: boolean;
-  }> = [];
+  const [results, setResults] = useState<MemberSupportPartner[]>([]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setResults(searchMemberSupportPartners(query));
     setSearched(true);
   };
 
@@ -362,37 +379,73 @@ function WiseOnTrustBanner() {
             </button>
           </form>
 
-          {/* Results placeholder */}
+          {/* Search results */}
           {searched && (
             <div className="mt-6">
               {results.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-white/25 bg-white/[0.03] px-6 py-8 text-center text-[14px] text-white/70">
-                  현재 등록된 협단체 정보가 없습니다. 개인정보보호진흥원으로
-                  문의해 주세요.
+                  검색 결과가 없습니다. 협력 협단체 명단을 확인하거나
+                  개인정보보호진흥원으로 문의해 주세요.
                 </div>
               ) : (
                 <div className="grid gap-3 md:grid-cols-2">
                   {results.map((r) => (
-                    <div
-                      key={r.org}
-                      className="rounded-2xl border border-white/15 bg-white/[0.06] p-5 text-[14px] text-white/90"
-                    >
-                      <div className="text-[16px] font-bold text-white">{r.org}</div>
-                      <ul className="mt-3 space-y-1.5 text-[13.5px] text-white/75">
-                        <li>회원사 여부: {r.member ? "예" : "아니오"}</li>
-                        <li>무료 지원 대상: {r.free ? "대상" : "비대상"}</li>
-                        <li>할인 적용: {r.discount ? "적용" : "미적용"}</li>
-                        <li>신청 가능 여부: {r.available ? "가능" : "문의 필요"}</li>
-                      </ul>
-                      <div className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-[#5EEAD4]">
-                        지원 안내 보기 <ArrowRight className="h-3.5 w-3.5" />
-                      </div>
-                    </div>
+                    <MemberSupportResultCard key={r.id} partner={r} />
                   ))}
                 </div>
               )}
             </div>
           )}
+
+          {/* Registered partners table */}
+          <div className="mt-8">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#93C5FD]">
+                  Partner List
+                </div>
+                <h4 className="mt-1 text-[17px] font-bold text-white">
+                  협력 협단체 명단
+                </h4>
+              </div>
+              <p className="text-[13px] text-white/60">
+                등록 {memberSupportPartners.length}개 기관
+              </p>
+            </div>
+            <div className="mt-4 overflow-x-auto rounded-2xl border border-white/15 bg-white/[0.04]">
+              <table className="w-full min-w-[640px] text-left text-[13.5px]">
+                <thead>
+                  <tr className="border-b border-white/15 bg-white/[0.06] text-[12px] uppercase tracking-wider text-[#93C5FD]">
+                    <th className="px-5 py-3.5 font-bold">기관명</th>
+                    <th className="px-4 py-3.5 font-bold">회원사</th>
+                    <th className="px-4 py-3.5 font-bold">무료 지원</th>
+                    <th className="px-4 py-3.5 font-bold">할인 적용</th>
+                    <th className="px-4 py-3.5 font-bold">신청 가능</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {memberSupportPartners.map((p) => (
+                    <tr
+                      key={p.id}
+                      className="border-b border-white/10 last:border-0 text-white/90"
+                    >
+                      <td className="px-5 py-4 font-semibold text-white">{p.name}</td>
+                      <td className="px-4 py-4">{formatSupportFlag(p.member)}</td>
+                      <td className="px-4 py-4">
+                        {formatSupportFlag(p.free, "대상", "비대상")}
+                      </td>
+                      <td className="px-4 py-4">
+                        {formatSupportFlag(p.discount, "적용", "미적용")}
+                      </td>
+                      <td className="px-4 py-4">
+                        {formatSupportFlag(p.available, "가능", "문의 필요")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -573,10 +626,10 @@ function TrustCardsThree() {
               <SafeSurveyBadge size={68} />
             </div>
             <div className="mt-5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-privacy-green">
-              03 · Privacy Safe Survey Mark
+              03 · SURE Mark
             </div>
             <div className="mt-1.5 text-[20px] font-bold text-navy leading-snug">
-              개인정보 안심 조사 마크
+              개인정보보호 SURE 안심마크
             </div>
             <p className="mt-3 text-[14px] leading-relaxed text-text-secondary">
               <strong className="text-navy">WiseON을 사용하는 기관과 기업은</strong>{" "}
@@ -610,7 +663,7 @@ function TrustCardsThree() {
   );
 }
 
-/* ---------- Privacy Safe Survey Mark — official badge image ---------- */
+/* ---------- SURE Mark — official certification badge ---------- */
 function SafeSurveyBadge({
   size = 160,
   className = "",
@@ -620,8 +673,8 @@ function SafeSurveyBadge({
 }) {
   return (
     <img
-      src={safetyMark}
-      alt="개인정보보호 안심마크 GSAP"
+      src={sureMark}
+      alt="개인정보보호 SURE 안심마크"
       width={size}
       height={size}
       className={`object-contain ${className}`.trim()}
@@ -639,34 +692,40 @@ function SafeSurveyMarkDetail() {
     >
       <div className="container-page section-y">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          {/* Badge visual */}
+          {/* SURE mark (large) + CSAP 안내 */}
           <div className="flex flex-col items-center">
             <div className="relative">
               <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-accent-teal/35 via-trust-blue/20 to-privacy-green/25 blur-3xl" />
-              <div className="flex h-[300px] w-[300px] items-center justify-center rounded-full bg-white p-8 shadow-[0_24px_60px_rgba(11,31,58,0.12)] ring-1 ring-border">
-                <SafeSurveyBadge size={220} />
+              <div className="flex h-[320px] w-[320px] items-center justify-center rounded-full bg-white p-10 shadow-[0_24px_60px_rgba(11,31,58,0.12)] ring-1 ring-border sm:h-[360px] sm:w-[360px] sm:p-12">
+                <img
+                  src={sureMark}
+                  alt="개인정보보호 SURE 안심마크"
+                  className="h-[240px] w-[240px] object-contain sm:h-[280px] sm:w-[280px]"
+                />
               </div>
             </div>
-            <div className="mt-6 rounded-full border border-[#0F766E]/30 bg-white px-4 py-2 text-[12.5px] font-bold text-[#0F766E]">
-              WiseON 사용 기관/기업 부여 마크
+            <div className="relative mt-10 w-full max-w-lg">
+              <img
+                src={sureDetail}
+                alt="개인정보보호 SURE 안심마크 — CSAP 인증 온라인 조사 솔루션 적용 안내"
+                className="w-full rounded-2xl bg-white p-4 shadow-[0_16px_40px_rgba(11,31,58,0.08)] ring-1 ring-border object-contain"
+              />
             </div>
-            <p className="mt-3 max-w-xs text-center text-[13px] leading-relaxed text-text-secondary">
-              개인정보보호진흥원은 WiseON을 활용하여 안전한 온라인 조사·접수
-              환경을 운영하는 기관 및 기업에 ‘개인정보 안심 조사 마크’를
-              안내·부여합니다.
-            </p>
+            <div className="mt-8 rounded-full border border-[#0F766E]/30 bg-white px-4 py-2 text-[12.5px] font-bold text-[#0F766E]">
+              WiseON 사용 기관/기업 부여 SURE 마크
+            </div>
           </div>
 
           {/* Content */}
           <div>
-            <div className="label-eyebrow mb-4">Privacy Safe Survey Mark</div>
-            <h2 className="text-navy">개인정보 안심 조사 마크란?</h2>
+            <div className="label-eyebrow mb-4">SURE Mark</div>
+            <h2 className="text-navy">개인정보보호 SURE 안심마크란?</h2>
             <p className="mt-5 text-[15.5px] leading-[1.85] text-text-secondary">
-              개인정보 안심 조사 마크는 개인정보보호진흥원이 <strong className="text-navy">WiseON</strong>을
-              활용하여 안전한 온라인 조사·접수 환경을 운영하는 기관 및 기업에
-              부여하는 안내 마크입니다. 설문조사, 행사 접수, 교육 신청, 고객만족도
-              조사, 내부 직원 조사 등 온라인 정보 수집 과정에서 개인정보보호
-              기준을 반영한 운영을 상징합니다.
+              SURE(Secure User Response Environment) 안심마크는 개인정보보호진흥원이{" "}
+              <strong className="text-navy">WiseON</strong>을 활용하여 안전한 온라인 조사·접수
+              환경을 운영하는 기관 및 기업에 부여하는 인증 마크입니다. 정부 CSAP 인증
+              온라인 조사 솔루션을 적용한 설문·접수 과정에서 개인정보보호 기준을
+              반영한 운영을 상징합니다.
             </p>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
@@ -1271,64 +1330,6 @@ function PrivacySelfCheck() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Section 5. 5 Principles ---------- */
-function SafeSurveyPrinciples() {
-  const principles = [
-    {
-      title: "완전 익명 설계",
-      desc: "이름, 연락처, 이메일 등 식별 항목을 제거하고 개인별 추적 링크 대신 공개 링크를 사용합니다.",
-    },
-    {
-      title: "집계 단위 설계",
-      desc: "개인 단위가 아닌 조직, 부서, 집단 단위 분석 중심으로 설계합니다.",
-    },
-    {
-      title: "인구통계 항목 범주화",
-      desc: "정확한 나이, 연봉, 경력 대신 범위형 응답을 사용합니다.",
-    },
-    {
-      title: "경품·사은품 신청 채널 분리",
-      desc: "설문 응답과 경품 신청 정보를 분리하고, 목적 달성 후 즉시 파기합니다.",
-    },
-    {
-      title: "내부 직원 조사 익명성 보장",
-      desc: "담당자도 개인별 응답을 볼 수 없도록 설정하고, 최소 응답 수 미달 시 결과를 비공개 처리합니다.",
-    },
-  ];
-  return (
-    <section className="section-y bg-[#F5F8FC] border-y border-[#E5E7EB]">
-      <div className="container-page max-w-5xl">
-        <div className="max-w-3xl">
-          <div className="label-eyebrow mb-4">Safe Survey Principles</div>
-          <h2 className="text-navy">
-            개인정보를 받지 않는 설계가<br />가장 안전한 설계입니다
-          </h2>
-          <p className="mt-5 text-text-secondary leading-[1.8]">
-            안전한 온라인 수집을 위한 5대 원칙입니다.
-          </p>
-        </div>
-        <ol className="mt-12 relative space-y-4">
-          <div className="absolute left-[22px] top-2 bottom-2 w-px bg-[#CBD5E1]" />
-          {principles.map((p, i) => (
-            <li key={p.title} className="relative grid grid-cols-[48px_1fr] gap-5">
-              <div className="relative z-10 flex h-11 w-11 items-center justify-center rounded-xl bg-navy text-white">
-                <ShieldCheck className="h-5 w-5" strokeWidth={1.75} />
-              </div>
-              <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-[12px] font-bold text-trust-blue">STEP {i + 1}</span>
-                </div>
-                <div className="mt-1 text-[19px] font-bold text-navy">{p.title}</div>
-                <p className="mt-2 text-[15px] leading-relaxed text-text-secondary">{p.desc}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
   );

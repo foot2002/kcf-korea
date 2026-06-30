@@ -1,4 +1,4 @@
-import kcfLogo from "@/assets/kcf-logo.jpg";
+import kcfLogo from "@site-image/kcf_logo.jpg";
 
 type KcfLogoProps = {
   /** header/footer: full wordmark, mark: small badge */
