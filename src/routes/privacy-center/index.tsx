@@ -39,6 +39,7 @@ import sureDetail from "@site-image/sure_detail.png";
 import partnerServiceIndustry from "@site-image/logo_서비스산업총연합회.gif";
 import partnerSwict from "@site-image/logo_swict총연합회.gif";
 import { PrivacyInquiryForm } from "@/components/privacy/PrivacyInquiryForm";
+import { SureStartAssociationSection } from "@/components/privacy/SureStartAssociationSection";
 import { privacyOffice } from "@/data/kcf";
 import {
   memberSupportPartners,
@@ -48,7 +49,7 @@ import {
 } from "@/data/member-support-partners";
 
 
-export const Route = createFileRoute("/privacy-center")({
+export const Route = createFileRoute("/privacy-center/")({
   head: () => ({
     meta: [
       { title: "개인정보보호진흥원 | 한국컨설팅산업재단" },
@@ -77,6 +78,7 @@ function PrivacyCenterPage() {
       <PartnerLogosStrip />
       <SafeSurveyMarkDetail />
       <WiseOnTrustBanner />
+      <SureStartAssociationSection />
       <TrustCardsThree />
       <PrivacyMissionSection />
       <PrivacyBusinessPillars />

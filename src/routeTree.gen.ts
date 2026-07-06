@@ -9,20 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PrivacyCenterRouteImport } from './routes/privacy-center'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PrivacyCenterIndexRouteImport } from './routes/privacy-center/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as PrivacyCenterAssociationApplyRouteImport } from './routes/privacy-center/association-apply'
 
-const PrivacyCenterRoute = PrivacyCenterRouteImport.update({
-  id: '/privacy-center',
-  path: '/privacy-center',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -53,11 +49,22 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyCenterIndexRoute = PrivacyCenterIndexRouteImport.update({
+  id: '/privacy-center/',
+  path: '/privacy-center/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyCenterAssociationApplyRoute =
+  PrivacyCenterAssociationApplyRouteImport.update({
+    id: '/privacy-center/association-apply',
+    path: '/privacy-center/association-apply',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,8 +73,9 @@ export interface FileRoutesByFullPath {
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
-  '/privacy-center': typeof PrivacyCenterRoute
+  '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/admin/': typeof AdminIndexRoute
+  '/privacy-center/': typeof PrivacyCenterIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,8 +84,9 @@ export interface FileRoutesByTo {
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
-  '/privacy-center': typeof PrivacyCenterRoute
+  '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/admin': typeof AdminIndexRoute
+  '/privacy-center': typeof PrivacyCenterIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,8 +96,9 @@ export interface FileRoutesById {
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
-  '/privacy-center': typeof PrivacyCenterRoute
+  '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/admin/': typeof AdminIndexRoute
+  '/privacy-center/': typeof PrivacyCenterIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,8 +109,9 @@ export interface FileRouteTypes {
     | '/business'
     | '/contact'
     | '/history'
-    | '/privacy-center'
+    | '/privacy-center/association-apply'
     | '/admin/'
+    | '/privacy-center/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,8 +120,9 @@ export interface FileRouteTypes {
     | '/business'
     | '/contact'
     | '/history'
-    | '/privacy-center'
+    | '/privacy-center/association-apply'
     | '/admin'
+    | '/privacy-center'
   id:
     | '__root__'
     | '/'
@@ -119,8 +131,9 @@ export interface FileRouteTypes {
     | '/business'
     | '/contact'
     | '/history'
-    | '/privacy-center'
+    | '/privacy-center/association-apply'
     | '/admin/'
+    | '/privacy-center/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,19 +143,13 @@ export interface RootRouteChildren {
   BusinessRoute: typeof BusinessRoute
   ContactRoute: typeof ContactRoute
   HistoryRoute: typeof HistoryRoute
-  PrivacyCenterRoute: typeof PrivacyCenterRoute
+  PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  PrivacyCenterIndexRoute: typeof PrivacyCenterIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/privacy-center': {
-      id: '/privacy-center'
-      path: '/privacy-center'
-      fullPath: '/privacy-center'
-      preLoaderRoute: typeof PrivacyCenterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/history': {
       id: '/history'
       path: '/history'
@@ -185,11 +192,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-center/': {
+      id: '/privacy-center/'
+      path: '/privacy-center'
+      fullPath: '/privacy-center/'
+      preLoaderRoute: typeof PrivacyCenterIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/association-apply': {
+      id: '/privacy-center/association-apply'
+      path: '/privacy-center/association-apply'
+      fullPath: '/privacy-center/association-apply'
+      preLoaderRoute: typeof PrivacyCenterAssociationApplyRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -202,8 +223,9 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessRoute: BusinessRoute,
   ContactRoute: ContactRoute,
   HistoryRoute: HistoryRoute,
-  PrivacyCenterRoute: PrivacyCenterRoute,
+  PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
   AdminIndexRoute: AdminIndexRoute,
+  PrivacyCenterIndexRoute: PrivacyCenterIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

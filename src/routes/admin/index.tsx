@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import {
   Download,
+  FileText,
+  Handshake,
   Loader2,
   Lock,
   Mail,
@@ -12,6 +14,9 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import { AssociationApplicationsPanel } from "@/components/admin/AssociationApplicationsPanel";
+import { verifyAdminPassword } from "@/lib/admin/auth";
+
 import { formatBytes } from "@/lib/privacy-inquiry/config";
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import { formatUserError } from "@/lib/privacy-inquiry/errors";
@@ -21,10 +26,11 @@ import {
   downloadPrivacyAttachment,
   listPrivacyInquiries,
   markPrivacyInquiryRead,
-  verifyPrivacyAdmin,
 } from "@/lib/privacy-inquiry/actions";
 
 const STORAGE_KEY = "kcf-privacy-admin-key";
+
+type AdminTab = "inquiries" | "associations";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -34,6 +40,9 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function AdminPage() {
+  const [activeTab, setActiveTab] = useState<AdminTab>(
+    isStaticGitHubPages ? "associations" : "inquiries",
+  );
   const [adminKey, setAdminKey] = useState("");
   const [inputKey, setInputKey] = useState("");
   const [authed, setAuthed] = useState(false);
@@ -64,27 +73,32 @@ function AdminPage() {
     if (saved) {
       setAdminKey(saved);
       setAuthed(true);
-      void load(saved);
+      if (!isStaticGitHubPages) {
+        void load(saved);
+      }
     }
   }, [load]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    if (isStaticGitHubPages) {
-      toast.error("GitHub Pages에서는 관리자 기능을 사용할 수 없습니다.");
+    const key = inputKey.trim();
+    if (!key) {
+      toast.error("관리자 비밀번호를 입력해 주세요.");
       return;
     }
     setLoading(true);
     try {
-      const result = await verifyPrivacyAdmin({ data: { adminKey: inputKey } });
-      if (!result.ok) {
+      const ok = await verifyAdminPassword(key);
+      if (!ok) {
         toast.error("관리자 비밀번호가 올바르지 않습니다.");
         return;
       }
-      sessionStorage.setItem(STORAGE_KEY, inputKey);
-      setAdminKey(inputKey);
+      sessionStorage.setItem(STORAGE_KEY, key);
+      setAdminKey(key);
       setAuthed(true);
-      await load(inputKey);
+      if (!isStaticGitHubPages) {
+        await load(key);
+      }
     } catch (err) {
       toast.error(formatUserError(err));
     } finally {
@@ -157,20 +171,6 @@ function AdminPage() {
           <p className="mt-2 text-[14px] text-text-secondary">
             관리자 비밀번호를 입력하세요.
           </p>
-          {isStaticGitHubPages && (
-            <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13.5px] leading-relaxed text-amber-950">
-              <p className="font-semibold">GitHub Pages에서는 관리자 페이지를 사용할 수 없습니다.</p>
-              <p className="mt-1.5 text-amber-900/90">
-                문의 저장·비밀번호 확인은 서버가 필요합니다. 로컬에서{" "}
-                <code className="rounded bg-amber-100 px-1 py-0.5 text-[12px]">npm run dev</code>{" "}
-                실행 후{" "}
-                <code className="rounded bg-amber-100 px-1 py-0.5 text-[12px]">
-                  http://localhost:8080/admin
-                </code>
-                에 접속하거나, Cloudflare·Vercel 등 서버 호스팅에 배포해 주세요.
-              </p>
-            </div>
-          )}
           <input
             type="password"
             value={inputKey}
@@ -181,7 +181,7 @@ function AdminPage() {
           />
           <button
             type="submit"
-            disabled={loading || isStaticGitHubPages}
+            disabled={loading}
             className="btn-primary-kcf mt-4 w-full disabled:opacity-60"
           >
             {loading ? "확인 중…" : "로그인"}
@@ -196,26 +196,69 @@ function AdminPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="label-eyebrow">Admin</div>
-          <h1 className="text-navy">개인정보보호 문의함</h1>
+          <h1 className="text-navy">개인정보보호 관리</h1>
           <p className="mt-2 text-[14px] text-text-secondary">
-            DB 없이 서버 로컬 <code className="text-[12px]">data/privacy-inquiries/</code>에
-            저장된 문의입니다.
+            문의함 및 협단체 협약 신청을 관리합니다.
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => void load(adminKey)}
-            disabled={loading}
-            className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]"
-          >
-            <RefreshCw className={`mr-1.5 inline h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-            새로고침
-          </button>
-          <button type="button" onClick={logout} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
-            로그아웃
-          </button>
+        {activeTab === "inquiries" && !isStaticGitHubPages && (
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => void load(adminKey)}
+              disabled={loading}
+              className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]"
+            >
+              <RefreshCw className={`mr-1.5 inline h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+              새로고침
+            </button>
+            <button type="button" onClick={logout} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
+              로그아웃
+            </button>
+          </div>
+        )}
+        {(activeTab === "associations" || isStaticGitHubPages) && (
+          <div className="flex gap-2">
+            <button type="button" onClick={logout} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
+              로그아웃
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 flex gap-2 border-b border-border">
+        <TabButton
+          active={activeTab === "inquiries"}
+          onClick={() => setActiveTab("inquiries")}
+          icon={FileText}
+          label="개인정보보호 문의함"
+        />
+        <TabButton
+          active={activeTab === "associations"}
+          onClick={() => setActiveTab("associations")}
+          icon={Handshake}
+          label="협단체 협약 신청 관리"
+        />
+      </div>
+
+      {activeTab === "associations" ? (
+        <div className="mt-8">
+          <AssociationApplicationsPanel adminKey={adminKey} parentAuthed={authed} />
         </div>
+      ) : isStaticGitHubPages ? (
+        <div className="mt-8 rounded-2xl border border-border bg-white p-8 text-center text-[14px] text-text-secondary">
+          개인정보보호 문의함은 서버 호스팅 환경에서만 사용할 수 있습니다.
+          <br />
+          협단체 협약 신청은 <strong className="text-navy">협단체 협약 신청 관리</strong> 탭에서
+          확인해 주세요.
+        </div>
+      ) : (
+        <>
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+        <p className="text-[14px] text-text-secondary">
+          DB 없이 서버 로컬 <code className="text-[12px]">data/privacy-inquiries/</code>에
+          저장된 문의입니다.
+        </p>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[320px_1fr]">
@@ -351,6 +394,35 @@ function AdminPage() {
           )}
         </main>
       </div>
+        </>
+      )}
     </div>
+  );
+}
+
+function TabButton({
+  active,
+  onClick,
+  icon: Icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: typeof FileText;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-2 border-b-2 px-4 py-3 text-[14px] font-semibold transition ${
+        active
+          ? "border-trust-blue text-trust-blue"
+          : "border-transparent text-text-muted hover:text-navy"
+      }`}
+    >
+      <Icon className="h-4 w-4" />
+      {label}
+    </button>
   );
 }
