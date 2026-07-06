@@ -23,10 +23,10 @@ import {
 } from "@/lib/association-application/api";
 import {
   getAssociationAdminToken,
-  isAssociationApiReady,
   isAssociationGasConfigured,
+  canUseLocalAssociationStorage,
+  useClientAssociationStorage,
 } from "@/lib/association-application/config";
-import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import {
   APPLICATION_STATUSES,
   type ApplicationStatus,
@@ -52,9 +52,11 @@ export function AssociationApplicationsPanel({
   parentAuthed?: boolean;
 }) {
   const gasMode = isAssociationGasConfigured();
+  const clientMode = useClientAssociationStorage();
+  const localMode = canUseLocalAssociationStorage();
+  const directMode = clientMode || localMode;
   const buildTimeGasToken = getAssociationAdminToken();
   const autoGasAuth = gasMode && parentAuthed && Boolean(buildTimeGasToken);
-  const localMode = !gasMode && !isStaticGitHubPages;
 
   const [token, setToken] = useState("");
   const [inputToken, setInputToken] = useState("");
@@ -95,8 +97,6 @@ export function AssociationApplicationsPanel({
   );
 
   useEffect(() => {
-    if (!isAssociationApiReady()) return;
-
     if (autoGasAuth) {
       void load(buildTimeGasToken);
       return;
@@ -109,10 +109,10 @@ export function AssociationApplicationsPanel({
       }
       return;
     }
-    if (localMode && adminKey) {
+    if (directMode && parentAuthed && adminKey) {
       void load(adminKey);
     }
-  }, [load, gasMode, localMode, adminKey, autoGasAuth, buildTimeGasToken]);
+  }, [load, gasMode, directMode, parentAuthed, adminKey, autoGasAuth, buildTimeGasToken]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -246,32 +246,6 @@ export function AssociationApplicationsPanel({
     a.download = `association-applications-${date}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-  }
-
-  if (!isAssociationApiReady()) {
-    return (
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-8 text-center md:px-10">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
-          <Lock className="h-6 w-6" />
-        </div>
-        <h3 className="mt-4 text-[18px] font-bold text-navy">협약 신청 데이터 연동이 필요합니다</h3>
-        <p className="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-amber-950/90">
-          운영 사이트(GitHub Pages)에서는 Google Apps Script 연동 후 신청 목록을 조회할 수
-          있습니다.
-        </p>
-        <ol className="mx-auto mt-5 max-w-lg space-y-2 text-left text-[14px] leading-relaxed text-amber-950/85">
-          <li>1. Google Sheet + Apps Script 배포 (docs/association-applications-setup.md 참고)</li>
-          <li>2. GitHub Secrets에 API URL·관리자 토큰 등록</li>
-          <li>3. 사이트 자동 재배포 후 이 페이지 새로고침</li>
-        </ol>
-        <p className="mt-5 text-[13px] text-amber-900/70">
-          Secret 이름:{" "}
-          <code className="rounded bg-amber-100 px-1.5 py-0.5">ASSOCIATION_APPLICATION_API_URL</code>
-          ,{" "}
-          <code className="rounded bg-amber-100 px-1.5 py-0.5">ASSOCIATION_ADMIN_TOKEN</code>
-        </p>
-      </div>
-    );
   }
 
   if (gasMode && !authed && !autoGasAuth) {
@@ -428,6 +402,11 @@ export function AssociationApplicationsPanel({
 
       <p className="mt-3 text-[12.5px] text-text-muted">
         총 {filtered.length}건 표시 (전체 {applications.length}건)
+        {clientMode && (
+          <span className="ml-2">
+            · 이 브라우저에 저장된 신청 목록입니다. 새로고침으로 최신 내용을 불러옵니다.
+          </span>
+        )}
       </p>
 
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>

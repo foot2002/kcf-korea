@@ -1,4 +1,8 @@
-import { canUseLocalAssociationStorage } from "./config";
+import {
+  canUseLocalAssociationStorage,
+  useClientAssociationStorage,
+  useGithubAssociationStorage,
+} from "./config";
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import type {
   ApplicationStatus,
@@ -39,9 +43,19 @@ export async function submitAssociationApplication(
     return parseJsonResponse<{ id: string }>(res);
   }
 
+  if (useGithubAssociationStorage()) {
+    const { submitAssociationApplicationGithub } = await import("./github-storage");
+    return submitAssociationApplicationGithub(data);
+  }
+
+  if (useClientAssociationStorage()) {
+    const { submitAssociationApplicationClient } = await import("./client-storage");
+    return submitAssociationApplicationClient(data);
+  }
+
   if (isStaticGitHubPages) {
     throw new Error(
-      "신청 접수 시스템이 설정되지 않았습니다. 잠시 후 다시 시도하거나 담당자에게 문의해 주세요.",
+      "신청 접수 중 오류가 발생했습니다. 잠시 후 다시 시도하거나 담당자에게 문의해 주세요.",
     );
   }
 
@@ -50,15 +64,25 @@ export async function submitAssociationApplication(
 }
 
 export async function fetchAssociationApplications(
-  token: string,
+  _token: string,
 ): Promise<AssociationApplication[]> {
   const gasUrl = getGasApiUrl();
   if (gasUrl) {
     const url = new URL(gasUrl);
     url.searchParams.set("action", "list");
-    url.searchParams.set("token", token);
+    url.searchParams.set("token", _token);
     const res = await fetch(url.toString(), { method: "GET" });
     return parseJsonResponse<AssociationApplication[]>(res);
+  }
+
+  if (useGithubAssociationStorage()) {
+    const { fetchAssociationApplicationsGithub } = await import("./github-storage");
+    return fetchAssociationApplicationsGithub();
+  }
+
+  if (useClientAssociationStorage()) {
+    const { hydrateAssociationApplicationsClient } = await import("./client-storage");
+    return hydrateAssociationApplicationsClient();
   }
 
   if (!canUseLocalAssociationStorage()) {
@@ -66,7 +90,7 @@ export async function fetchAssociationApplications(
   }
 
   const { listAssociationApplicationsLocal } = await import("./actions");
-  return listAssociationApplicationsLocal({ data: { adminKey: token } });
+  return listAssociationApplicationsLocal({ data: { adminKey: _token } });
 }
 
 export async function updateAssociationApplicationStatus(
@@ -85,8 +109,16 @@ export async function updateAssociationApplicationStatus(
     return;
   }
 
-  if (isStaticGitHubPages) {
-    throw new Error("운영 사이트에서는 Google Apps Script 연동이 필요합니다.");
+  if (useGithubAssociationStorage()) {
+    const { updateAssociationApplicationStatusGithub } = await import("./github-storage");
+    await updateAssociationApplicationStatusGithub(id, status);
+    return;
+  }
+
+  if (useClientAssociationStorage()) {
+    const { updateAssociationApplicationStatusClient } = await import("./client-storage");
+    updateAssociationApplicationStatusClient(id, status);
+    return;
   }
 
   const { updateAssociationApplicationStatusLocal } = await import("./actions");
@@ -109,8 +141,16 @@ export async function updateAssociationApplicationMemo(
     return;
   }
 
-  if (isStaticGitHubPages) {
-    throw new Error("운영 사이트에서는 Google Apps Script 연동이 필요합니다.");
+  if (useGithubAssociationStorage()) {
+    const { updateAssociationApplicationMemoGithub } = await import("./github-storage");
+    await updateAssociationApplicationMemoGithub(id, adminMemo);
+    return;
+  }
+
+  if (useClientAssociationStorage()) {
+    const { updateAssociationApplicationMemoClient } = await import("./client-storage");
+    updateAssociationApplicationMemoClient(id, adminMemo);
+    return;
   }
 
   const { updateAssociationApplicationMemoLocal } = await import("./actions");
