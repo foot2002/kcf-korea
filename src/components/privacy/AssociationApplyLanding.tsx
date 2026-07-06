@@ -4,6 +4,7 @@ import {
   Award,
   BadgeCheck,
   Building2,
+  CalendarClock,
   ChevronRight,
   ClipboardCheck,
   Cloud,
@@ -17,6 +18,9 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+
+import sureLogo from "@site-image/sure_logo.png";
+import sureMark from "@site-image/sure_mark.png";
 
 import {
   Accordion,
@@ -32,6 +36,24 @@ const BADGES = [
   { icon: ShieldCheck, text: "협약 체결 무료" },
   { icon: Sparkles, text: "심사 없이 혜택 적용" },
   { icon: Phone, text: "담당자 확인 후 연락" },
+] as const;
+
+const HERO_HIGHLIGHTS = [
+  {
+    icon: ShieldCheck,
+    title: "안전한 온라인 설문·접수",
+    desc: "협회와 회원사의 개인정보 수집 업무를 안전하게 지원합니다.",
+  },
+  {
+    icon: CalendarClock,
+    title: "2026년 법 개정 대비",
+    desc: "개인정보보호법 전면 개정에 맞춘 실무 대응을 돕습니다.",
+  },
+  {
+    icon: Sparkles,
+    title: "협약 즉시 혜택 적용",
+    desc: "별도 심사 없이 담당자 확인 후 바로 지원이 시작됩니다.",
+  },
 ] as const;
 
 const SUMMARY_CARDS = [
@@ -156,62 +178,95 @@ export function AssociationApplyLanding() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#04101F] via-[#0B2540] to-[#1D4ED8] text-white">
         <div className="absolute inset-0 grid-bg opacity-30" />
-        <div className="container-page relative py-10 md:py-16">
+        <div className="container-page relative py-12 md:py-20">
           <Link
             to="/privacy-center"
-            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-white/70 hover:text-white"
+            className="inline-flex items-center gap-1.5 text-[14px] font-medium text-white/75 hover:text-white"
           >
             ← 개인정보보호진흥원으로 돌아가기
           </Link>
-          <div className="label-eyebrow mt-6 !text-[#5EEAD4]">SURE START Program</div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {BADGES.map(({ icon: Icon, text }) => (
-              <span
-                key={text}
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[12px] font-semibold backdrop-blur"
-              >
-                <Icon className="h-3.5 w-3.5 text-[#5EEAD4]" />
-                {text}
-              </span>
-            ))}
-          </div>
-          <h1 className="mt-6 max-w-3xl text-[28px] font-bold leading-tight md:text-[36px]">
-            SURE START 협단체 개인정보보호 지원사업
-          </h1>
-          <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/85 md:text-[17px]">
-            협회·단체와 소속 회원사가 안전한 온라인 설문·접수·이벤트·신청 업무를 운영할 수 있도록
-            개인정보보호진흥원이 지원합니다.
-          </p>
-          <div className="mt-6 max-w-3xl space-y-3 text-[14.5px] leading-relaxed text-white/75">
-            <p>
-              오는 2026년 9월 개인정보보호법 전면 개정·시행에 따라 온라인 설문, 이벤트, 회원가입,
-              교육 신청, 행사 접수 등 개인정보를 수집하는 기업·기관의 관리 책임이 더욱 중요해지고
-              있습니다.
-            </p>
-            <p>
-              개인정보보호진흥원은 협단체 및 소속 회원사가 큰 비용 부담 없이 개인정보보호 체계를
-              갖출 수 있도록 SURE START 협단체 특별 지원 프로그램을 운영합니다.
-            </p>
-            <p>
-              협약 체결 즉시 협회와 회원사에 대한 지원 혜택이 적용되며, 별도 심사 절차 없이 담당자
-              확인 후 협약 절차가 진행됩니다.
-            </p>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => scrollTo("apply-form")}
-              className="btn-hero-light !px-6 !py-3 text-[14px]"
-            >
-              협약 신청하기 <ArrowRight className="ml-1.5 inline h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollTo("support-details")}
-              className="btn-hero-outline !px-6 !py-3 text-[14px]"
-            >
-              지원내용 보기
-            </button>
+
+          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+            <div>
+              <div className="label-eyebrow !text-[#5EEAD4]">SURE START Program</div>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {BADGES.map(({ icon: Icon, text }) => (
+                  <span
+                    key={text}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[13px] font-semibold backdrop-blur"
+                  >
+                    <Icon className="h-4 w-4 text-[#5EEAD4]" />
+                    {text}
+                  </span>
+                ))}
+              </div>
+              <h1 className="mt-7 max-w-3xl text-[32px] font-bold leading-[1.2] text-white md:text-[44px]">
+                SURE START 협단체
+                <br />
+                개인정보보호 지원사업
+              </h1>
+              <p className="mt-6 max-w-2xl text-[18px] font-medium leading-[1.75] text-white/95 md:text-[20px]">
+                협회·단체와 회원사가 안전하게 설문·접수·이벤트를 운영할 수 있도록
+                개인정보보호진흥원이 지원합니다.
+              </p>
+
+              <div className="mt-8 grid gap-4">
+                {HERO_HIGHLIGHTS.map(({ icon: Icon, title, desc }) => (
+                  <div
+                    key={title}
+                    className="flex gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-sm md:p-5"
+                  >
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#5EEAD4]/15 text-[#5EEAD4]">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <div className="text-[16px] font-bold text-white md:text-[17px]">{title}</div>
+                      <p className="mt-1.5 text-[15px] leading-relaxed text-white/80 md:text-[16px]">
+                        {desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-10 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => scrollTo("apply-form")}
+                  className="btn-hero-light !px-7 !py-3.5 text-[15px] font-semibold"
+                >
+                  협약 신청하기 <ArrowRight className="ml-1.5 inline h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollTo("support-details")}
+                  className="btn-hero-outline !px-7 !py-3.5 text-[15px] font-semibold"
+                >
+                  지원내용 보기
+                </button>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+              <div className="absolute -inset-4 rounded-[2rem] bg-[#5EEAD4]/10 blur-2xl" />
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/5 p-6 backdrop-blur-sm md:p-8">
+                <img
+                  src={sureLogo}
+                  alt="SURE START"
+                  className="mx-auto h-auto w-full max-w-[280px] object-contain"
+                />
+                <img
+                  src={sureMark}
+                  alt="SURE 안심마크"
+                  className="mx-auto mt-6 h-auto w-full max-w-[220px] object-contain drop-shadow-lg"
+                />
+                <p className="mt-6 text-center text-[14px] leading-relaxed text-white/75 md:text-[15px]">
+                  국가인증 온라인조사 플랫폼 WiseON과
+                  <br />
+                  SURE 안심마크로 안전한 정보 수집을 지원합니다.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -219,25 +274,17 @@ export function AssociationApplyLanding() {
       {/* Background */}
       <Section>
         <SectionTitle eyebrow="Background" title="왜 협단체 지원사업이 필요한가요?" />
-        <div className="mt-6 max-w-3xl space-y-4 text-[15px] leading-relaxed text-text-secondary">
+        <div className="mt-8 max-w-3xl space-y-5 text-[16px] leading-[1.8] text-text-secondary md:text-[17px]">
+          <p>협회·회원사는 설문, 행사 신청, 교육 접수 등에서 이름·연락처·이메일 등 개인정보를 수집합니다.</p>
+          <p>일반 설문도구는 동의·접근권한·로그관리 등 개인정보보호 요건을 충분히 반영하기 어렵습니다.</p>
           <p>
-            많은 협회와 회원사는 온라인 설문조사, 만족도 조사, 행사 신청, 교육 접수, 이벤트 응모,
-            회원 정보 확인 등의 과정에서 이름, 연락처, 이메일, 소속, 직무, 주소 등 다양한
-            개인정보를 수집합니다.
-          </p>
-          <p>
-            그러나 기존 범용 설문도구나 일반 신청폼은 개인정보 수집 고지, 동의, 접근권한 관리,
-            로그관리, 안전한 보관·파기 등 개인정보보호 실무 요건을 충분히 반영하기 어렵습니다.
-          </p>
-          <p>
-            SURE START 협단체 지원사업은 협회가 회원사에게 안전한 온라인 정보 수집 환경을 안내하고,
-            국가인증 기반 온라인조사 플랫폼과 SURE 안심마크를 활용할 수 있도록 지원하는 협력
-            프로그램입니다.
+            SURE START는 국가인증 온라인조사 플랫폼과 SURE 안심마크로 안전한 정보 수집 환경을
+            지원하는 협력 프로그램입니다.
           </p>
         </div>
-        <div className="mt-8 rounded-2xl border border-trust-blue/20 bg-gradient-to-r from-[#EFF6FF] to-white p-6">
-          <p className="text-[14.5px] font-semibold text-navy">
-            협약 신청 → 담당자 확인 → 협약서 서명 → 협회 전용 가입 코드 발급 → 회원사 혜택 적용
+        <div className="mt-8 rounded-2xl border border-trust-blue/20 bg-gradient-to-r from-[#EFF6FF] to-white p-6 md:p-7">
+          <p className="text-[16px] font-semibold leading-relaxed text-navy md:text-[17px]">
+            협약 신청 → 담당자 확인 → 협약서 서명 → 가입 코드 발급 → 회원사 혜택 적용
           </p>
         </div>
       </Section>
@@ -255,7 +302,7 @@ export function AssociationApplyLanding() {
                 {card.title}
               </div>
               <div className="mt-2 text-[16px] font-bold leading-snug text-navy">{card.highlight}</div>
-              <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-text-secondary">
+              <p className="mt-2 flex-1 text-[15px] leading-relaxed text-text-secondary">
                 {card.desc}
               </p>
             </div>
@@ -266,7 +313,7 @@ export function AssociationApplyLanding() {
       {/* WiseON */}
       <Section>
         <SectionTitle eyebrow="Platform" title="지원 플랫폼: WiseON" />
-        <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-text-secondary">
+        <p className="mt-4 max-w-3xl text-[16px] leading-[1.8] text-text-secondary md:text-[17px]">
           본 지원사업에서 제공하는 WiseON은 온라인조사 전문 플랫폼으로, 설문 제작부터 배포, 응답
           수집, 데이터 분석, 전문 보고서 생성까지 한 번에 운영할 수 있는 올인원 조사·분석
           솔루션입니다.
@@ -275,7 +322,7 @@ export function AssociationApplyLanding() {
           {WISEON_FEATURES.map((f) => (
             <div key={f.title} className="rounded-xl border border-border bg-white p-5">
               <div className="text-[14px] font-bold text-navy">{f.title}</div>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-text-secondary">{f.desc}</p>
+              <p className="mt-2 text-[15px] leading-relaxed text-text-secondary">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -446,7 +493,7 @@ export function AssociationApplyLanding() {
                 </span>
               ))}
             </div>
-            <p className="mt-4 text-center text-[14.5px] leading-relaxed text-text-secondary">
+            <p className="mt-4 text-center text-[16px] leading-relaxed text-text-secondary">
               아래 신청 내용은 비공개로 접수되며, 담당자 확인 후 협약 절차와 회원사 지원 방안을
               안내드립니다.
             </p>

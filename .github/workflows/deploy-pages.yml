@@ -35,7 +35,7 @@ jobs:
         env:
           GITHUB_PAGES: "true"
           VITE_GITHUB_PAGES: "true"
-          VITE_PRIVACY_ADMIN_KEY: ${{ secrets.PRIVACY_ADMIN_KEY }}
+          VITE_PRIVACY_ADMIN_KEY: kcf2026
           VITE_ASSOCIATION_APPLICATION_API_URL: ${{ secrets.ASSOCIATION_APPLICATION_API_URL }}
           VITE_ASSOCIATION_ADMIN_TOKEN: ${{ secrets.ASSOCIATION_ADMIN_TOKEN }}
 
