@@ -12,3 +12,12 @@ export function getAssociationAdminToken(): string {
 export function canUseAssociationAdminOnStatic(): boolean {
   return isStaticGitHubPages && isAssociationGasConfigured() && Boolean(getAssociationAdminToken());
 }
+
+/** 로컬 서버 JSON 저장 (GitHub Pages 정적 배포에서는 사용 불가) */
+export function canUseLocalAssociationStorage(): boolean {
+  return !isStaticGitHubPages && !isAssociationGasConfigured();
+}
+
+export function isAssociationApiReady(): boolean {
+  return isAssociationGasConfigured() || canUseLocalAssociationStorage();
+}

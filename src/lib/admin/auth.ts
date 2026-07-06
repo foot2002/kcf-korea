@@ -1,5 +1,4 @@
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
-import { verifyPrivacyAdmin } from "@/lib/privacy-inquiry/actions";
 
 /** GitHub Pages 등 정적 배포에서 클라이언트 로그인에 사용 (빌드 시 주입) */
 export function getClientAdminKey(): string {
@@ -15,6 +14,7 @@ export async function verifyAdminPassword(adminKey: string): Promise<boolean> {
     return key === getClientAdminKey();
   }
 
+  const { verifyPrivacyAdmin } = await import("@/lib/privacy-inquiry/actions");
   const result = await verifyPrivacyAdmin({ data: { adminKey: key } });
   return result.ok;
 }

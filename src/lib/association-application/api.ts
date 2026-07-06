@@ -1,10 +1,4 @@
-import {
-  listAssociationApplicationsLocal,
-  submitAssociationApplicationLocal,
-  updateAssociationApplicationMemoLocal,
-  updateAssociationApplicationStatusLocal,
-} from "./actions";
-import { isAssociationGasConfigured } from "./config";
+import { canUseLocalAssociationStorage } from "./config";
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import type {
   ApplicationStatus,
@@ -51,6 +45,7 @@ export async function submitAssociationApplication(
     );
   }
 
+  const { submitAssociationApplicationLocal } = await import("./actions");
   return submitAssociationApplicationLocal({ data });
 }
 
@@ -66,6 +61,11 @@ export async function fetchAssociationApplications(
     return parseJsonResponse<AssociationApplication[]>(res);
   }
 
+  if (!canUseLocalAssociationStorage()) {
+    return [];
+  }
+
+  const { listAssociationApplicationsLocal } = await import("./actions");
   return listAssociationApplicationsLocal({ data: { adminKey: token } });
 }
 
@@ -85,6 +85,11 @@ export async function updateAssociationApplicationStatus(
     return;
   }
 
+  if (isStaticGitHubPages) {
+    throw new Error("운영 사이트에서는 Google Apps Script 연동이 필요합니다.");
+  }
+
+  const { updateAssociationApplicationStatusLocal } = await import("./actions");
   await updateAssociationApplicationStatusLocal({ data: { adminKey: token, id, status } });
 }
 
@@ -104,5 +109,10 @@ export async function updateAssociationApplicationMemo(
     return;
   }
 
+  if (isStaticGitHubPages) {
+    throw new Error("운영 사이트에서는 Google Apps Script 연동이 필요합니다.");
+  }
+
+  const { updateAssociationApplicationMemoLocal } = await import("./actions");
   await updateAssociationApplicationMemoLocal({ data: { adminKey: token, id, adminMemo } });
 }
