@@ -36,6 +36,15 @@ import heroPrivacy from "@/assets/hero-privacy.jpg";
 import sureLogo from "@site-image/sure_logo.png";
 import sureMark from "@site-image/sure_mark.png";
 import sureDetail from "@site-image/sure_detail.png";
+import partnerLogoHiseoul from "@site-image/logo_hiseoul.png";
+import partnerLogoEngineering from "@site-image/logo_engineering.png";
+import partnerLogoIp from "@site-image/logo_ip.png";
+import partnerLogoItservice from "@site-image/logo-itservice.png";
+import partnerLogoEdutech from "@site-image/logo_edutech.png";
+import partnerLogoPco from "@site-image/logo_pco.png";
+import partnerLogoHospital from "@site-image/logo_hospital.png";
+import partnerLogoFranchise from "@site-image/logo_franchise.png";
+import partnerLogoMice from "@site-image/logo_mice.png";
 import partnerServiceIndustry from "@site-image/logo_서비스산업총연합회.gif";
 import partnerSwict from "@site-image/logo_swict총연합회.gif";
 import { PrivacyInquiryForm } from "@/components/privacy/PrivacyInquiryForm";
@@ -221,18 +230,25 @@ function HeroShieldVisual() {
 }
 
 /* ---------- Section 1B. Partner Logos Strip ---------- */
-function PartnerLogosStrip() {
-  const partners = [
-    {
-      name: "서비스산업총연합회",
-      logo: partnerServiceIndustry,
-    },
-    {
-      name: "SWICT총연합회",
-      logo: partnerSwict,
-    },
-  ] as const;
+const PARTNER_ASSOCIATION_LOGOS: {
+  name: string;
+  logo: string;
+  darkBg?: boolean;
+}[] = [
+  { name: "하이서울기업협회", logo: partnerLogoHiseoul, darkBg: true },
+  { name: "한국엔지니어링협회", logo: partnerLogoEngineering },
+  { name: "한국지식재산서비스협회", logo: partnerLogoIp, darkBg: true },
+  { name: "한국IT서비스산업협회", logo: partnerLogoItservice },
+  { name: "한국에듀테크산업협회", logo: partnerLogoEdutech },
+  { name: "한국PCO협회", logo: partnerLogoPco },
+  { name: "대한병원협회", logo: partnerLogoHospital },
+  { name: "한국프랜차이즈산업협회", logo: partnerLogoFranchise },
+  { name: "한국MICE협회", logo: partnerLogoMice },
+  { name: "서비스산업총연합회", logo: partnerServiceIndustry },
+  { name: "SWICT총연합회", logo: partnerSwict },
+];
 
+function PartnerLogosStrip() {
   return (
     <section className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
       <div className="container-page py-10 md:py-12">
@@ -245,20 +261,30 @@ function PartnerLogosStrip() {
             협력 협단체와 함께 회원사의 안전한 온라인 조사·접수 환경을 지원합니다.
           </p>
         </div>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-5 md:gap-8">
-          {partners.map((p) => (
+        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+          {PARTNER_ASSOCIATION_LOGOS.map((p) => (
             <div
               key={p.name}
               title={p.name}
               aria-label={`${p.name} 로고`}
-              className="flex h-24 w-[min(100%,280px)] flex-col items-center justify-center rounded-xl border border-[#E5E7EB] bg-white px-6 py-4 transition hover:border-trust-blue hover:shadow-[0_8px_20px_rgba(15,23,42,0.06)] sm:h-28 sm:w-[300px]"
+              className="flex flex-col items-center rounded-xl border border-[#DDE4EE] bg-white p-4 shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition hover:border-trust-blue/40 hover:shadow-[0_8px_20px_rgba(15,23,42,0.08)]"
             >
-              <img
-                src={p.logo}
-                alt={p.name}
-                className="max-h-14 w-full object-contain sm:max-h-16"
-              />
-              <span className="mt-2 text-[12px] font-semibold text-navy">{p.name}</span>
+              <div
+                className={`flex h-[96px] w-full items-center justify-center rounded-lg px-3 py-3 ring-1 ${
+                  p.darkBg
+                    ? "bg-[#0B2540] ring-[#1E3A5F]"
+                    : "bg-[#F1F5F9] ring-[#E2E8F0]"
+                }`}
+              >
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  className="max-h-[68px] w-full object-contain"
+                />
+              </div>
+              <span className="mt-2.5 line-clamp-2 min-h-[2.5rem] text-center text-[12px] font-semibold leading-snug text-navy">
+                {p.name}
+              </span>
             </div>
           ))}
         </div>

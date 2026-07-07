@@ -3,7 +3,6 @@ import type {
   AssociationApplication,
   AssociationApplicationInput,
 } from "./types";
-import { isGithubAssociationStorageConfigured } from "./config";
 
 const DATA_PATH = "public/association-applications-data.json";
 const REPO = "foot2002/kcf-korea";
