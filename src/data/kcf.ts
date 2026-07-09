@@ -13,6 +13,18 @@ export const foundation = {
   addressOfficial: "서울 송파구 올림픽로 362 (방이동) 4층 401호",
 };
 
+/** 재정경제부 지정 비영리 공익법인 (기부금 세제 혜택) */
+export const publicInterestCorporation = {
+  displayName: "공익법인 한국컨설팅산업재단",
+  designationNo: "4318",
+  entityName: "(재)한국컨설팅산업재단",
+  taxOffice: "서울지방국세청",
+  designatedAt: "2024년 9월 30일",
+  period: "2024-01-01 ~ 2026-12-31",
+  taxBenefitNote:
+    "재정경제부 지정 비영리 공익법인 — 기부금 영수증 발급 및 세제 혜택 적용",
+} as const;
+
 export const privacyOffice = {
   name: "개인정보보호진흥원",
   addressRegistered: "서울시 강남구 봉은사로 57길 13",

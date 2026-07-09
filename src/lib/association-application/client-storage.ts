@@ -1,7 +1,7 @@
 import type {
   ApplicationStatus,
   AssociationApplication,
-  AssociationApplicationInput,
+  SupportApplicationInput,
 } from "./types";
 
 const STORAGE_KEY = "kcf-association-applications-v1";
@@ -32,30 +32,20 @@ function generateId(existingCount: number): string {
 }
 
 export function submitAssociationApplicationClient(
-  data: AssociationApplicationInput,
+  data: SupportApplicationInput,
 ): { id: string } {
   const records = readAll();
   const now = new Date().toISOString();
   const record: AssociationApplication = {
     id: generateId(records.length),
     createdAt: now,
+    kind: data.kind,
     associationName: data.associationName,
-    websiteUrl: data.websiteUrl,
-    memberCompanyCount: data.memberCompanyCount,
     managerName: data.managerName,
     managerPhone: data.managerPhone,
     managerEmail: data.managerEmail,
-    representativeName: data.representativeName,
-    businessNumber: data.businessNumber,
-    establishedYear: data.establishedYear,
-    address: data.address,
-    industry: data.industry,
-    smallBusinessMemberCount: data.smallBusinessMemberCount,
-    managerPosition: data.managerPosition,
-    preferredContactMethod: data.preferredContactMethod,
     message: data.message,
     privacyConsent: true,
-    newsletterConsent: data.newsletterConsent,
     status: "접수완료",
     updatedAt: now,
   };

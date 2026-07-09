@@ -48,23 +48,13 @@ function generateId(existingCount: number): string {
 }
 
 const submitSchema = z.object({
+  kind: z.enum(["association", "enterprise", "public"]).default("association"),
   associationName: z.string().trim().min(1),
-  websiteUrl: z.string().trim().min(1),
-  memberCompanyCount: z.number().int().min(1),
   managerName: z.string().trim().min(1),
   managerPhone: z.string().trim().min(1),
   managerEmail: z.string().trim().email(),
-  representativeName: z.string().trim().optional(),
-  businessNumber: z.string().trim().optional(),
-  establishedYear: z.string().trim().optional(),
-  address: z.string().trim().optional(),
-  industry: z.string().trim().optional(),
-  smallBusinessMemberCount: z.string().trim().optional(),
-  managerPosition: z.string().trim().optional(),
-  preferredContactMethod: z.string().trim().optional(),
   message: z.string().trim().max(1000).optional(),
   privacyConsent: z.literal(true),
-  newsletterConsent: z.boolean().optional(),
 });
 
 export const submitAssociationApplicationLocal = createServerFn({ method: "POST" })
@@ -75,23 +65,13 @@ export const submitAssociationApplicationLocal = createServerFn({ method: "POST"
     const record: AssociationApplication = {
       id: generateId(records.length),
       createdAt: now,
+      kind: data.kind,
       associationName: data.associationName,
-      websiteUrl: data.websiteUrl,
-      memberCompanyCount: data.memberCompanyCount,
       managerName: data.managerName,
       managerPhone: data.managerPhone,
       managerEmail: data.managerEmail,
-      representativeName: data.representativeName,
-      businessNumber: data.businessNumber,
-      establishedYear: data.establishedYear,
-      address: data.address,
-      industry: data.industry,
-      smallBusinessMemberCount: data.smallBusinessMemberCount,
-      managerPosition: data.managerPosition,
-      preferredContactMethod: data.preferredContactMethod,
       message: data.message,
       privacyConsent: true,
-      newsletterConsent: data.newsletterConsent,
       status: "접수완료",
       updatedAt: now,
     };

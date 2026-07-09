@@ -4,6 +4,7 @@ import {
   Download,
   FileText,
   Handshake,
+  List,
   Loader2,
   Lock,
   Mail,
@@ -15,6 +16,7 @@ import {
 import { toast } from "sonner";
 
 import { AssociationApplicationsPanel } from "@/components/admin/AssociationApplicationsPanel";
+import { VoucherRegistryPanel } from "@/components/admin/VoucherRegistryPanel";
 import { verifyAdminPassword } from "@/lib/admin/auth";
 
 import { formatBytes } from "@/lib/privacy-inquiry/config";
@@ -30,7 +32,7 @@ import {
 
 const STORAGE_KEY = "kcf-privacy-admin-key";
 
-type AdminTab = "inquiries" | "associations";
+type AdminTab = "inquiries" | "associations" | "registry";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -198,7 +200,7 @@ function AdminPage() {
           <div className="label-eyebrow">Admin</div>
           <h1 className="text-navy">개인정보보호 관리</h1>
           <p className="mt-2 text-[14px] text-text-secondary">
-            문의함 및 협단체 협약 신청을 관리합니다.
+            문의함 및 협단체·기업·공공기관 지원 신청을 관리합니다.
           </p>
         </div>
         {activeTab === "inquiries" && !isStaticGitHubPages && (
@@ -217,7 +219,7 @@ function AdminPage() {
             </button>
           </div>
         )}
-        {(activeTab === "associations" || isStaticGitHubPages) && (
+        {(activeTab === "associations" || activeTab === "registry" || isStaticGitHubPages) && (
           <div className="flex gap-2">
             <button type="button" onClick={logout} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
               로그아웃
@@ -237,11 +239,21 @@ function AdminPage() {
           active={activeTab === "associations"}
           onClick={() => setActiveTab("associations")}
           icon={Handshake}
-          label="협단체 협약 신청 관리"
+          label="지원 신청 관리"
+        />
+        <TabButton
+          active={activeTab === "registry"}
+          onClick={() => setActiveTab("registry")}
+          icon={List}
+          label="협약 기관 등록"
         />
       </div>
 
-      {activeTab === "associations" ? (
+      {activeTab === "registry" ? (
+        <div className="mt-8">
+          <VoucherRegistryPanel parentAuthed={authed} />
+        </div>
+      ) : activeTab === "associations" ? (
         <div className="mt-8">
           <AssociationApplicationsPanel adminKey={adminKey} parentAuthed={authed} />
         </div>

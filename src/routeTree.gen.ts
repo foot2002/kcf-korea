@@ -17,6 +17,10 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivacyCenterIndexRouteImport } from './routes/privacy-center/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as PrivacyCenterVoucherRouteImport } from './routes/privacy-center/voucher'
+import { Route as PrivacyCenterSureMarkRouteImport } from './routes/privacy-center/sure-mark'
+import { Route as PrivacyCenterSelfCheckRouteImport } from './routes/privacy-center/self-check'
+import { Route as PrivacyCenterLawRouteImport } from './routes/privacy-center/law'
 import { Route as PrivacyCenterAssociationApplyRouteImport } from './routes/privacy-center/association-apply'
 
 const HistoryRoute = HistoryRouteImport.update({
@@ -59,6 +63,26 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyCenterVoucherRoute = PrivacyCenterVoucherRouteImport.update({
+  id: '/privacy-center/voucher',
+  path: '/privacy-center/voucher',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyCenterSureMarkRoute = PrivacyCenterSureMarkRouteImport.update({
+  id: '/privacy-center/sure-mark',
+  path: '/privacy-center/sure-mark',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyCenterSelfCheckRoute = PrivacyCenterSelfCheckRouteImport.update({
+  id: '/privacy-center/self-check',
+  path: '/privacy-center/self-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyCenterLawRoute = PrivacyCenterLawRouteImport.update({
+  id: '/privacy-center/law',
+  path: '/privacy-center/law',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyCenterAssociationApplyRoute =
   PrivacyCenterAssociationApplyRouteImport.update({
     id: '/privacy-center/association-apply',
@@ -74,6 +98,10 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
+  '/privacy-center/law': typeof PrivacyCenterLawRoute
+  '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
+  '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
+  '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin/': typeof AdminIndexRoute
   '/privacy-center/': typeof PrivacyCenterIndexRoute
 }
@@ -85,6 +113,10 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
+  '/privacy-center/law': typeof PrivacyCenterLawRoute
+  '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
+  '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
+  '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin': typeof AdminIndexRoute
   '/privacy-center': typeof PrivacyCenterIndexRoute
 }
@@ -97,6 +129,10 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
+  '/privacy-center/law': typeof PrivacyCenterLawRoute
+  '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
+  '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
+  '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin/': typeof AdminIndexRoute
   '/privacy-center/': typeof PrivacyCenterIndexRoute
 }
@@ -110,6 +146,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/history'
     | '/privacy-center/association-apply'
+    | '/privacy-center/law'
+    | '/privacy-center/self-check'
+    | '/privacy-center/sure-mark'
+    | '/privacy-center/voucher'
     | '/admin/'
     | '/privacy-center/'
   fileRoutesByTo: FileRoutesByTo
@@ -121,6 +161,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/history'
     | '/privacy-center/association-apply'
+    | '/privacy-center/law'
+    | '/privacy-center/self-check'
+    | '/privacy-center/sure-mark'
+    | '/privacy-center/voucher'
     | '/admin'
     | '/privacy-center'
   id:
@@ -132,6 +176,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/history'
     | '/privacy-center/association-apply'
+    | '/privacy-center/law'
+    | '/privacy-center/self-check'
+    | '/privacy-center/sure-mark'
+    | '/privacy-center/voucher'
     | '/admin/'
     | '/privacy-center/'
   fileRoutesById: FileRoutesById
@@ -144,6 +192,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   HistoryRoute: typeof HistoryRoute
   PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
+  PrivacyCenterLawRoute: typeof PrivacyCenterLawRoute
+  PrivacyCenterSelfCheckRoute: typeof PrivacyCenterSelfCheckRoute
+  PrivacyCenterSureMarkRoute: typeof PrivacyCenterSureMarkRoute
+  PrivacyCenterVoucherRoute: typeof PrivacyCenterVoucherRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PrivacyCenterIndexRoute: typeof PrivacyCenterIndexRoute
 }
@@ -206,6 +258,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-center/voucher': {
+      id: '/privacy-center/voucher'
+      path: '/privacy-center/voucher'
+      fullPath: '/privacy-center/voucher'
+      preLoaderRoute: typeof PrivacyCenterVoucherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/sure-mark': {
+      id: '/privacy-center/sure-mark'
+      path: '/privacy-center/sure-mark'
+      fullPath: '/privacy-center/sure-mark'
+      preLoaderRoute: typeof PrivacyCenterSureMarkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/self-check': {
+      id: '/privacy-center/self-check'
+      path: '/privacy-center/self-check'
+      fullPath: '/privacy-center/self-check'
+      preLoaderRoute: typeof PrivacyCenterSelfCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/law': {
+      id: '/privacy-center/law'
+      path: '/privacy-center/law'
+      fullPath: '/privacy-center/law'
+      preLoaderRoute: typeof PrivacyCenterLawRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-center/association-apply': {
       id: '/privacy-center/association-apply'
       path: '/privacy-center/association-apply'
@@ -224,6 +304,10 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   HistoryRoute: HistoryRoute,
   PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
+  PrivacyCenterLawRoute: PrivacyCenterLawRoute,
+  PrivacyCenterSelfCheckRoute: PrivacyCenterSelfCheckRoute,
+  PrivacyCenterSureMarkRoute: PrivacyCenterSureMarkRoute,
+  PrivacyCenterVoucherRoute: PrivacyCenterVoucherRoute,
   AdminIndexRoute: AdminIndexRoute,
   PrivacyCenterIndexRoute: PrivacyCenterIndexRoute,
 }

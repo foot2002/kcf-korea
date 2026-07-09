@@ -51,7 +51,7 @@ const SUPPORT_CARDS = [
 ] as const;
 
 const STEPS = [
-  { step: 1, label: "협단체 협약 신청", icon: FileSignature },
+  { step: 1, label: "협약/바우처 신청", icon: FileSignature },
   { step: 2, label: "담당자 확인 및 연락", icon: Phone },
   { step: 3, label: "협약서 검토·서명", icon: Handshake },
   { step: 4, label: "협회 전용 가입 코드 발급", icon: ShieldCheck },
@@ -74,7 +74,7 @@ export function SureStartAssociationSection() {
             SURE 안심마크 활용, 개인정보보호 교육·자가진단 등 회원사 지원 프로그램이 제공됩니다.
           </p>
           <p className="mt-3 text-[14.5px] leading-relaxed text-text-muted">
-            협약 신청 후 담당자가 내용을 확인하여 협약 절차와 회원사 지원 방안을 안내드립니다.
+            협약/바우처 신청 후 담당자가 내용을 확인하여 협약 절차와 회원사 지원 방안을 안내드립니다.
           </p>
         </div>
 
@@ -122,7 +122,7 @@ export function SureStartAssociationSection() {
           </ol>
           <p className="mt-4 flex items-center gap-2 text-[13px] text-text-muted">
             <Lock className="h-3.5 w-3.5 shrink-0" />
-            협약 신청 내용은 비공개로 접수되며, 담당자가 확인 후 연락드립니다.
+            협약/바우처 신청 내용은 비공개로 접수되며, 담당자가 확인 후 연락드립니다.
           </p>
         </div>
 
@@ -132,14 +132,14 @@ export function SureStartAssociationSection() {
           </h3>
           <p className="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-text-secondary">
             회원사 대상 개인정보보호 온라인 수집체계 점검, WiseON 도입 안내, SURE 안심마크 활용을
-            협력하여 진행할 수 있습니다. 협약 신청 내용은 비공개로 접수되며, 담당자가 확인 후
+            협력하여 진행할 수 있습니다. 협약/바우처 신청 내용은 비공개로 접수되며, 담당자가 확인 후
             연락드립니다.
           </p>
           <Link
             to="/privacy-center/association-apply"
             className="btn-primary-kcf mt-6 inline-flex items-center gap-2"
           >
-            협단체 협약 신청하기
+            협약/바우처 신청하기
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

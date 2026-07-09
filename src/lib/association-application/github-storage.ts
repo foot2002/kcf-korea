@@ -1,7 +1,7 @@
 import type {
   ApplicationStatus,
   AssociationApplication,
-  AssociationApplicationInput,
+  SupportApplicationInput,
 } from "./types";
 
 const DATA_PATH = "public/association-applications-data.json";
@@ -80,7 +80,7 @@ export async function fetchAssociationApplicationsGithub(): Promise<AssociationA
 }
 
 export async function submitAssociationApplicationGithub(
-  data: AssociationApplicationInput,
+  data: SupportApplicationInput,
 ): Promise<{ id: string }> {
   const token = getToken();
   if (!token) throw new Error("저장소 연동이 설정되지 않았습니다.");
@@ -90,23 +90,13 @@ export async function submitAssociationApplicationGithub(
   const record: AssociationApplication = {
     id: generateId(records.length),
     createdAt: now,
+    kind: data.kind,
     associationName: data.associationName,
-    websiteUrl: data.websiteUrl,
-    memberCompanyCount: data.memberCompanyCount,
     managerName: data.managerName,
     managerPhone: data.managerPhone,
     managerEmail: data.managerEmail,
-    representativeName: data.representativeName,
-    businessNumber: data.businessNumber,
-    establishedYear: data.establishedYear,
-    address: data.address,
-    industry: data.industry,
-    smallBusinessMemberCount: data.smallBusinessMemberCount,
-    managerPosition: data.managerPosition,
-    preferredContactMethod: data.preferredContactMethod,
     message: data.message,
     privacyConsent: true,
-    newsletterConsent: data.newsletterConsent,
     status: "접수완료",
     updatedAt: now,
   };

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { foundation } from "@/data/kcf";
+import { foundation, publicInterestCorporation } from "@/data/kcf";
 import { KcfLogo } from "@/components/site/KcfLogo";
 
 const footerLinks = [
@@ -22,7 +22,7 @@ export function Footer() {
             </div>
             <p className="mt-5 max-w-md text-[14px] leading-relaxed text-white/75">
               컨설팅을 통해 선도적 지식산업을 창출하고, 산업계의 지식고도화와
-              지식시장 창출을 촉진하는 비영리 재단입니다.
+              지식시장 창출을 촉진하는 비영리 공익법인입니다.
             </p>
           </div>
 
@@ -64,7 +64,23 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-[12px] text-white/55">
+        <div className="mt-10 rounded-lg border border-white/10 bg-white/[0.04] px-5 py-4 text-[12.5px] leading-relaxed text-white/60">
+          <div className="font-semibold text-white/85">
+            {publicInterestCorporation.displayName}
+          </div>
+          <p className="mt-1.5">
+            {publicInterestCorporation.taxBenefitNote} · 지정번호{" "}
+            {publicInterestCorporation.designationNo}호 · 관할{" "}
+            {publicInterestCorporation.taxOffice}
+          </p>
+          <p className="mt-1">
+            대상 {publicInterestCorporation.entityName} · 지정일{" "}
+            {publicInterestCorporation.designatedAt} · 지정기간{" "}
+            {publicInterestCorporation.period}
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-[12px] text-white/55">
           <div>© {new Date().getFullYear()} {foundation.nameKo}. All rights reserved.</div>
           <div className="text-white/45">{foundation.addressOfficial}</div>
         </div>

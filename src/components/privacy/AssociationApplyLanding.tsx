@@ -28,7 +28,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AssociationApplicationForm } from "@/components/privacy/AssociationApplicationForm";
+import { SupportApplyForms } from "@/components/privacy/SupportApplyForms";
 import { privacyOffice } from "@/data/kcf";
 
 const BADGES = [
@@ -134,7 +134,7 @@ const COMPARISON_ROWS = [
 ] as const;
 
 const TIMELINE = [
-  { step: 1, title: "협단체 협약 신청", desc: "협회·단체 기본 정보와 담당자 정보를 입력합니다." },
+  { step: 1, title: "협약/바우처 신청", desc: "협회·단체 기본 정보와 담당자 정보를 입력합니다." },
   { step: 2, title: "담당자 확인 및 연락", desc: "신청 내용 확인 후 영업일 기준 1~2일 이내 담당자가 연락드립니다." },
   { step: 3, title: "협약서 검토·서명", desc: "지원내용, 회원사 안내 방식, 전용 가입 코드 발급 절차를 확인합니다." },
   { step: 4, title: "협회 전용 가입 코드 발급", desc: "협회별 전용 코드를 통해 회원사 혜택이 자동 연계됩니다." },
@@ -235,7 +235,7 @@ export function AssociationApplyLanding() {
                   onClick={() => scrollTo("apply-form")}
                   className="btn-hero-light !px-7 !py-3.5 text-[15px] font-semibold"
                 >
-                  협약 신청하기 <ArrowRight className="ml-1.5 inline h-4 w-4" />
+                  협약/바우처 신청하기 <ArrowRight className="ml-1.5 inline h-4 w-4" />
                 </button>
                 <button
                   type="button"
@@ -273,7 +273,17 @@ export function AssociationApplyLanding() {
 
       {/* Background */}
       <Section>
-        <SectionTitle eyebrow="Background" title="왜 협단체 지원사업이 필요한가요?" />
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <SectionTitle eyebrow="Background" title="왜 협단체 지원사업이 필요한가요?" />
+          <button
+            type="button"
+            onClick={() => scrollTo("apply-form")}
+            className="btn-primary-kcf inline-flex shrink-0 items-center gap-2 self-start"
+          >
+            협약/바우처 신청하기
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
         <div className="mt-8 max-w-3xl space-y-5 text-[16px] leading-[1.8] text-text-secondary md:text-[17px]">
           <p>협회·회원사는 설문, 행사 신청, 교육 접수 등에서 이름·연락처·이메일 등 개인정보를 수집합니다.</p>
           <p>일반 설문도구는 동의·접근권한·로그관리 등 개인정보보호 요건을 충분히 반영하기 어렵습니다.</p>
@@ -284,7 +294,7 @@ export function AssociationApplyLanding() {
         </div>
         <div className="mt-8 rounded-2xl border border-trust-blue/20 bg-gradient-to-r from-[#EFF6FF] to-white p-6 md:p-7">
           <p className="text-[16px] font-semibold leading-relaxed text-navy md:text-[17px]">
-            협약 신청 → 담당자 확인 → 협약서 서명 → 가입 코드 발급 → 회원사 혜택 적용
+            협약/바우처 신청 → 담당자 확인 → 협약서 서명 → 가입 코드 발급 → 회원사 혜택 적용
           </p>
         </div>
       </Section>
@@ -398,7 +408,7 @@ export function AssociationApplyLanding() {
             onClick={() => scrollTo("apply-form")}
             className="btn-primary-kcf inline-flex items-center gap-2"
           >
-            협약 신청하기 <ChevronRight className="h-4 w-4" />
+            협약/바우처 신청하기 <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </Section>
@@ -453,7 +463,7 @@ export function AssociationApplyLanding() {
 
       {/* Timeline */}
       <Section alt>
-        <SectionTitle eyebrow="Process" title="협약 신청 및 지원 절차" />
+        <SectionTitle eyebrow="Process" title="협약/바우처 신청 및 지원 절차" />
         <ol className="mt-8 space-y-0">
           {TIMELINE.map((item, i) => (
             <li key={item.step} className="relative flex gap-5 pb-8 last:pb-0">
@@ -481,7 +491,7 @@ export function AssociationApplyLanding() {
       >
         <div className="container-page">
           <div className="mx-auto max-w-3xl">
-            <SectionTitle eyebrow="Application" title="협단체 협약 신청서" center />
+            <SectionTitle eyebrow="Application" title="협약/바우처 신청" center />
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {BADGES.slice(0, 3).map(({ icon: Icon, text }) => (
                 <span
@@ -494,11 +504,11 @@ export function AssociationApplyLanding() {
               ))}
             </div>
             <p className="mt-4 text-center text-[16px] leading-relaxed text-text-secondary">
-              아래 신청 내용은 비공개로 접수되며, 담당자 확인 후 협약 절차와 회원사 지원 방안을
-              안내드립니다.
+              협단체·기업·공공기관 신청 유형을 선택한 뒤 핵심 정보를 입력해 주세요.
+              접수 내용은 비공개로 관리되며, 담당자 확인 후 연락드립니다.
             </p>
             <div className="mt-8">
-              <AssociationApplicationForm />
+              <SupportApplyForms />
             </div>
           </div>
         </div>
@@ -536,7 +546,7 @@ export function AssociationApplyLanding() {
           <dl className="mt-8 grid gap-4 text-left sm:grid-cols-3">
             <ContactCard icon={Phone} label="전화" value={privacyOffice.tel} href={`tel:${privacyOffice.tel.replace(/-/g, "")}`} />
             <ContactCard icon={Mail} label="이메일" value="wiseon@wiseinc.co.kr" href="mailto:wiseon@wiseinc.co.kr" />
-            <ContactCard icon={Search} label="홈페이지" value="개인정보보호진흥원 → SURE START" href="/privacy-center#sure-start-association" />
+            <ContactCard icon={Search} label="홈페이지" value="개인정보보호진흥원 → 협단체 바우처" href="/privacy-center/voucher" />
           </dl>
           <p className="mt-10 text-[13px] text-text-muted">
             개인정보보호진흥원 · 한국컨설팅산업재단

@@ -7,7 +7,7 @@ import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import type {
   ApplicationStatus,
   AssociationApplication,
-  AssociationApplicationInput,
+  SupportApplicationInput,
 } from "./types";
 
 function getGasApiUrl(): string | null {
@@ -30,7 +30,7 @@ async function parseJsonResponse<T>(res: Response): Promise<T> {
 }
 
 export async function submitAssociationApplication(
-  data: AssociationApplicationInput,
+  data: SupportApplicationInput,
   honeypot = "",
 ): Promise<{ id: string }> {
   const gasUrl = getGasApiUrl();

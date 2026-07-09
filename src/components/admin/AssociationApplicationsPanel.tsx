@@ -28,9 +28,13 @@ import {
   useClientAssociationStorage,
 } from "@/lib/association-application/config";
 import {
+  APPLICATION_KIND_LABELS,
   APPLICATION_STATUSES,
+  type ApplicationKind,
   type ApplicationStatus,
   type AssociationApplication,
+  organizationFieldLabel,
+  resolveApplicationKind,
 } from "@/lib/association-application/types";
 
 const STORAGE_KEY = "kcf-association-admin-token";
@@ -65,6 +69,7 @@ export function AssociationApplicationsPanel({
   const [applications, setApplications] = useState<AssociationApplication[]>([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">("all");
+  const [kindFilter, setKindFilter] = useState<ApplicationKind | "all">("all");
   const [selected, setSelected] = useState<AssociationApplication | null>(null);
   const [memoDraft, setMemoDraft] = useState("");
   const [saving, setSaving] = useState(false);
@@ -133,16 +138,19 @@ export function AssociationApplicationsPanel({
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return applications.filter((app) => {
+      const kind = resolveApplicationKind(app);
+      if (kindFilter !== "all" && kind !== kindFilter) return false;
       if (statusFilter !== "all" && app.status !== statusFilter) return false;
       if (!q) return true;
       return (
         app.associationName.toLowerCase().includes(q) ||
         app.managerName.toLowerCase().includes(q) ||
         app.managerEmail.toLowerCase().includes(q) ||
-        app.managerPhone.includes(q)
+        app.managerPhone.includes(q) ||
+        APPLICATION_KIND_LABELS[kind].includes(q)
       );
     });
-  }, [applications, search, statusFilter]);
+  }, [applications, search, statusFilter, kindFilter]);
 
   function openDetail(app: AssociationApplication) {
     setSelected(app);
@@ -190,51 +198,32 @@ export function AssociationApplicationsPanel({
     const headers = [
       "접수일",
       "접수번호",
-      "협회·단체명",
-      "웹사이트",
-      "총 회원사 수",
+      "신청 유형",
+      "기관·기업명",
       "담당자명",
-      "전화번호",
+      "연락처",
       "이메일",
-      "대표자 성명",
-      "사업자등록번호",
-      "설립연도",
-      "주소",
-      "주요 업종·분야",
-      "소기업 회원사 수",
-      "담당자 직함·부서",
-      "선호 연락 방법",
-      "문의사항",
-      "개인정보 동의",
-      "뉴스레터 수신 동의",
+      "남기는 글",
       "상태",
       "관리자 메모",
       "수정일시",
     ];
-    const rows = filtered.map((a) => [
-      new Date(a.createdAt).toLocaleString("ko-KR"),
-      a.id,
-      a.associationName,
-      a.websiteUrl,
-      String(a.memberCompanyCount),
-      a.managerName,
-      a.managerPhone,
-      a.managerEmail,
-      a.representativeName ?? "",
-      a.businessNumber ?? "",
-      a.establishedYear ?? "",
-      a.address ?? "",
-      a.industry ?? "",
-      a.smallBusinessMemberCount ?? "",
-      a.managerPosition ?? "",
-      a.preferredContactMethod ?? "",
-      a.message ?? "",
-      a.privacyConsent ? "동의" : "미동의",
-      a.newsletterConsent ? "동의" : "미동의",
-      a.status,
-      a.adminMemo ?? "",
-      a.updatedAt ? new Date(a.updatedAt).toLocaleString("ko-KR") : "",
-    ]);
+    const rows = filtered.map((a) => {
+      const kind = resolveApplicationKind(a);
+      return [
+        new Date(a.createdAt).toLocaleString("ko-KR"),
+        a.id,
+        APPLICATION_KIND_LABELS[kind],
+        a.associationName,
+        a.managerName,
+        a.managerPhone,
+        a.managerEmail,
+        a.message ?? "",
+        a.status,
+        a.adminMemo ?? "",
+        a.updatedAt ? new Date(a.updatedAt).toLocaleString("ko-KR") : "",
+      ];
+    });
     const csv = [headers, ...rows]
       .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
       .join("\n");
@@ -243,7 +232,7 @@ export function AssociationApplicationsPanel({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `association-applications-${date}.csv`;
+    a.download = `support-applications-${date}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -258,9 +247,10 @@ export function AssociationApplicationsPanel({
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy text-white">
             <Lock className="h-6 w-6" />
           </div>
-          <h2 className="mt-5 text-navy">협단체 협약 신청 관리</h2>
+          <h2 className="mt-5 text-navy">지원 신청 관리</h2>
           <p className="mt-2 text-[14px] text-text-secondary">
-            Google Apps Script에 설정한 관리자 토큰(ADMIN_TOKEN)을 입력하세요.
+            Google Apps Script 사용 시 관리자 토큰(ADMIN_TOKEN)을 입력하세요.
+            협단체·기업·공공기관 신청을 함께 확인할 수 있습니다.
           </p>
           <input
             type="password"
@@ -283,7 +273,7 @@ export function AssociationApplicationsPanel({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="mt-1 text-[14px] text-text-secondary">
-            Google Sheet에 저장된 협단체 협약 신청 목록입니다.
+            협단체·기업·공공기관 지원 신청 목록입니다.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -317,14 +307,31 @@ export function AssociationApplicationsPanel({
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">
+        <div className="flex flex-wrap gap-2">
+          {(["all", "association", "enterprise", "public"] as const).map((k) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => setKindFilter(k)}
+              className={[
+                "rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition",
+                kindFilter === k
+                  ? "bg-navy text-white"
+                  : "border border-border bg-white text-text-secondary hover:bg-section-bg",
+              ].join(" ")}
+            >
+              {k === "all" ? "전체" : APPLICATION_KIND_LABELS[k]}
+            </button>
+          ))}
+        </div>
+        <div className="relative min-w-[200px] flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
           <input
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="협회명, 담당자, 이메일, 전화번호 검색"
+            placeholder="기관명, 담당자, 이메일, 연락처 검색"
             className="w-full rounded-xl border border-border py-2.5 pl-10 pr-4 text-[14px] focus:border-trust-blue focus:outline-none"
           />
         </div>
@@ -356,8 +363,8 @@ export function AssociationApplicationsPanel({
             <thead className="border-b border-border bg-section-bg text-[12.5px] font-semibold text-text-muted">
               <tr>
                 <th className="px-4 py-3">접수일</th>
-                <th className="px-4 py-3">협회·단체명</th>
-                <th className="px-4 py-3">회원사 수</th>
+                <th className="px-4 py-3">유형</th>
+                <th className="px-4 py-3">기관·기업명</th>
                 <th className="px-4 py-3">담당자</th>
                 <th className="px-4 py-3">연락처</th>
                 <th className="px-4 py-3">이메일</th>
@@ -366,13 +373,19 @@ export function AssociationApplicationsPanel({
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {filtered.map((app) => (
+              {filtered.map((app) => {
+                const kind = resolveApplicationKind(app);
+                return (
                 <tr key={app.id} className="hover:bg-blue-gray/50">
                   <td className="whitespace-nowrap px-4 py-3 text-text-muted">
                     {new Date(app.createdAt).toLocaleDateString("ko-KR")}
                   </td>
+                  <td className="px-4 py-3">
+                    <span className="rounded-full bg-soft-sky px-2.5 py-0.5 text-[11.5px] font-semibold text-trust-blue">
+                      {APPLICATION_KIND_LABELS[kind]}
+                    </span>
+                  </td>
                   <td className="px-4 py-3 font-medium text-navy">{app.associationName}</td>
-                  <td className="px-4 py-3">{app.memberCompanyCount.toLocaleString()}</td>
                   <td className="px-4 py-3">{app.managerName}</td>
                   <td className="whitespace-nowrap px-4 py-3">{app.managerPhone}</td>
                   <td className="max-w-[160px] truncate px-4 py-3">{app.managerEmail}</td>
@@ -394,7 +407,8 @@ export function AssociationApplicationsPanel({
                     </button>
                   </td>
                 </tr>
-              ))}
+              );
+              })}
             </tbody>
           </table>
         )}
@@ -411,66 +425,49 @@ export function AssociationApplicationsPanel({
 
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
-          {selected && (
+          {selected && (() => {
+            const kind = resolveApplicationKind(selected);
+            const orgLabel = organizationFieldLabel(kind);
+            return (
             <>
               <DialogHeader>
                 <DialogTitle className="text-navy">{selected.associationName}</DialogTitle>
               </DialogHeader>
 
-              <DetailSection title="기본 정보">
+              <DetailSection title="신청 정보">
+                <DetailRow label="신청 유형" value={APPLICATION_KIND_LABELS[kind]} />
                 <DetailRow label="접수번호" value={selected.id} />
                 <DetailRow
                   label="접수일시"
                   value={new Date(selected.createdAt).toLocaleString("ko-KR")}
                 />
-                <DetailRow label="협회·단체명" value={selected.associationName} />
-                <DetailRow
-                  label="웹사이트"
-                  value={
-                    <a
-                      href={selected.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-trust-blue hover:underline"
-                    >
-                      {selected.websiteUrl}
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  }
-                />
-                <DetailRow
-                  label="총 회원사 수"
-                  value={`${selected.memberCompanyCount.toLocaleString()}개`}
-                />
+                <DetailRow label={orgLabel} value={selected.associationName} />
                 <DetailRow label="담당자명" value={selected.managerName} />
-                <DetailRow label="전화번호" value={selected.managerPhone} />
+                <DetailRow label="연락처" value={selected.managerPhone} />
                 <DetailRow label="이메일" value={selected.managerEmail} />
-              </DetailSection>
-
-              <DetailSection title="추가 협약정보">
-                <DetailRow label="대표자 성명" value={selected.representativeName || "(없음)"} />
-                <DetailRow label="사업자등록번호" value={selected.businessNumber || "(없음)"} />
-                <DetailRow label="설립연도" value={selected.establishedYear || "(없음)"} />
-                <DetailRow label="주소" value={selected.address || "(없음)"} multiline />
-                <DetailRow label="주요 업종·분야" value={selected.industry || "(없음)"} />
-                <DetailRow
-                  label="소기업 회원사 수"
-                  value={selected.smallBusinessMemberCount || "(없음)"}
-                />
-                <DetailRow label="담당자 직함·부서" value={selected.managerPosition || "(없음)"} />
-                <DetailRow
-                  label="선호 연락 방법"
-                  value={selected.preferredContactMethod || "(없음)"}
-                />
-                <DetailRow label="문의사항" value={selected.message || "(없음)"} multiline />
-                <DetailRow
-                  label="개인정보 동의"
-                  value={selected.privacyConsent ? "동의함" : "미동의"}
-                />
-                <DetailRow
-                  label="뉴스레터 수신"
-                  value={selected.newsletterConsent ? "동의함" : "미동의"}
-                />
+                <DetailRow label="남기는 글" value={selected.message || "(없음)"} multiline />
+                {selected.websiteUrl && (
+                  <DetailRow
+                    label="웹사이트 (이전 접수)"
+                    value={
+                      <a
+                        href={selected.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-trust-blue hover:underline"
+                      >
+                        {selected.websiteUrl}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    }
+                  />
+                )}
+                {selected.memberCompanyCount != null && (
+                  <DetailRow
+                    label="회원사 수 (이전 접수)"
+                    value={`${selected.memberCompanyCount.toLocaleString()}개`}
+                  />
+                )}
               </DetailSection>
 
               <DetailSection title="처리 정보">
@@ -519,7 +516,8 @@ export function AssociationApplicationsPanel({
                 </button>
               </div>
             </>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </div>
