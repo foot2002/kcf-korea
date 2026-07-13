@@ -13,7 +13,7 @@ export const Route = createFileRoute("/privacy-center/law")({
       {
         name: "description",
         content:
-          "온라인 설문·접수에서 알아야 할 개인정보보호법과 제도 변화, 실무 Q&A를 안내합니다.",
+          "온라인 설문·수집에서 알아야 할 개인정보보호법과 제도 변화, 실무 Q&A를 안내합니다.",
       },
       { property: "og:url", content: "/privacy-center/law" },
     ],
@@ -30,7 +30,7 @@ function PrivacyLawPage() {
         title={
           <>
             개인정보보호법과<br />
-            온라인 설문·접수 제도
+            온라인 설문·수집 제도
           </>
         }
         description="온라인 설문, 행사 접수, 교육 신청 등 일상 업무에서도 개인정보 보호가

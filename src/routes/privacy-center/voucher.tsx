@@ -4,7 +4,7 @@ import { SureStartAssociationSection } from "@/components/privacy/SureStartAssoc
 import { VoucherIntroSection } from "@/components/privacy/VoucherIntroSection";
 import {
   PartnerLogosStrip,
-  WiseOnTrustBanner,
+  SecureCollectionToolBanner,
 } from "@/components/privacy/privacy-sections";
 
 export const Route = createFileRoute("/privacy-center/voucher")({
@@ -40,7 +40,7 @@ function VoucherPage() {
       />
       <VoucherIntroSection />
       <PartnerLogosStrip />
-      <WiseOnTrustBanner />
+      <SecureCollectionToolBanner />
       <SureStartAssociationSection />
     </>
   );

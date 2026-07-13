@@ -52,7 +52,7 @@ export function validateSupportApplicationForm(
   }
 
   if (!input.privacyConsent) {
-    return { ok: false, error: "개인정보 수집·이용에 동의해 주세요." };
+    return { ok: false, error: "개인정보 수집·이용 동의가 필요합니다." };
   }
 
   return {

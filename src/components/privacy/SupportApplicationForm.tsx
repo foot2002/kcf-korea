@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PrivacyConsentBlock } from "@/components/privacy/PrivacyConsentBlock";
+import { supportApplicationConsentVariant } from "@/data/privacy-consent";
 import { submitAssociationApplication } from "@/lib/association-application/api";
 import type { ApplicationKind } from "@/lib/association-application/types";
 import { organizationFieldLabel } from "@/lib/association-application/types";
@@ -18,15 +20,6 @@ const SUBMIT_LABELS: Record<ApplicationKind, string> = {
   association: "협약/바우처 신청하기",
   enterprise: "기업 신청하기",
   public: "공공기관 신청하기",
-};
-
-const PRIVACY_NOTICES: Record<ApplicationKind, string> = {
-  association:
-    "개인정보보호진흥원은 협약/바우처 신청 접수 및 SURE 지원사업 안내를 위해 협회·단체명, 담당자명, 연락처, 이메일, 남기는 글을 수집·이용합니다. 수집된 정보는 협약 확인 및 담당자 연락 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.",
-  enterprise:
-    "개인정보보호진흥원은 기업 지원 신청 접수를 위해 기업명, 담당자명, 연락처, 이메일, 남기는 글을 수집·이용합니다. 수집된 정보는 신청 확인 및 담당자 연락 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.",
-  public:
-    "개인정보보호진흥원은 공공기관 지원 신청 접수를 위해 기관명, 담당자명, 연락처, 이메일, 남기는 글을 수집·이용합니다. 수집된 정보는 신청 확인 및 담당자 연락 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.",
 };
 
 export function SupportApplicationForm({
@@ -135,19 +128,13 @@ export function SupportApplicationForm({
         </div>
         <p className="mt-1 text-[12px] text-text-muted">남기는 글은 최대 1,000자 (선택)</p>
 
-        <div className="mt-6 rounded-xl border border-border bg-section-bg p-4">
-          <p className="text-[13px] leading-relaxed text-text-secondary">
-            {PRIVACY_NOTICES[kind]}
-          </p>
-          <label className="mt-4 flex cursor-pointer items-start gap-2 text-[13.5px] text-text-primary">
-            <input
-              type="checkbox"
-              checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1"
-            />
-            개인정보 수집·이용에 동의합니다.
-          </label>
+        <div className="mt-6">
+          <PrivacyConsentBlock
+            variant={supportApplicationConsentVariant(kind)}
+            consent={consent}
+            onConsentChange={setConsent}
+            id={`support-privacy-consent-${kind}`}
+          />
         </div>
 
         <button

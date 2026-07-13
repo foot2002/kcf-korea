@@ -66,7 +66,7 @@ const submitSchema = z.object({
   type: z.string().trim().min(1, "문의 유형을 선택해 주세요."),
   content: z.string().trim().min(10, "문의 내용을 10자 이상 입력해 주세요."),
   consent: z.literal(true, {
-    errorMap: () => ({ message: "개인정보 수집·이용에 동의해 주세요." }),
+    errorMap: () => ({ message: "개인정보 수집·이용 동의가 필요합니다." }),
   }),
   attachments: z.array(attachmentInputSchema).max(MAX_ATTACHMENTS_PER_INQUIRY).optional(),
 });

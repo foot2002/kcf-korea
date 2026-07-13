@@ -13,6 +13,7 @@ import {
 import type { PrivacyInquiryAttachmentInput } from "@/lib/privacy-inquiry/types";
 import { submitPrivacyInquiry } from "@/lib/privacy-inquiry/actions";
 import { formatUserError } from "@/lib/privacy-inquiry/errors";
+import { PrivacyConsentBlock } from "@/components/privacy/PrivacyConsentBlock";
 
 const INQUIRY_TYPES = [
   "서비스 추천 기준 문의",
@@ -78,7 +79,7 @@ export function PrivacyInquiryForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!consent) {
-      toast.error("개인정보 수집·이용에 동의해 주세요.");
+      toast.error("개인정보 수집·이용 동의가 필요합니다.");
       return;
     }
 
@@ -175,19 +176,14 @@ export function PrivacyInquiryForm() {
         마세요.
       </div>
 
-      <div className="mt-4 flex items-start gap-2 text-[13.5px] text-white/85">
-        <input
-          id="privacy-consent"
-          type="checkbox"
-          checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
-          className="mt-1"
-          required
+      <div className="mt-4">
+        <PrivacyConsentBlock
+          variant="privacy-inquiry"
+          consent={consent}
+          onConsentChange={setConsent}
+          id="privacy-inquiry-consent"
+          theme="dark"
         />
-        <label htmlFor="privacy-consent">
-          개인정보 수집·이용에 동의합니다. (수집 항목: 이름·연락처·이메일, 목적: 문의
-          응대, 보유기간: 응대 완료 후 즉시 파기)
-        </label>
       </div>
 
       {/* 파일 첨부 — DB 없이 서버 로컬 디스크(data/privacy-inquiries/files/)에 저장 */}

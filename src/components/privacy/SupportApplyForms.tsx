@@ -73,7 +73,7 @@ export function SupportApplyForms() {
         })}
       </div>
 
-      <p className="mt-6 text-center text-[15px] leading-relaxed text-text-secondary">
+      <p className="privacy-desc mt-6 text-center">
         <strong className="text-navy">{active.label}</strong> — 아래 내용은 비공개로 접수되며,
         담당자 확인 후 안내드립니다.
       </p>

@@ -34,6 +34,23 @@ export const privacyOffice = {
   email: "wiseon@wiseinc.co.kr",
 };
 
+/** Contact Us 페이지 전용 연락처 */
+export const contactPage = {
+  foundation: {
+    name: "한국컨설팅산업재단",
+    tel: foundation.tel,
+    fax: foundation.fax,
+  },
+  privacyOffice: {
+    name: "개인정보보호진흥원",
+    associationTel: "02-562-0101",
+    associationLabel: "협단체 가입문의",
+    generalTel: "02-501-2906",
+    generalLabel: "기타 업무 문의",
+  },
+  address: foundation.addressOfficial,
+} as const;
+
 export const heroBadges = [
   "Since 2010",
   "비영리 재단",

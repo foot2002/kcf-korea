@@ -138,6 +138,7 @@ function RootComponent() {
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const hash = useRouterState({ select: (s) => s.location.hash });
+  const isPrivacyCenter = pathname.startsWith("/privacy-center");
   useEffect(() => {
     if (hash) return;
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -147,7 +148,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col bg-background">
         <Header />
-        <main className="flex-1">
+        <main className={isPrivacyCenter ? "privacy-center flex-1" : "flex-1"}>
           <Outlet />
         </main>
         <Footer />

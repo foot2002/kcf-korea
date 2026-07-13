@@ -18,7 +18,7 @@ export const Route = createFileRoute("/privacy-center/")({
       {
         property: "og:description",
         content:
-          "온라인 설문·접수에서 국민 개인정보를 지키는 SURE 사업 — 안심마크, 바우처, 자가진단.",
+          "온라인 설문·수집에서 국민 개인정보를 지키는 SURE 사업 — 안심마크, 바우처, 자가진단.",
       },
       { property: "og:url", content: "/privacy-center" },
     ],

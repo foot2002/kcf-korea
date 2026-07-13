@@ -19,7 +19,7 @@ const SUPPORT_CARDS = [
     items: [
       "온라인조사 연간 10회 무료 제공",
       "협회별 회원사 전용 가입 코드 발급",
-      "WiseON 기반 설문에 SURE 안심마크 적용",
+      "보안 인증 수집도구 기반 설문에 SURE 안심마크 적용",
       "개인정보보호진흥원 홈페이지 협력기관 등재",
       "회원사 안내문, 웨비나, 도입 안내 지원",
     ],
@@ -65,11 +65,11 @@ export function SureStartAssociationSection() {
         <div className="max-w-3xl">
           <div className="label-eyebrow">SURE START Program</div>
           <h2 className="text-navy">SURE START 협단체 개인정보보호 지원사업</h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-text-secondary">
-            개인정보보호진흥원은 협회·단체와 소속 회원사가 안전한 온라인 설문·접수·이벤트·신청
+          <p className="privacy-desc mt-4">
+            개인정보보호진흥원은 협회·단체와 소속 회원사가 안전한 온라인 설문·수집·이벤트·신청
             업무를 운영할 수 있도록 SURE START 협단체 특별 지원사업을 운영합니다.
           </p>
-          <p className="mt-3 text-[15px] leading-relaxed text-text-secondary">
+          <p className="privacy-desc mt-3">
             협약을 체결한 협회·단체에는 국가인증 기반 온라인조사 이용권, 회원사 전용 가입 코드,
             SURE 안심마크 활용, 개인정보보호 교육·자가진단 등 회원사 지원 프로그램이 제공됩니다.
           </p>
@@ -131,7 +131,7 @@ export function SureStartAssociationSection() {
             협회·단체 지원사업 참여를 원하시나요?
           </h3>
           <p className="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-text-secondary">
-            회원사 대상 개인정보보호 온라인 수집체계 점검, WiseON 도입 안내, SURE 안심마크 활용을
+            회원사 대상 개인정보보호 온라인 수집체계 점검, 보안 인증 수집도구 도입 안내, SURE 안심마크 활용을
             협력하여 진행할 수 있습니다. 협약/바우처 신청 내용은 비공개로 접수되며, 담당자가 확인 후
             연락드립니다.
           </p>

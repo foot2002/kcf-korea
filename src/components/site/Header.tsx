@@ -39,14 +39,7 @@ const FOUNDATION_NAV: NavItem[] = [
       { label: "교사/교장/교육청 공무원 연수", hash: "teacher" },
     ],
   },
-  {
-    label: "찾아오시는 길",
-    to: "/contact",
-    children: [
-      { label: "오시는 길", hash: "directions" },
-      { label: "연락처", hash: "info" },
-    ],
-  },
+  { label: "Contact Us", to: "/contact" },
 ];
 
 const PRIVACY_CENTER_NAV = {
@@ -54,7 +47,6 @@ const PRIVACY_CENTER_NAV = {
   to: "/privacy-center",
   children: [
     ...PRIVACY_CENTER_PAGES.map((p) => ({ label: p.label, to: p.to })),
-    { label: "협약/바우처 신청", to: "/privacy-center/association-apply" },
   ],
 } as const;
 

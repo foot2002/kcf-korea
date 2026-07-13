@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BadgeCheck, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+
+import { SECURE_COLLECTION_TOOL } from "@/data/privacy-center";
 
 export function VoucherIntroSection() {
   return (
@@ -11,17 +13,17 @@ export function VoucherIntroSection() {
             SURE 사업의 온라인 설문솔루션 추천과<br />
             협단체 지원 바우처
           </h2>
-          <p className="mt-5 text-[15.5px] leading-[1.85] text-text-secondary">
+          <p className="privacy-desc mt-5">
             개인정보보호진흥원의 SURE 사업은 기관·기업·협단체가 안전한 온라인
             설문·접수 환경을 구축할 수 있도록{" "}
             <strong className="text-navy">검증된 온라인 설문솔루션을 추천</strong>
             하고, 협력 협단체 및 회원사에는 이용 바우처(무료·할인)를 지원합니다.
           </p>
-          <p className="mt-4 text-[15px] leading-relaxed text-text-secondary">
-            현재 진흥원이 공식 추천하는 국가인증 온라인설문 플랫폼은{" "}
-            <strong className="text-navy">WiseON</strong>이며, CSAP 인증 기반으로
-            운영됩니다. WiseON은 SURE 안심마크 부여와 협단체 바우처 지원의
-            핵심 연계 솔루션입니다.
+          <p className="privacy-desc mt-4">
+            현재 진흥원이 공식 추천하는 국가인증 온라인설문 수단은{" "}
+            <strong className="text-navy">{SECURE_COLLECTION_TOOL}</strong>이며, CSAP
+            인증 기반으로 운영됩니다. {SECURE_COLLECTION_TOOL}은 SURE 안심마크 부여와
+            협단체 바우처 지원의 핵심 연계 수단입니다.
           </p>
         </div>
 
@@ -30,7 +32,7 @@ export function VoucherIntroSection() {
             {
               step: "01",
               title: "솔루션 추천",
-              desc: "SURE 기준에 부합하는 온라인 설문·접수 솔루션을 안내합니다.",
+              desc: "SURE 기준에 부합하는 온라인 설문·수집 솔루션을 안내합니다.",
             },
             {
               step: "02",
@@ -73,15 +75,12 @@ export function VoucherIntroSection() {
           >
             회원사 지원 검색
           </a>
-          <a
-            href="https://www.wiseon.io"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/privacy-center/sure-mark"
             className="inline-flex items-center gap-2 rounded-full border border-[#0F766E]/30 px-5 py-2.5 text-[13.5px] font-bold text-[#0F766E] hover:bg-[#ECFEFB]"
           >
-            <BadgeCheck className="h-4 w-4" />
-            WiseON 안내
-          </a>
+            SURE 마크 안내
+          </Link>
         </div>
 
         <ul className="mt-8 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 text-[13.5px] text-text-secondary">

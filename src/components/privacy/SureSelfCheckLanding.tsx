@@ -12,7 +12,7 @@ export function SureSelfCheckLanding() {
               내가 받은 설문, 내가 만든 설문 —<br />
               개인정보를 제대로 지키고 있나요?
             </h2>
-            <p className="mt-5 text-[15.5px] leading-[1.85] text-text-secondary">
+            <p className="privacy-desc mt-5">
               설문안심 SURE 자가진단은 응답자와 설문 운영자 모두가 온라인
               설문·접수 과정에서 개인정보가 적법하고 안전하게 처리되는지
               스스로 점검할 수 있도록 지원하는 SURE 사업입니다.

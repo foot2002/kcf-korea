@@ -24,7 +24,7 @@ function SelfCheckPage() {
       <PrivacySubPageHeader
         eyebrow="SURE Self Check"
         title="설문안심 SURE 자가진단"
-        description="응답자와 설문 운영자 모두가 온라인 설문·접수 과정의 개인정보 보호 수준을
+        description="응답자와 설문 운영자 모두가 온라인 설문·수집 과정의 개인정보 보호 수준을
           스스로 점검할 수 있는 SURE 사업입니다."
       />
       <SureSelfCheckLanding />

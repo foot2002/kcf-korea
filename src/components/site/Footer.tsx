@@ -8,7 +8,7 @@ const footerLinks = [
   { label: "사업", to: "/business" as const },
   { label: "개인정보보호진흥원", to: "/privacy-center" as const, accent: true },
   { label: "실적·자료", to: "/achievements" as const },
-  { label: "찾아오시는 길", to: "/contact" as const },
+  { label: "Contact Us", to: "/contact" as const },
 ];
 
 export function Footer() {

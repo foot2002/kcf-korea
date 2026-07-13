@@ -523,6 +523,36 @@
   color: var(--trust-blue);
 }
 
+@utility privacy-desc {
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+/* 개인정보보호진흥원 영역 — 제목·본문 가독성 강화 */
+.privacy-center h1 {
+  font-size: clamp(2.5rem, 4.8vw, 4rem);
+  line-height: 1.16;
+  letter-spacing: -0.04em;
+}
+
+.privacy-center h2 {
+  font-size: clamp(2.125rem, 3.6vw, 3rem);
+  line-height: 1.22;
+  letter-spacing: -0.035em;
+}
+
+.privacy-center h3 {
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  line-height: 1.32;
+}
+
+.privacy-center .label-eyebrow {
+  font-size: 0.8125rem;
+  letter-spacing: 0.11em;
+  margin-bottom: 1.125rem;
+}
+
 @utility hero-eyebrow {
   display: inline-flex;
   align-items: center;

@@ -14,7 +14,6 @@ import {
   Search,
   Users,
   ClipboardCheck,
-  Network,
   CheckCircle2,
   ArrowRight,
   Info,
@@ -22,6 +21,10 @@ import {
   BadgeCheck,
   Award,
   Sparkles,
+  Layers,
+  FormInput,
+  Radar,
+  LockKeyhole,
 } from "lucide-react";
 import heroPrivacy from "@/assets/hero-privacy.jpg";
 import sureLogo from "@site-image/sure_logo.png";
@@ -44,6 +47,7 @@ import {
   formatSupportFlag,
   type MemberSupportPartner,
 } from "@/data/member-support-partners";
+import { SECURE_COLLECTION_TOOL } from "@/data/privacy-center";
 
 
 /* ---------- Section 1. Hero ---------- */
@@ -77,8 +81,8 @@ export function PrivacyHero() {
           <h1 className="mt-3 text-white">
             국민의 개인정보를<br />지키는 공익 플랫폼
           </h1>
-          <p className="mt-7 max-w-xl text-[17px] leading-[1.8] text-white/80">
-            한국컨설팅산업재단 개인정보보호진흥원은 온라인 설문·접수에서 국민
+          <p className="mt-7 max-w-xl privacy-desc text-white/85">
+            한국컨설팅산업재단 개인정보보호진흥원은 온라인 설문·수집에서 국민
             개인정보를 지키기 위한 SURE 안심 인증, 협단체 지원 바우처,
             자가진단 사업을 운영하는 공익 플랫폼입니다.
           </p>
@@ -198,11 +202,12 @@ export function PartnerLogosStrip() {
     <section className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
       <div className="container-page py-10 md:py-12">
         <div className="flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[11.5px] font-bold uppercase tracking-[0.16em] text-trust-blue ring-1 ring-[#E5E7EB]">
-            <Users className="h-3.5 w-3.5" />
-            개인정보보호진흥원 협력 협단체
+          <div className="label-eyebrow mb-4 justify-center">
+            <Users className="h-4 w-4" />
+            Partners
           </div>
-          <p className="mt-4 max-w-2xl text-[14.5px] leading-relaxed text-text-secondary">
+          <h2 className="text-navy">개인정보보호진흥원 협력 협단체</h2>
+          <p className="privacy-desc mt-4 max-w-2xl">
             협력 협단체와 함께 회원사의 안전한 온라인 조사·접수 환경을 지원합니다.
           </p>
         </div>
@@ -238,7 +243,7 @@ export function PartnerLogosStrip() {
   );
 }
 
-/* ---------- Section 1C. WiseON Trust Banner + Search ---------- */
+/* ---------- Section 1C. 보안 인증 수집도구 배너 + 검색 ---------- */
 function MemberSupportResultCard({ partner }: { partner: MemberSupportPartner }) {
   return (
     <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-5 text-[14px] text-white/90">
@@ -256,7 +261,7 @@ function MemberSupportResultCard({ partner }: { partner: MemberSupportPartner })
   );
 }
 
-export function WiseOnTrustBanner() {
+export function SecureCollectionToolBanner() {
   const [query, setQuery] = useState("");
   const [searched, setSearched] = useState(false);
   const [results, setResults] = useState<MemberSupportPartner[]>([]);
@@ -268,7 +273,7 @@ export function WiseOnTrustBanner() {
   };
 
   return (
-    <section id="wiseon-detail" className="relative overflow-hidden bg-gradient-to-br from-[#04101F] via-[#071529] to-[#0B2540] text-white scroll-mt-24">
+    <section id="collection-tool-detail" className="relative overflow-hidden bg-gradient-to-br from-[#04101F] via-[#071529] to-[#0B2540] text-white scroll-mt-24">
       <div className="absolute inset-0 grid-bg opacity-[0.07]" />
       <div className="absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#1D4ED8]/20 blur-3xl" />
       <div className="absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-[#0F766E]/25 blur-3xl" />
@@ -285,19 +290,19 @@ export function WiseOnTrustBanner() {
               검증된 온라인 설문솔루션과<br />협단체 바우처 지원
             </h2>
             <p className="mt-5 text-[16px] font-semibold text-[#93C5FD]">
-              SURE 사업 — 국가인증 플랫폼 WiseON 연계
+              SURE 사업 — {SECURE_COLLECTION_TOOL} 연계
             </p>
             <p className="mt-4 max-w-xl text-[15.5px] leading-[1.85] text-white/80">
-              SURE 사업은 안전한 온라인 설문·접수를 위한 솔루션을 추천하고,
+              SURE 사업은 안전한 온라인 설문·수집를 위한 솔루션을 추천하고,
               협력 협단체·회원사에 이용 바우처를 지원합니다. 현재 공식 추천
-              솔루션은 <strong className="text-white">WiseON</strong>이며,
+              수단은 <strong className="text-white">{SECURE_COLLECTION_TOOL}</strong>이며,
               CSAP 인증 기반으로 운영됩니다.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-2">
               {[
                 "SURE 온라인 설문솔루션 추천",
-                "국가인증 플랫폼 WiseON",
+                SECURE_COLLECTION_TOOL,
                 "CSAP 인증 온라인 정보 수집 SaaS",
                 "회원사 무료·할인 바우처",
                 "SURE 안심마크 연계",
@@ -312,8 +317,8 @@ export function WiseOnTrustBanner() {
             </div>
           </div>
 
-          {/* RIGHT: WiseON Highlight Block */}
-          <WiseOnHighlightBlock />
+          {/* RIGHT: 보안 인증 수집도구 하이라이트 */}
+          <CollectionToolHighlightBlock />
         </div>
 
         {/* SEARCH AREA */}
@@ -426,7 +431,7 @@ export function WiseOnTrustBanner() {
   );
 }
 
-function WiseOnHighlightBlock() {
+function CollectionToolHighlightBlock() {
   return (
     <div className="relative h-full overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-7 backdrop-blur">
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#5EEAD4]/15 blur-2xl" />
@@ -439,8 +444,8 @@ function WiseOnHighlightBlock() {
             <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#5EEAD4]">
               정부인증 온라인조사 서비스
             </div>
-            <div className="text-[22px] font-extrabold text-white leading-tight">
-              WiseON
+            <div className="text-[20px] font-extrabold text-white leading-tight">
+              {SECURE_COLLECTION_TOOL}
             </div>
           </div>
         </div>
@@ -454,9 +459,9 @@ function WiseOnHighlightBlock() {
         CSAP 인증 온라인 정보 수집 SaaS
       </div>
       <p className="relative mt-2 text-[13.5px] leading-[1.8] text-white/75">
-        WiseON은 온라인 설문조사, 행사 신청, 교육 접수, 고객만족도 조사, 내부 직원
+        {SECURE_COLLECTION_TOOL}는 온라인 설문조사, 행사 신청, 교육 접수, 고객만족도 조사, 내부 직원
         조사 등 다양한 온라인 정보 수집 업무를 보다 안전하고 체계적으로 운영할 수
-        있도록 지원하는 온라인 정보 수집 SaaS입니다.
+        있도록 지원하는 온라인 정보 수집 수단입니다.
       </p>
 
       <ul className="relative mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -479,14 +484,12 @@ function WiseOnHighlightBlock() {
       </ul>
 
       <div className="relative mt-6 flex flex-wrap gap-2">
-        <a
-          href="https://www.wiseon.io"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/privacy-center/sure-mark"
           className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-[12.5px] font-bold text-[#04101F] hover:bg-soft-sky"
         >
-          WiseON 서비스 안내 보기 <ArrowRight className="h-3.5 w-3.5" />
-        </a>
+          SURE 마크 안내 보기 <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
         <a
           href="#member-search"
           className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-4 py-2 text-[12.5px] font-bold text-white hover:bg-white/10"
@@ -527,7 +530,7 @@ export function SafeSurveyMarkDetail() {
               />
             </div>
             <div className="mt-8 rounded-full border border-[#0F766E]/30 bg-white px-4 py-2 text-[12.5px] font-bold text-[#0F766E]">
-              WiseON 사용 기관/기업 부여 SURE 마크
+              {SECURE_COLLECTION_TOOL} 사용 기관/기업 부여 SURE 마크
             </div>
           </div>
 
@@ -535,11 +538,11 @@ export function SafeSurveyMarkDetail() {
           <div>
             <div className="label-eyebrow mb-4">SURE Mark</div>
             <h2 className="text-navy">개인정보보호 SURE 안심마크란?</h2>
-            <p className="mt-5 text-[15.5px] leading-[1.85] text-text-secondary">
+            <p className="privacy-desc mt-5">
               SURE(Secure User Response Environment) 안심마크는 개인정보보호진흥원
               SURE 사업을 통해 안전한 온라인 조사·접수 환경을 운영하는 기관 및
               기업에 부여하는 인증 마크입니다. 진흥원이 추천하는 온라인 설문솔루션
-              (현재 <strong className="text-navy">WiseON</strong>)을 적용하고
+              (<strong className="text-navy">{SECURE_COLLECTION_TOOL}</strong>)을 적용하고
               개인정보보호 기준을 반영한 운영을 상징합니다.
             </p>
 
@@ -550,10 +553,10 @@ export function SafeSurveyMarkDetail() {
                 </div>
                 <ul className="mt-3 space-y-1.5 text-[13.5px] text-text-secondary">
                   {[
-                    "WiseON을 사용하는 기관",
-                    "WiseON을 사용하는 기업",
-                    "WiseON을 사용하는 협단체 회원사",
-                    "WiseON 기반 온라인 조사·접수 운영 기관",
+                    `${SECURE_COLLECTION_TOOL}를 사용하는 기관`,
+                    `${SECURE_COLLECTION_TOOL}를 사용하는 기업`,
+                    `${SECURE_COLLECTION_TOOL}를 사용하는 협단체 회원사`,
+                    "보안 인증 수집도구 기반 온라인 조사·접수 운영 기관",
                   ].map((t) => (
                     <li key={t} className="flex gap-2">
                       <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-trust-blue" />
@@ -591,7 +594,7 @@ export function SafeSurveyMarkDetail() {
               </div>
               <div className="mt-3 grid gap-2 sm:grid-cols-5">
                 {[
-                  "WiseON 사용",
+                  SECURE_COLLECTION_TOOL,
                   "온라인 조사·접수 운영",
                   "개인정보보호 기준 확인",
                   "안심 조사 마크 부여",
@@ -626,14 +629,13 @@ export function SafeSurveyMarkDetail() {
               >
                 회원사 지원 검색
               </Link>
-              <a
-                href="https://www.wiseon.io"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/privacy-center/voucher"
+                hash="collection-tool-detail"
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#0F766E]/30 bg-white px-5 py-2.5 text-[13.5px] font-bold text-[#0F766E] hover:bg-[#ECFEFB]"
               >
-                WiseON 안내 보기
-              </a>
+                {SECURE_COLLECTION_TOOL} 안내 보기
+              </Link>
             </div>
           </div>
         </div>
@@ -646,24 +648,28 @@ export function SafeSurveyMarkDetail() {
 export function PrivacyMissionSection() {
   const items = [
     {
-      icon: Network,
+      icon: Layers,
       title: "개인정보 범위 확대",
       desc: "이름·연락처·이메일뿐 아니라 부서, 직급, 나이, 지역, IP, 기기정보, 주관식 응답 등도 결합 시 개인정보가 될 수 있습니다.",
+      num: "01",
     },
     {
-      icon: ClipboardCheck,
+      icon: FormInput,
       title: "온라인 수집 리스크 증가",
       desc: "설문, 행사 접수, 교육 신청, 이벤트, 고객 만족도 조사 등 일상적 업무에서도 개인정보 처리가 발생할 수 있습니다.",
+      num: "02",
     },
     {
-      icon: Search,
+      icon: Radar,
       title: "신고와 모니터링 중요성 확대",
       desc: "국민 누구나 침해 사실을 발견하고 신고할 수 있는 환경으로 전환되고 있습니다.",
+      num: "03",
     },
     {
-      icon: ShieldCheck,
+      icon: LockKeyhole,
       title: "예방 중심 체계 필요",
       desc: "사후 대응보다 수집 설계, 접근권한, 로그관리, 파기 증빙, 위탁관리 등 예방 체계가 중요해지고 있습니다.",
+      num: "04",
     },
   ];
 
@@ -675,7 +681,7 @@ export function PrivacyMissionSection() {
           <h2 className="text-navy">
             개인정보보호는 선택이 아니라<br />국민 권리 보호의 기본입니다
           </h2>
-          <p className="mt-6 text-text-secondary leading-[1.8]">
+          <p className="privacy-desc mt-6">
             개인정보보호법상 개인정보의 범위는 매우 넓으며, 이름·연락처·이메일
             같은 직접 식별정보뿐 아니라 부서, 직급, 나이, 지역, IP, 기기정보,
             주관식 응답 등도 다른 정보와 결합될 경우 개인정보가 될 수 있습니다.
@@ -683,23 +689,41 @@ export function PrivacyMissionSection() {
             등 일상적인 업무에서도 개인정보 처리 리스크가 발생할 수 있습니다.
           </p>
         </div>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((it, i) => (
-            <div key={it.title} className="kcf-icon-card">
-              <div className="kcf-ic">
-                <it.icon className="h-6 w-6" strokeWidth={1.75} />
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((it) => {
+            const Icon = it.icon;
+            return (
+              <div
+                key={it.title}
+                className="group relative flex flex-col overflow-hidden rounded-xl border border-[#E8EDF3] bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-1 hover:border-trust-blue/20 hover:shadow-[0_14px_32px_rgba(15,23,42,0.08)]"
+              >
+                <div
+                  className="pointer-events-none absolute -right-2 top-0 text-[3.25rem] font-black leading-none text-[#EEF2F7]"
+                  aria-hidden
+                >
+                  {it.num}
+                </div>
+
+                <div className="relative flex items-start justify-between gap-2">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F4F7FB] text-navy ring-1 ring-[#E8EDF3] transition duration-300 group-hover:bg-[#EFF6FF] group-hover:ring-trust-blue/15">
+                    <Icon className="h-6 w-6" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-[10px] font-bold tracking-[0.12em] text-trust-blue/60">
+                    {it.num}
+                  </span>
+                </div>
+
+                <div className="relative mt-4 flex flex-1 flex-col">
+                  <div className="text-[15px] font-bold leading-snug text-navy">
+                    {it.title}
+                  </div>
+                  <p className="mt-2.5 text-[13px] leading-[1.7] text-text-secondary">
+                    {it.desc}
+                  </p>
+                </div>
               </div>
-              <div className="mt-5 text-[11.5px] font-bold uppercase tracking-[0.12em] text-trust-blue">
-                Issue 0{i + 1}
-              </div>
-              <div className="mt-1.5 text-[18px] font-bold text-navy leading-snug">
-                {it.title}
-              </div>
-              <p className="mt-3 text-[14.5px] leading-relaxed text-text-secondary">
-                {it.desc}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>
@@ -754,7 +778,7 @@ export function PrivacyLawChangeSection() {
           <h2 className="text-navy">
             개인정보보호 환경이<br />사후 대응에서 예방 중심으로 바뀌고 있습니다
           </h2>
-          <p className="mt-5 text-text-secondary leading-[1.8]">
+          <p className="privacy-desc mt-5">
             아래 비교는 첨부자료 기준의 제도 변화 방향을 정리한 것으로,
             구체적인 적용은 사안별 법률 검토와 사전 점검이 필요합니다.
           </p>

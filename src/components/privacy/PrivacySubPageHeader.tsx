@@ -37,8 +37,8 @@ export function PrivacySubPageHeader({
             <p
               className={
                 dark
-                  ? "mt-5 text-[16px] leading-[1.85] text-white/80"
-                  : "mt-5 text-[16px] leading-[1.85] text-text-secondary"
+                  ? "privacy-desc mt-5 text-white/85"
+                  : "privacy-desc mt-5"
               }
             >
               {description}

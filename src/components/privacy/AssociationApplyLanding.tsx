@@ -19,6 +19,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { SECURE_COLLECTION_TOOL } from "@/data/privacy-center";
 import sureLogo from "@site-image/sure_logo.png";
 import sureMark from "@site-image/sure_mark.png";
 
@@ -41,7 +42,7 @@ const BADGES = [
 const HERO_HIGHLIGHTS = [
   {
     icon: ShieldCheck,
-    title: "안전한 온라인 설문·접수",
+    title: "안전한 온라인 설문·수집",
     desc: "협회와 회원사의 개인정보 수집 업무를 안전하게 지원합니다.",
   },
   {
@@ -59,7 +60,7 @@ const HERO_HIGHLIGHTS = [
 const SUMMARY_CARDS = [
   {
     title: "제휴 플랫폼",
-    highlight: "WISEON",
+    highlight: SECURE_COLLECTION_TOOL,
     desc: "설문 제작 → 배포 → 응답 수집 → 데이터 분석 → 보고서 생성까지 올인원 제공",
     icon: Cloud,
   },
@@ -83,18 +84,18 @@ const SUMMARY_CARDS = [
   },
 ] as const;
 
-const WISEON_FEATURES = [
+const COLLECTION_TOOL_FEATURES = [
   { title: "설문 제작", desc: "다양한 온라인 설문과 신청폼을 손쉽게 제작" },
   { title: "배포 및 응답 수집", desc: "링크 배포, 응답 수집, 참여 현황 관리 지원" },
   { title: "데이터 분석", desc: "응답 데이터 자동 집계 및 분석 지원" },
   { title: "보고서 생성", desc: "조사 결과를 보고서 형태로 정리 가능" },
   { title: "개인정보보호 대응", desc: "접근권한 관리, 로그관리, 안전한 데이터 관리 등 운영 지원" },
-  { title: "SURE 마크 적용", desc: "WiseON 기반 설문에 개인정보보호 안심설문 SURE 마크 적용 가능" },
+  { title: "SURE 마크 적용", desc: "보안 인증 수집도구 기반 설문에 개인정보보호 안심설문 SURE 마크 적용 가능" },
 ] as const;
 
 const ASSOCIATION_SUPPORT = [
   { title: "국가인증 온라인조사 무료 이용", desc: "연간 10회 무료 제공, 1년 이내 사용, 용량 무제한" },
-  { title: "SURE 마크 자동 부여", desc: "WiseON으로 제작한 설문에 SURE 안심마크 적용" },
+  { title: "SURE 마크 자동 부여", desc: "보안 인증 수집도구로 제작한 설문에 SURE 안심마크 적용" },
   { title: "개인정보보호진흥원 홈페이지 공식 등재", desc: "협력기관 섹션에 기관명 또는 로고 게시 가능" },
   { title: "회원사 전용 가입 코드 발급", desc: "협회별 고유 코드로 회원사 혜택 자동 연계" },
   { title: "회원사 안내 지원", desc: "회원사 발송용 안내문, 도입 안내 자료, 웨비나 안내 지원" },
@@ -117,7 +118,7 @@ const SMALL_STEPS = [
 ] as const;
 
 const COMMON_BENEFITS = [
-  { icon: BadgeCheck, title: "SURE 마크 자동 적용", desc: "WiseON으로 제작한 설문에 SURE 안심마크를 적용하여 응답자에게 안전한 정보 수집 환경임을 안내할 수 있습니다." },
+  { icon: BadgeCheck, title: "SURE 마크 자동 적용", desc: "보안 인증 수집도구로 제작한 설문에 SURE 안심마크를 적용하여 응답자에게 안전한 정보 수집 환경임을 안내할 수 있습니다." },
   { icon: Shield, title: "개인정보보호진흥원 포털 등재", desc: "SURE 솔루션 사용 기업 또는 기관을 개인정보보호진흥원 공식 포털에 등재할 수 있습니다." },
   { icon: GraduationCap, title: "개인정보보호 무료 교육 웨비나", desc: "회원사 대상 개인정보보호법 실무 대응 교육을 제공합니다." },
   { icon: ClipboardCheck, title: "SURE CHECK 자가진단", desc: "운영 중인 설문·이벤트·신청 페이지의 개인정보보호 적정성을 점검할 수 있도록 지원합니다." },
@@ -160,11 +161,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "기존에 구글폼이나 네이버폼을 사용하던 회원사도 신청할 수 있나요?",
-    a: "가능합니다. 기존 온라인 설문·접수 업무를 WiseON 기반의 안전한 정보 수집 환경으로 전환할 수 있도록 안내합니다.",
+    a: "가능합니다. 기존 온라인 설문·수집 업무를 보안 인증 수집도구 기반의 안전한 정보 수집 환경으로 전환할 수 있도록 안내합니다.",
   },
   {
     q: "SURE 마크는 어디에 활용되나요?",
-    a: "WiseON으로 제작한 설문·접수 화면에 SURE 안심마크를 적용하여 응답자에게 안전한 정보 수집 환경임을 안내하는 데 활용할 수 있습니다.",
+    a: "보안 인증 수집도구로 제작한 설문·접수 화면에 SURE 안심마크를 적용하여 응답자에게 안전한 정보 수집 환경임을 안내하는 데 활용할 수 있습니다.",
   },
 ] as const;
 
@@ -261,7 +262,7 @@ export function AssociationApplyLanding() {
                   className="mx-auto mt-6 h-auto w-full max-w-[220px] object-contain drop-shadow-lg"
                 />
                 <p className="mt-6 text-center text-[14px] leading-relaxed text-white/75 md:text-[15px]">
-                  국가인증 온라인조사 플랫폼 WiseON과
+                  국가인증 온라인조사 {SECURE_COLLECTION_TOOL}과
                   <br />
                   SURE 안심마크로 안전한 정보 수집을 지원합니다.
                 </p>
@@ -284,7 +285,7 @@ export function AssociationApplyLanding() {
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
-        <div className="mt-8 max-w-3xl space-y-5 text-[16px] leading-[1.8] text-text-secondary md:text-[17px]">
+        <div className="mt-8 max-w-3xl space-y-5 privacy-desc">
           <p>협회·회원사는 설문, 행사 신청, 교육 접수 등에서 이름·연락처·이메일 등 개인정보를 수집합니다.</p>
           <p>일반 설문도구는 동의·접근권한·로그관리 등 개인정보보호 요건을 충분히 반영하기 어렵습니다.</p>
           <p>
@@ -320,16 +321,16 @@ export function AssociationApplyLanding() {
         </div>
       </Section>
 
-      {/* WiseON */}
+      {/* 보안 인증 수집도구 */}
       <Section>
-        <SectionTitle eyebrow="Platform" title="지원 플랫폼: WiseON" />
-        <p className="mt-4 max-w-3xl text-[16px] leading-[1.8] text-text-secondary md:text-[17px]">
-          본 지원사업에서 제공하는 WiseON은 온라인조사 전문 플랫폼으로, 설문 제작부터 배포, 응답
+        <SectionTitle eyebrow="Platform" title={`지원 도구: ${SECURE_COLLECTION_TOOL}`} />
+        <p className="privacy-desc mt-4 max-w-3xl">
+          본 지원사업에서 제공하는 {SECURE_COLLECTION_TOOL}는 온라인조사 전문 수단으로, 설문 제작부터 배포, 응답
           수집, 데이터 분석, 전문 보고서 생성까지 한 번에 운영할 수 있는 올인원 조사·분석
-          솔루션입니다.
+          환경을 지원합니다.
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {WISEON_FEATURES.map((f) => (
+          {COLLECTION_TOOL_FEATURES.map((f) => (
             <div key={f.title} className="rounded-xl border border-border bg-white p-5">
               <div className="text-[14px] font-bold text-navy">{f.title}</div>
               <p className="mt-2 text-[15px] leading-relaxed text-text-secondary">{f.desc}</p>
@@ -503,7 +504,7 @@ export function AssociationApplyLanding() {
                 </span>
               ))}
             </div>
-            <p className="mt-4 text-center text-[16px] leading-relaxed text-text-secondary">
+            <p className="privacy-desc mt-4 text-center">
               협단체·기업·공공기관 신청 유형을 선택한 뒤 핵심 정보를 입력해 주세요.
               접수 내용은 비공개로 관리되며, 담당자 확인 후 연락드립니다.
             </p>
@@ -539,13 +540,13 @@ export function AssociationApplyLanding() {
       <Section alt>
         <SectionTitle eyebrow="Contact" title="문의 및 신청 안내" />
         <div className="mx-auto mt-6 max-w-2xl text-center">
-          <p className="text-[15px] leading-relaxed text-text-secondary">
-            협단체 협약, 회원사 안내, WiseON 도입, SURE 마크 활용과 관련한 문의는 아래 채널로
+          <p className="privacy-desc">
+            협단체 협약, 회원사 안내, 보안 인증 수집도구 도입, SURE 마크 활용과 관련한 문의는 아래 채널로
             연락해 주세요.
           </p>
           <dl className="mt-8 grid gap-4 text-left sm:grid-cols-3">
             <ContactCard icon={Phone} label="전화" value={privacyOffice.tel} href={`tel:${privacyOffice.tel.replace(/-/g, "")}`} />
-            <ContactCard icon={Mail} label="이메일" value="wiseon@wiseinc.co.kr" href="mailto:wiseon@wiseinc.co.kr" />
+            <ContactCard icon={Mail} label="이메일" value={privacyOffice.email} href={`mailto:${privacyOffice.email}`} />
             <ContactCard icon={Search} label="홈페이지" value="개인정보보호진흥원 → 협단체 바우처" href="/privacy-center/voucher" />
           </dl>
           <p className="mt-10 text-[13px] text-text-muted">
