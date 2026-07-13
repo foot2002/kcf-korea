@@ -51,7 +51,7 @@ const SUPPORT_CARDS = [
 ] as const;
 
 const STEPS = [
-  { step: 1, label: "협약/바우처 신청", icon: FileSignature },
+  { step: 1, label: "협약/바우처 신청하기", icon: FileSignature },
   { step: 2, label: "담당자 확인 및 연락", icon: Phone },
   { step: 3, label: "협약서 검토·서명", icon: Handshake },
   { step: 4, label: "협회 전용 가입 코드 발급", icon: ShieldCheck },

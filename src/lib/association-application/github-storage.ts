@@ -1,8 +1,5 @@
-import type {
-  ApplicationStatus,
-  AssociationApplication,
-  SupportApplicationInput,
-} from "./types";
+import type { ApplicationStatus, AssociationApplication, SupportApplicationInput } from "./types";
+import { buildApplicationRecord } from "./types";
 
 const DATA_PATH = "public/association-applications-data.json";
 const REPO = "foot2002/kcf-korea";
@@ -87,19 +84,7 @@ export async function submitAssociationApplicationGithub(
 
   const { sha, records } = await readRemoteFile(token);
   const now = new Date().toISOString();
-  const record: AssociationApplication = {
-    id: generateId(records.length),
-    createdAt: now,
-    kind: data.kind,
-    associationName: data.associationName,
-    managerName: data.managerName,
-    managerPhone: data.managerPhone,
-    managerEmail: data.managerEmail,
-    message: data.message,
-    privacyConsent: true,
-    status: "접수완료",
-    updatedAt: now,
-  };
+  const record = buildApplicationRecord(data, generateId(records.length), now);
   records.push(record);
   await writeRemoteFile(token, sha, records);
   return { id: record.id };

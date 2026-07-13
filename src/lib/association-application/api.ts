@@ -10,37 +10,13 @@ import type {
   SupportApplicationInput,
 } from "./types";
 
-function getGasApiUrl(): string | null {
-  const url = import.meta.env.VITE_ASSOCIATION_APPLICATION_API_URL?.trim();
-  return url || null;
-}
-
-async function parseJsonResponse<T>(res: Response): Promise<T> {
-  const text = await res.text();
-  let body: { ok?: boolean; error?: string; data?: T } = {};
-  try {
-    body = text ? JSON.parse(text) : {};
-  } catch {
-    throw new Error("서버 응답을 처리할 수 없습니다.");
-  }
-  if (!res.ok || body.ok === false) {
-    throw new Error(body.error ?? "신청 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-  }
-  return body.data as T;
-}
-
 export async function submitAssociationApplication(
   data: SupportApplicationInput,
-  honeypot = "",
+  _honeypot = "",
 ): Promise<{ id: string }> {
-  const gasUrl = getGasApiUrl();
-  if (gasUrl) {
-    const res = await fetch(gasUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "create", website: honeypot, ...data }),
-    });
-    return parseJsonResponse<{ id: string }>(res);
+  if (canUseLocalAssociationStorage()) {
+    const { submitAssociationApplicationLocal } = await import("./actions");
+    return submitAssociationApplicationLocal({ data });
   }
 
   if (useGithubAssociationStorage()) {
@@ -66,13 +42,9 @@ export async function submitAssociationApplication(
 export async function fetchAssociationApplications(
   _token: string,
 ): Promise<AssociationApplication[]> {
-  const gasUrl = getGasApiUrl();
-  if (gasUrl) {
-    const url = new URL(gasUrl);
-    url.searchParams.set("action", "list");
-    url.searchParams.set("token", _token);
-    const res = await fetch(url.toString(), { method: "GET" });
-    return parseJsonResponse<AssociationApplication[]>(res);
+  if (canUseLocalAssociationStorage()) {
+    const { listAssociationApplicationsLocal } = await import("./actions");
+    return listAssociationApplicationsLocal({ data: { adminKey: _token } });
   }
 
   if (useGithubAssociationStorage()) {
@@ -85,12 +57,7 @@ export async function fetchAssociationApplications(
     return hydrateAssociationApplicationsClient();
   }
 
-  if (!canUseLocalAssociationStorage()) {
-    return [];
-  }
-
-  const { listAssociationApplicationsLocal } = await import("./actions");
-  return listAssociationApplicationsLocal({ data: { adminKey: _token } });
+  return [];
 }
 
 export async function updateAssociationApplicationStatus(
@@ -98,14 +65,9 @@ export async function updateAssociationApplicationStatus(
   status: ApplicationStatus,
   token: string,
 ): Promise<void> {
-  const gasUrl = getGasApiUrl();
-  if (gasUrl) {
-    const res = await fetch(gasUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "updateStatus", token, id, status }),
-    });
-    await parseJsonResponse(res);
+  if (canUseLocalAssociationStorage()) {
+    const { updateAssociationApplicationStatusLocal } = await import("./actions");
+    await updateAssociationApplicationStatusLocal({ data: { adminKey: token, id, status } });
     return;
   }
 
@@ -120,9 +82,6 @@ export async function updateAssociationApplicationStatus(
     updateAssociationApplicationStatusClient(id, status);
     return;
   }
-
-  const { updateAssociationApplicationStatusLocal } = await import("./actions");
-  await updateAssociationApplicationStatusLocal({ data: { adminKey: token, id, status } });
 }
 
 export async function updateAssociationApplicationMemo(
@@ -130,14 +89,9 @@ export async function updateAssociationApplicationMemo(
   adminMemo: string,
   token: string,
 ): Promise<void> {
-  const gasUrl = getGasApiUrl();
-  if (gasUrl) {
-    const res = await fetch(gasUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "updateMemo", token, id, adminMemo }),
-    });
-    await parseJsonResponse(res);
+  if (canUseLocalAssociationStorage()) {
+    const { updateAssociationApplicationMemoLocal } = await import("./actions");
+    await updateAssociationApplicationMemoLocal({ data: { adminKey: token, id, adminMemo } });
     return;
   }
 
@@ -152,7 +106,4 @@ export async function updateAssociationApplicationMemo(
     updateAssociationApplicationMemoClient(id, adminMemo);
     return;
   }
-
-  const { updateAssociationApplicationMemoLocal } = await import("./actions");
-  await updateAssociationApplicationMemoLocal({ data: { adminKey: token, id, adminMemo } });
 }

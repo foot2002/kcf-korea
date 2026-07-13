@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PrivacyCenterHomeSections } from "@/components/privacy/PrivacyCenterHomeSections";
 import { PrivacyHomeQuickNav } from "@/components/privacy/PrivacyHomeQuickNav";
 import {
   PartnerLogosStrip,
@@ -31,7 +32,7 @@ function PrivacyCenterHomePage() {
   return (
     <>
       <PrivacyHero />
-      <PrivacyHomeQuickNav />
+      <PrivacyCenterHomeSections />
       <PartnerLogosStrip />
     </>
   );

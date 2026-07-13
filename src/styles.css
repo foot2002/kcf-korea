@@ -130,6 +130,8 @@
     line-height: 1.75;
     font-weight: 400;
     font-feature-settings: "kern" 1, "liga" 1;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   ::selection {
@@ -142,7 +144,8 @@
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.025em;
-    text-wrap: balance;
+    text-wrap: wrap;
+    word-break: keep-all;
   }
 
   h1 { font-size: clamp(2.25rem, 4vw, 3.5rem); line-height: 1.18; letter-spacing: -0.04em; }
@@ -551,6 +554,97 @@
   font-size: 0.8125rem;
   letter-spacing: 0.11em;
   margin-bottom: 1.125rem;
+}
+
+/* 다크 히어로 — 전역 h1/h2 색상이 배경과 겹치지 않도록 */
+.privacy-center .privacy-hero-dark {
+  color: #ffffff;
+}
+.privacy-center .privacy-hero-dark :is(h1, h2, h3, h4) {
+  color: inherit;
+}
+
+/* ── 개인정보보호진흥원 디자인 시스템 ── */
+.privacy-center {
+  --pc-navy: #071529;
+  --pc-blue: #2563eb;
+  --pc-soft-blue: #eff6ff;
+  --pc-teal: #0f766e;
+  --pc-mint: #ecfdf5;
+  --pc-gold: #d97706;
+  --pc-border: #dce6f2;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@utility pc-section {
+  padding-top: clamp(3.5rem, 6vw, 5.5rem);
+  padding-bottom: clamp(3.5rem, 6vw, 5.5rem);
+}
+
+@utility pc-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pc-blue);
+  margin-bottom: 0.875rem;
+}
+
+@utility pc-section-title {
+  font-size: clamp(1.625rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+@utility pc-card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--navy);
+}
+
+@utility pc-body {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 42rem;
+}
+
+@utility pc-card {
+  border-radius: 1.375rem;
+  border: 1px solid var(--pc-border);
+  background: #ffffff;
+  box-shadow: 0 4px 18px rgba(7, 21, 41, 0.04);
+}
+
+@utility pc-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(7, 21, 41, 0.08);
+  }
+}
+
+@utility pc-accent-card {
+  border-radius: 1.375rem;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  background: linear-gradient(145deg, var(--pc-soft-blue) 0%, #ffffff 100%);
+  box-shadow: 0 4px 18px rgba(7, 21, 41, 0.04);
+}
+
+@utility pc-cta-band {
+  border: 1px solid var(--pc-border);
+  background: linear-gradient(135deg, var(--pc-soft-blue) 0%, #ffffff 100%);
+}
+
+@utility pc-cta-band-dark {
+  background: linear-gradient(135deg, var(--pc-navy) 0%, #0b2540 55%, #1d4ed8 100%);
+  box-shadow: 0 16px 48px rgba(7, 21, 41, 0.2);
 }
 
 @utility hero-eyebrow {

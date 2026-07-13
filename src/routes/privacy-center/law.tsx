@@ -27,12 +27,7 @@ function PrivacyLawPage() {
     <>
       <PrivacySubPageHeader
         eyebrow="Privacy Law & Policy"
-        title={
-          <>
-            개인정보보호법과<br />
-            온라인 설문·수집 제도
-          </>
-        }
+        title="개인정보보호법과 온라인 설문·수집 제도"
         description="온라인 설문, 행사 접수, 교육 신청 등 일상 업무에서도 개인정보 보호가
           필요합니다. 개인정보보호 환경 변화와 실무에서 자주 묻는 질문을 정리했습니다."
       />

@@ -41,8 +41,9 @@ const SUPPORT_NOTICES: Record<ApplicationKind, PrivacyConsentNotice> = {
     title: "개인정보 수집·이용 동의 (필수)",
     purpose:
       "SURE START 협단체 지원사업 협약·바우처 신청 접수, 신청 내용 확인, 담당자 연락 및 지원사업 안내",
-    requiredItems: "협회·단체명, 담당자명, 연락처, 이메일",
-    optionalItems: "남기는 글",
+    requiredItems: "협회·단체명, 웹사이트 주소, 총 회원사 수, 담당자명, 전화번호, 이메일",
+    optionalItems:
+      "대표자 성명, 사업자등록번호, 설립연도, 주소, 업종, 소기업 회원사 수, 직함·부서, 선호 연락 방법, 문의사항, 뉴스레터 수신",
   },
   enterprise: {
     title: "개인정보 수집·이용 동의 (필수)",

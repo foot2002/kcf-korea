@@ -36,7 +36,7 @@ const PROGRAM_CARDS: ProgramCard[] = [
   },
   {
     to: "/privacy-center/voucher",
-    label: "협단체 지원 바우처 사업",
+    label: "협단체 지원 바우처 사업소개",
     description: "협력 협단체·회원사에 무료 이용권과 할인 바우처를 지원합니다.",
     tags: ["보안 인증 수집도구", "회원사 혜택"],
     icon: Ticket,

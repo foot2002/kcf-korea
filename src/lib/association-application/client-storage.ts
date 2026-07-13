@@ -3,6 +3,7 @@ import type {
   AssociationApplication,
   SupportApplicationInput,
 } from "./types";
+import { buildApplicationRecord } from "./types";
 
 const STORAGE_KEY = "kcf-association-applications-v1";
 
@@ -36,19 +37,7 @@ export function submitAssociationApplicationClient(
 ): { id: string } {
   const records = readAll();
   const now = new Date().toISOString();
-  const record: AssociationApplication = {
-    id: generateId(records.length),
-    createdAt: now,
-    kind: data.kind,
-    associationName: data.associationName,
-    managerName: data.managerName,
-    managerPhone: data.managerPhone,
-    managerEmail: data.managerEmail,
-    message: data.message,
-    privacyConsent: true,
-    status: "접수완료",
-    updatedAt: now,
-  };
+  const record = buildApplicationRecord(data, generateId(records.length), now);
   records.push(record);
   writeAll(records);
   return { id: record.id };

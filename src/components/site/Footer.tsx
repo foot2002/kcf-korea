@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { foundation, publicInterestCorporation } from "@/data/kcf";
+import { contactPage, foundation, publicInterestCorporation } from "@/data/kcf";
 import { KcfLogo } from "@/components/site/KcfLogo";
 
 const footerLinks = [
@@ -12,6 +12,8 @@ const footerLinks = [
 ];
 
 export function Footer() {
+  const { foundation: foundationContact, privacyOffice } = contactPage;
+
   return (
     <footer className="border-t border-white/10 bg-navy text-white">
       <div className="container-page py-14 md:py-16">
@@ -52,15 +54,48 @@ export function Footer() {
             <div className="mb-4 text-[13px] font-semibold tracking-wide text-white/90">
               연락처
             </div>
-            <ul className="space-y-2 text-[14px] text-white/75">
-              <li>사업자등록번호 {foundation.bizNo}</li>
-              <li>
-                <a href={`tel:${foundation.tel}`} className="transition-colors hover:text-white">
-                  전화 {foundation.tel}
-                </a>
-              </li>
-              <li>팩스 {foundation.fax}</li>
-            </ul>
+            <div className="space-y-6">
+              <div>
+                <div className="text-[14px] font-semibold text-white/90">
+                  {foundationContact.name}
+                </div>
+                <ul className="mt-2 space-y-2 text-[14px] text-white/75">
+                  <li>
+                    <a
+                      href={`tel:${foundationContact.tel}`}
+                      className="transition-colors hover:text-white"
+                    >
+                      전화: {foundationContact.tel}
+                    </a>
+                  </li>
+                  <li>팩스: {foundationContact.fax}</li>
+                  <li>사업자등록번호 {foundation.bizNo}</li>
+                </ul>
+              </div>
+              <div>
+                <div className="text-[14px] font-semibold text-accent-teal">
+                  {privacyOffice.name}
+                </div>
+                <ul className="mt-2 space-y-2 text-[14px] text-white/75">
+                  <li>
+                    <a
+                      href={`tel:${privacyOffice.associationTel}`}
+                      className="transition-colors hover:text-white"
+                    >
+                      {privacyOffice.associationLabel}: {privacyOffice.associationTel}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={`tel:${privacyOffice.generalTel}`}
+                      className="transition-colors hover:text-white"
+                    >
+                      {privacyOffice.generalLabel}: {privacyOffice.generalTel}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 

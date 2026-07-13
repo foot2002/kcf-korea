@@ -10,8 +10,7 @@ export function VoucherIntroSection() {
         <div className="max-w-3xl">
           <div className="label-eyebrow mb-4">SURE Voucher Program</div>
           <h2 className="text-navy">
-            SURE 사업의 온라인 설문솔루션 추천과<br />
-            협단체 지원 바우처
+            SURE 사업의 온라인 설문솔루션 추천과 협단체 지원 바우처 사업소개
           </h2>
           <p className="privacy-desc mt-5">
             개인정보보호진흥원의 SURE 사업은 기관·기업·협단체가 안전한 온라인
@@ -66,7 +65,7 @@ export function VoucherIntroSection() {
             className="inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-[13.5px] font-bold text-white hover:bg-[#0B2540]"
           >
             <Sparkles className="h-4 w-4" />
-            협약/바우처 신청
+            협약/바우처 신청하기
             <ArrowRight className="h-4 w-4" />
           </Link>
           <a

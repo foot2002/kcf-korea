@@ -4,7 +4,7 @@ import path from "node:path";
 import { z } from "zod";
 
 import type { ApplicationStatus, AssociationApplication } from "./types";
-import { APPLICATION_STATUSES } from "./types";
+import { APPLICATION_STATUSES, buildApplicationRecord } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data", "association-applications");
 const JSON_PATH = path.join(DATA_DIR, "applications.json");
@@ -55,6 +55,17 @@ const submitSchema = z.object({
   managerEmail: z.string().trim().email(),
   message: z.string().trim().max(1000).optional(),
   privacyConsent: z.literal(true),
+  websiteUrl: z.string().trim().optional(),
+  memberCompanyCount: z.number().int().min(0).optional(),
+  representativeName: z.string().trim().optional(),
+  businessNumber: z.string().trim().optional(),
+  establishedYear: z.string().trim().optional(),
+  address: z.string().trim().optional(),
+  industry: z.string().trim().optional(),
+  smallBusinessMemberCount: z.string().trim().optional(),
+  managerPosition: z.string().trim().optional(),
+  preferredContactMethod: z.string().trim().optional(),
+  newsletterConsent: z.boolean().optional(),
 });
 
 export const submitAssociationApplicationLocal = createServerFn({ method: "POST" })
@@ -62,19 +73,7 @@ export const submitAssociationApplicationLocal = createServerFn({ method: "POST"
   .handler(async ({ data }) => {
     const records = await loadApplications();
     const now = new Date().toISOString();
-    const record: AssociationApplication = {
-      id: generateId(records.length),
-      createdAt: now,
-      kind: data.kind,
-      associationName: data.associationName,
-      managerName: data.managerName,
-      managerPhone: data.managerPhone,
-      managerEmail: data.managerEmail,
-      message: data.message,
-      privacyConsent: true,
-      status: "접수완료",
-      updatedAt: now,
-    };
+    const record: AssociationApplication = buildApplicationRecord(data, generateId(records.length), now);
     records.push(record);
     await saveApplications(records);
     return { id: record.id };

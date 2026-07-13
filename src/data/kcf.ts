@@ -44,9 +44,9 @@ export const contactPage = {
   privacyOffice: {
     name: "개인정보보호진흥원",
     associationTel: "02-562-0101",
-    associationLabel: "협단체 가입문의",
+    associationLabel: "협단체문의",
     generalTel: "02-501-2906",
-    generalLabel: "기타 업무 문의",
+    generalLabel: "업무 문의",
   },
   address: foundation.addressOfficial,
 } as const;

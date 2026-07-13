@@ -17,21 +17,13 @@ export function PrivacySubPageHeader({
     <section
       className={
         dark
-          ? "bg-gradient-to-br from-[#04101F] via-[#071529] to-[#0B2540] text-white border-b border-white/10"
-          : "bg-[#F5F8FC] border-b border-[#E5E7EB]"
+          ? "privacy-hero-dark bg-gradient-to-br from-[var(--pc-navy)] via-[#0b2540] to-[#1e40af] text-white border-b border-white/10"
+          : "bg-[var(--pc-soft-blue)] border-b border-[var(--pc-border)]"
       }
     >
       <div className="container-page py-14 md:py-16">
         <div className="max-w-3xl">
-          <div
-            className={
-              dark
-                ? "label-eyebrow !text-[#5EEAD4]"
-                : "label-eyebrow"
-            }
-          >
-            {eyebrow}
-          </div>
+          <div className={dark ? "pc-eyebrow !text-teal-300" : "pc-eyebrow"}>{eyebrow}</div>
           <h1 className={dark ? "mt-4 text-white" : "mt-4 text-navy"}>{title}</h1>
           {description ? (
             <p

@@ -53,69 +53,34 @@ import { SECURE_COLLECTION_TOOL } from "@/data/privacy-center";
 /* ---------- Section 1. Hero ---------- */
 export function PrivacyHero() {
   return (
-    <section className="relative overflow-hidden bg-[#02141A] text-white">
+    <section className="privacy-hero-dark relative overflow-hidden bg-gradient-to-br from-[var(--pc-navy)] via-[#0b2540] to-[#115e59] text-white">
       <img
         src={heroPrivacy}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full scale-105 object-cover opacity-90 motion-safe:animate-hero-privacy-zoom"
+        className="absolute inset-0 h-full w-full object-cover opacity-25"
       />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(120deg, rgba(2,20,26,0.65) 0%, rgba(7,21,41,0.5) 50%, rgba(15,118,110,0.3) 100%)",
-        }}
-      />
-      <div className="absolute inset-0 opacity-15 grid-bg" />
-      <div className="relative container-page py-20 md:py-28 grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+      <div className="absolute inset-0 grid-bg opacity-15" />
+      <div className="relative container-page py-16 md:py-24 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
-          <img
-            src={sureLogo}
-            alt="SURE — 개인정보보호 안심마크 Secure User Response Environment Mark"
-            className="h-[120px] w-auto max-w-[min(100%,720px)] rounded-xl bg-white px-5 py-4 object-contain object-left shadow-[0_8px_28px_rgba(2,20,26,0.35)] sm:h-[140px] md:h-[160px] lg:h-[180px]"
-            width={720}
-            height={180}
-          />
-          <div className="mt-4 text-[14px] font-medium text-white/70">국민 개인정보 안심센터</div>
-          <h1 className="mt-3 text-white">
-            국민의 개인정보를<br />지키는 공익 플랫폼
-          </h1>
-          <p className="mt-7 max-w-xl privacy-desc text-white/85">
-            한국컨설팅산업재단 개인정보보호진흥원은 온라인 설문·수집에서 국민
-            개인정보를 지키기 위한 SURE 안심 인증, 협단체 지원 바우처,
-            자가진단 사업을 운영하는 공익 플랫폼입니다.
+          <div className="pc-eyebrow !text-teal-300">개인정보보호진흥원</div>
+          <h1 className="mt-2 text-white">국민의 개인정보를 지키는 공익 플랫폼</h1>
+          <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-white/85 md:text-[17px]">
+            온라인 설문·접수·신청 과정에서 발생하는 개인정보 수집 리스크를 줄이고,
+            협회·단체와 회원사가 안전한 정보 수집 환경을 운영할 수 있도록 지원합니다.
           </p>
-
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link to="/privacy-center/voucher" className="btn-hero-light !px-5 !py-3 text-[14px]">
-              협단체 지원 바우처 <ArrowRight className="h-4 w-4" />
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/privacy-center/association-apply" className="btn-hero-light !px-5 !py-3 text-[14px]">
+              협단체 협약 신청하기 <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link to="/privacy-center/voucher" className="btn-hero-outline !px-5 !py-3 text-[14px]">
+              SURE START 지원사업
             </Link>
             <Link to="/privacy-center/sure-mark" className="btn-hero-outline !px-5 !py-3 text-[14px]">
-              SURE 안심마크 안내
+              SURE 안심마크
             </Link>
-            <Link to="/privacy-center/self-check" className="btn-hero-outline !px-5 !py-3 text-[14px]">
-              설문안심 자가진단
-            </Link>
-          </div>
-
-          <div className="mt-10 flex flex-wrap gap-2">
-            {[
-              "SURE 안심 인증 마크",
-              "협단체·회원사 바우처 지원",
-              "온라인 설문솔루션 추천",
-              "설문안심 자가진단",
-            ].map((t) => (
-              <span
-                key={t}
-                className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-3.5 py-1.5 text-[12.5px] font-medium text-white/85 backdrop-blur"
-              >
-                {t}
-              </span>
-            ))}
           </div>
         </div>
-
         <HeroShieldVisual />
       </div>
     </section>
@@ -199,40 +164,29 @@ const PARTNER_ASSOCIATION_LOGOS: {
 
 export function PartnerLogosStrip() {
   return (
-    <section className="bg-[#F8FAFC] border-b border-[#E5E7EB]">
-      <div className="container-page py-10 md:py-12">
-        <div className="flex flex-col items-center text-center">
-          <div className="label-eyebrow mb-4 justify-center">
-            <Users className="h-4 w-4" />
-            Partners
-          </div>
-          <h2 className="text-navy">개인정보보호진흥원 협력 협단체</h2>
-          <p className="privacy-desc mt-4 max-w-2xl">
-            협력 협단체와 함께 회원사의 안전한 온라인 조사·접수 환경을 지원합니다.
-          </p>
+    <section className="border-t border-[var(--pc-border)] bg-[var(--pc-soft-blue)]/50">
+      <div className="container-page py-12 md:py-14">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="pc-eyebrow justify-center">Partners</div>
+          <h2 className="pc-section-title text-navy">협력 협단체와 함께 개인정보보호 확산을 추진합니다</h2>
         </div>
-        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-5">
           {PARTNER_ASSOCIATION_LOGOS.map((p) => (
             <div
               key={p.name}
               title={p.name}
-              aria-label={`${p.name} 로고`}
-              className="flex flex-col items-center rounded-xl border border-[#DDE4EE] bg-white p-4 shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition hover:border-trust-blue/40 hover:shadow-[0_8px_20px_rgba(15,23,42,0.08)]"
+              className="pc-card pc-card-hover flex flex-col items-center p-4"
             >
               <div
-                className={`flex h-[96px] w-full items-center justify-center rounded-lg px-3 py-3 ring-1 ${
+                className={`flex h-[72px] w-full items-center justify-center rounded-xl px-3 ${
                   p.darkBg
-                    ? "bg-[#0B2540] ring-[#1E3A5F]"
-                    : "bg-[#F1F5F9] ring-[#E2E8F0]"
+                    ? "bg-[var(--pc-navy)] ring-1 ring-white/10"
+                    : "bg-white ring-1 ring-[var(--pc-border)]"
                 }`}
               >
-                <img
-                  src={p.logo}
-                  alt={p.name}
-                  className="max-h-[68px] w-full object-contain"
-                />
+                <img src={p.logo} alt={p.name} className="max-h-[52px] w-full object-contain" />
               </div>
-              <span className="mt-2.5 line-clamp-2 min-h-[2.5rem] text-center text-[12px] font-semibold leading-snug text-navy">
+              <span className="mt-3 line-clamp-2 text-center text-[13px] font-semibold leading-snug text-navy">
                 {p.name}
               </span>
             </div>
@@ -287,7 +241,7 @@ export function SecureCollectionToolBanner() {
               SURE 온라인 설문솔루션 추천
             </div>
             <h2 className="mt-5 text-white">
-              검증된 온라인 설문솔루션과<br />협단체 바우처 지원
+              검증된 온라인 설문솔루션과 협단체 바우처 지원
             </h2>
             <p className="mt-5 text-[16px] font-semibold text-[#93C5FD]">
               SURE 사업 — {SECURE_COLLECTION_TOOL} 연계
@@ -679,7 +633,7 @@ export function PrivacyMissionSection() {
         <div className="max-w-3xl">
           <div className="label-eyebrow mb-4">Why Privacy Protection</div>
           <h2 className="text-navy">
-            개인정보보호는 선택이 아니라<br />국민 권리 보호의 기본입니다
+            개인정보보호는 선택이 아니라 국민 권리 보호의 기본입니다
           </h2>
           <p className="privacy-desc mt-6">
             개인정보보호법상 개인정보의 범위는 매우 넓으며, 이름·연락처·이메일
@@ -776,7 +730,7 @@ export function PrivacyLawChangeSection() {
         <div className="max-w-3xl">
           <div className="label-eyebrow mb-4">Regulatory Trend</div>
           <h2 className="text-navy">
-            개인정보보호 환경이<br />사후 대응에서 예방 중심으로 바뀌고 있습니다
+            개인정보보호 환경이 사후 대응에서 예방 중심으로 바뀌고 있습니다
           </h2>
           <p className="privacy-desc mt-5">
             아래 비교는 첨부자료 기준의 제도 변화 방향을 정리한 것으로,
