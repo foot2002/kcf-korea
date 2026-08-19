@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
+  Award,
   BookOpen,
   ClipboardList,
   ShieldCheck,
@@ -35,12 +36,20 @@ const PROGRAM_CARDS: ProgramCard[] = [
     num: "02",
   },
   {
+    to: "/privacy-center/sure-certified",
+    label: "안심인증 기업",
+    description: "개인정보 전문 파트너와 안심 네트워크를 확인하고 심사 신청을 할 수 있습니다.",
+    tags: ["파트너", "심사 신청"],
+    icon: Award,
+    num: "03",
+  },
+  {
     to: "/privacy-center/voucher",
     label: "협단체 지원 바우처 사업소개",
     description: "협력 협단체·회원사에 무료 이용권과 할인 바우처를 지원합니다.",
     tags: ["보안 인증 수집도구", "회원사 혜택"],
     icon: Ticket,
-    num: "03",
+    num: "04",
   },
   {
     to: "/privacy-center/self-check",
@@ -48,7 +57,7 @@ const PROGRAM_CARDS: ProgramCard[] = [
     description: "운영 중인 설문·접수 페이지의 개인정보보호 적정성을 직접 점검합니다.",
     tags: ["무료 진단", "즉시 시작"],
     icon: ClipboardList,
-    num: "04",
+    num: "05",
   },
 ];
 
@@ -66,7 +75,7 @@ export function PrivacyHomeQuickNav() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
           {PROGRAM_CARDS.map((card) => {
             const Icon = card.icon;
             return (

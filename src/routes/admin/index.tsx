@@ -12,12 +12,14 @@ import {
   Paperclip,
   Phone,
   RefreshCw,
+  ShieldCheck,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { AssociationApplicationsPanel } from "@/components/admin/AssociationApplicationsPanel";
 import { ContactInquiriesPanel } from "@/components/admin/ContactInquiriesPanel";
+import { SurePartnerApplicationsPanel } from "@/components/admin/SurePartnerApplicationsPanel";
 import { VoucherRegistryPanel } from "@/components/admin/VoucherRegistryPanel";
 import { verifyAdminPassword } from "@/lib/admin/auth";
 
@@ -34,7 +36,7 @@ import {
 
 const STORAGE_KEY = "kcf-privacy-admin-key";
 
-type AdminTab = "inquiries" | "associations" | "registry" | "contact";
+type AdminTab = "inquiries" | "associations" | "registry" | "contact" | "sure-partners";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -202,7 +204,7 @@ function AdminPage() {
           <div className="label-eyebrow">Admin</div>
           <h1 className="text-navy">개인정보보호 관리</h1>
           <p className="mt-2 text-[14px] text-text-secondary">
-            문의함, Contact Us 문의, 협단체·기업·공공기관 지원 신청을 관리합니다.
+            문의함, Contact Us 문의, 지원 신청, 안심 파트너 심사를 관리합니다.
           </p>
         </div>
         {activeTab === "inquiries" && !isStaticGitHubPages && (
@@ -221,7 +223,11 @@ function AdminPage() {
             </button>
           </div>
         )}
-        {(activeTab === "associations" || activeTab === "registry" || activeTab === "contact" || isStaticGitHubPages) && (
+        {(activeTab === "associations" ||
+          activeTab === "registry" ||
+          activeTab === "contact" ||
+          activeTab === "sure-partners" ||
+          isStaticGitHubPages) && (
           <div className="flex gap-2">
             <button type="button" onClick={logout} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
               로그아웃
@@ -250,6 +256,12 @@ function AdminPage() {
           label="지원 신청 관리"
         />
         <TabButton
+          active={activeTab === "sure-partners"}
+          onClick={() => setActiveTab("sure-partners")}
+          icon={ShieldCheck}
+          label="안심 파트너 심사"
+        />
+        <TabButton
           active={activeTab === "registry"}
           onClick={() => setActiveTab("registry")}
           icon={List}
@@ -264,6 +276,10 @@ function AdminPage() {
       ) : activeTab === "contact" ? (
         <div className="mt-8">
           <ContactInquiriesPanel />
+        </div>
+      ) : activeTab === "sure-partners" ? (
+        <div className="mt-8">
+          <SurePartnerApplicationsPanel adminKey={adminKey} parentAuthed={authed} />
         </div>
       ) : activeTab === "associations" ? (
         <div className="mt-8">

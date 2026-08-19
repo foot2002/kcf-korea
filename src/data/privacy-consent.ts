@@ -27,6 +27,7 @@ export const PRIVACY_REFUSAL_NOTICE =
 export type PrivacyConsentVariant =
   | "contact-inquiry"
   | "privacy-inquiry"
+  | "sure-partner-apply"
   | `support-application-${ApplicationKind}`;
 
 export type PrivacyConsentNotice = {
@@ -73,6 +74,13 @@ const NOTICES: Record<PrivacyConsentVariant, PrivacyConsentNotice> = {
       "개인정보보호진흥원 문의·제보 접수, 문의 내용 확인, 답변 및 관련 업무 처리",
     requiredItems: "이름 또는 기관명, 이메일, 문의 유형, 문의 내용",
     optionalItems: "연락처, 첨부파일(파일명·내용에 포함된 개인정보)",
+  },
+  "sure-partner-apply": {
+    title: "개인정보 수집·이용 동의 (필수)",
+    purpose:
+      "안심 파트너 심사 신청 접수, 신청 내용 검토, 담당자 연락 및 파트너십 안내",
+    requiredItems: "기업명, 담당자명, 연락처, 보유 개인정보 서비스명, 특징 및 장점",
+    optionalItems: "이메일",
   },
   "support-application-association": SUPPORT_NOTICES.association,
   "support-application-enterprise": SUPPORT_NOTICES.enterprise,

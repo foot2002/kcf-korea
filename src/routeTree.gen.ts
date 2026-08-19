@@ -19,6 +19,7 @@ import { Route as PrivacyCenterIndexRouteImport } from './routes/privacy-center/
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PrivacyCenterVoucherRouteImport } from './routes/privacy-center/voucher'
 import { Route as PrivacyCenterSureMarkRouteImport } from './routes/privacy-center/sure-mark'
+import { Route as PrivacyCenterSureCertifiedRouteImport } from './routes/privacy-center/sure-certified'
 import { Route as PrivacyCenterSelfCheckRouteImport } from './routes/privacy-center/self-check'
 import { Route as PrivacyCenterLawRouteImport } from './routes/privacy-center/law'
 import { Route as PrivacyCenterAssociationApplyRouteImport } from './routes/privacy-center/association-apply'
@@ -73,6 +74,12 @@ const PrivacyCenterSureMarkRoute = PrivacyCenterSureMarkRouteImport.update({
   path: '/privacy-center/sure-mark',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyCenterSureCertifiedRoute =
+  PrivacyCenterSureCertifiedRouteImport.update({
+    id: '/privacy-center/sure-certified',
+    path: '/privacy-center/sure-certified',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PrivacyCenterSelfCheckRoute = PrivacyCenterSelfCheckRouteImport.update({
   id: '/privacy-center/self-check',
   path: '/privacy-center/self-check',
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
+  '/privacy-center/sure-certified': typeof PrivacyCenterSureCertifiedRoute
   '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
   '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin/': typeof AdminIndexRoute
@@ -115,6 +123,7 @@ export interface FileRoutesByTo {
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
+  '/privacy-center/sure-certified': typeof PrivacyCenterSureCertifiedRoute
   '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
   '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin': typeof AdminIndexRoute
@@ -131,6 +140,7 @@ export interface FileRoutesById {
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
+  '/privacy-center/sure-certified': typeof PrivacyCenterSureCertifiedRoute
   '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
   '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin/': typeof AdminIndexRoute
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/self-check'
+    | '/privacy-center/sure-certified'
     | '/privacy-center/sure-mark'
     | '/privacy-center/voucher'
     | '/admin/'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/self-check'
+    | '/privacy-center/sure-certified'
     | '/privacy-center/sure-mark'
     | '/privacy-center/voucher'
     | '/admin'
@@ -178,6 +190,7 @@ export interface FileRouteTypes {
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/self-check'
+    | '/privacy-center/sure-certified'
     | '/privacy-center/sure-mark'
     | '/privacy-center/voucher'
     | '/admin/'
@@ -194,6 +207,7 @@ export interface RootRouteChildren {
   PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
   PrivacyCenterLawRoute: typeof PrivacyCenterLawRoute
   PrivacyCenterSelfCheckRoute: typeof PrivacyCenterSelfCheckRoute
+  PrivacyCenterSureCertifiedRoute: typeof PrivacyCenterSureCertifiedRoute
   PrivacyCenterSureMarkRoute: typeof PrivacyCenterSureMarkRoute
   PrivacyCenterVoucherRoute: typeof PrivacyCenterVoucherRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -272,6 +286,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyCenterSureMarkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-center/sure-certified': {
+      id: '/privacy-center/sure-certified'
+      path: '/privacy-center/sure-certified'
+      fullPath: '/privacy-center/sure-certified'
+      preLoaderRoute: typeof PrivacyCenterSureCertifiedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-center/self-check': {
       id: '/privacy-center/self-check'
       path: '/privacy-center/self-check'
@@ -306,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
   PrivacyCenterLawRoute: PrivacyCenterLawRoute,
   PrivacyCenterSelfCheckRoute: PrivacyCenterSelfCheckRoute,
+  PrivacyCenterSureCertifiedRoute: PrivacyCenterSureCertifiedRoute,
   PrivacyCenterSureMarkRoute: PrivacyCenterSureMarkRoute,
   PrivacyCenterVoucherRoute: PrivacyCenterVoucherRoute,
   AdminIndexRoute: AdminIndexRoute,
