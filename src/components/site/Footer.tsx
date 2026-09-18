@@ -79,18 +79,10 @@ export function Footer() {
                 <ul className="mt-2 space-y-2 text-[14px] text-white/75">
                   <li>
                     <a
-                      href={`tel:${privacyOffice.associationTel}`}
+                      href={`tel:${privacyOffice.tel}`}
                       className="transition-colors hover:text-white"
                     >
-                      {privacyOffice.associationLabel}: {privacyOffice.associationTel}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={`tel:${privacyOffice.generalTel}`}
-                      className="transition-colors hover:text-white"
-                    >
-                      {privacyOffice.generalLabel}: {privacyOffice.generalTel}
+                      {privacyOffice.telLabel}: {privacyOffice.tel}
                     </a>
                   </li>
                 </ul>

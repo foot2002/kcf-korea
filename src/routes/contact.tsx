@@ -72,37 +72,17 @@ function ContactPage() {
               </div>
               <h3 className="mt-5 text-[18px] font-bold text-navy">{privacyOffice.name}</h3>
               <dl className="mt-5 space-y-3 text-[14.5px]">
-                <div className="flex items-start gap-3">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-trust-blue" />
-                  <div>
-                    <dt className="text-[12.5px] font-semibold text-text-muted">
-                      {privacyOffice.associationLabel}
-                    </dt>
-                    <dd className="mt-0.5">
-                      <a
-                        href={`tel:${privacyOffice.associationTel}`}
-                        className="font-semibold text-navy hover:text-trust-blue"
-                      >
-                        {privacyOffice.associationTel}
-                      </a>
-                    </dd>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-trust-blue" />
-                  <div>
-                    <dt className="text-[12.5px] font-semibold text-text-muted">
-                      {privacyOffice.generalLabel}
-                    </dt>
-                    <dd className="mt-0.5">
-                      <a
-                        href={`tel:${privacyOffice.generalTel}`}
-                        className="font-semibold text-navy hover:text-trust-blue"
-                      >
-                        {privacyOffice.generalTel}
-                      </a>
-                    </dd>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-4 w-4 shrink-0 text-trust-blue" />
+                  <dt className="sr-only">{privacyOffice.telLabel}</dt>
+                  <dd>
+                    <a
+                      href={`tel:${privacyOffice.tel}`}
+                      className="font-semibold text-navy hover:text-trust-blue"
+                    >
+                      {privacyOffice.telLabel}: {privacyOffice.tel}
+                    </a>
+                  </dd>
                 </div>
               </dl>
             </div>
