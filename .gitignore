@@ -20,6 +20,7 @@ dist-ssr
 # Privacy inquiry data (file-based, no DB)
 data/privacy-inquiries/
 data/association-applications/
+data/privacy-center-ops/
 
 # Wrangler / Cloudflare
 .wrangler/

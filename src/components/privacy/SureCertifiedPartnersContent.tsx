@@ -88,13 +88,14 @@ function PartnerCard({
       />
 
       <div className="flex items-start justify-between gap-3">
-        <div
-          className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-2xl text-[18px] font-black tracking-wide text-white shadow-inner"
-          style={{ background: `linear-gradient(145deg, ${partner.accent}, #0b2540)` }}
-          aria-hidden
+        <a
+          href={partner.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`flex h-16 w-[180px] items-center justify-center rounded-xl px-3 ${partner.logoOnDark ? "bg-[#111827]" : "bg-white ring-1 ring-[var(--pc-border)]"}`}
         >
-          {partner.mark}
-        </div>
+          <img src={partner.logo} alt={`${partner.name} 로고`} className="max-h-10 w-full object-contain" />
+        </a>
         <div className="text-right">
           <span className="inline-flex items-center gap-1 rounded-full bg-[var(--pc-soft-blue)] px-2.5 py-1 text-[11px] font-bold text-trust-blue ring-1 ring-[var(--pc-border)]">
             <Award className="h-3 w-3" />

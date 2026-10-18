@@ -128,7 +128,7 @@ function PrivacyCenterNav({ pathname }: { pathname: string }) {
         <ChevronDown className="h-4 w-4 shrink-0 text-white/70 transition-transform group-hover:rotate-180" />
       </Link>
       <div className="invisible absolute right-0 top-full z-50 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-        <div className="min-w-[300px] overflow-hidden rounded-xl border border-[#1D4ED8]/20 bg-white shadow-[0_20px_48px_rgba(15,23,42,0.14)]">
+        <div className="min-w-[340px] overflow-hidden rounded-xl border border-[#1D4ED8]/20 bg-white shadow-[0_20px_48px_rgba(15,23,42,0.14)]">
           <div className="border-b border-[#E5E7EB] bg-gradient-to-r from-[#EFF6FF] to-[#F0FDFA] px-4 py-3.5">
             <div className="text-[15px] font-bold text-navy">{PRIVACY_CENTER_NAV.label}</div>
           </div>
@@ -137,7 +137,7 @@ function PrivacyCenterNav({ pathname }: { pathname: string }) {
               <Link
                 key={`${c.label}-${c.to}`}
                 to={c.to}
-                className="block rounded-lg px-3 py-2.5 text-[14px] font-medium leading-snug text-text-secondary transition-colors hover:bg-blue-gray hover:text-navy"
+                className="block rounded-lg px-3 py-2.5 text-[14px] font-medium leading-snug text-text-secondary transition-colors hover:bg-blue-gray hover:text-navy whitespace-normal"
               >
                 {c.label}
               </Link>

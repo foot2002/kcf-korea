@@ -76,6 +76,9 @@ export function Footer() {
                 <div className="text-[14px] font-semibold text-accent-teal">
                   {privacyOffice.name}
                 </div>
+                <p className="mt-1 text-[12.5px] leading-relaxed text-white/60">
+                  한국컨설팅산업재단 산하 민간 공익조직
+                </p>
                 <ul className="mt-2 space-y-2 text-[14px] text-white/75">
                   <li>
                     <a

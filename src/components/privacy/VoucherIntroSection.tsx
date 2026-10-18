@@ -19,10 +19,10 @@ export function VoucherIntroSection() {
             하고, 협력 협단체 및 회원사에는 이용 바우처(무료·할인)를 지원합니다.
           </p>
           <p className="privacy-desc mt-4">
-            현재 진흥원이 공식 추천하는 국가인증 온라인설문 수단은{" "}
-            <strong className="text-navy">{SECURE_COLLECTION_TOOL}</strong>이며, CSAP
-            인증 기반으로 운영됩니다. {SECURE_COLLECTION_TOOL}은 SURE 안심마크 부여와
-            협단체 바우처 지원의 핵심 연계 수단입니다.
+            진흥원이 연계를 안내하는 온라인 설문·수집 수단은{" "}
+            <strong className="text-navy">{SECURE_COLLECTION_TOOL}</strong>입니다.
+            클라우드 보안인증(CSAP), 국가정보원 도입 가능 목록, 진흥원의 자체 표시인
+            SURE Mark는 서로 다른 제도입니다. 인증번호와 범위는 확인된 경우에만 적습니다.
           </p>
         </div>
 
@@ -61,7 +61,8 @@ export function VoucherIntroSection() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            to="/privacy-center/association-apply"
+            to="/privacy-center/support/apply"
+            search={{ type: "association" }}
             className="inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-[13.5px] font-bold text-white hover:bg-[#0B2540]"
           >
             <Sparkles className="h-4 w-4" />

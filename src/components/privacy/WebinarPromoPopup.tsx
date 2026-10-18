@@ -1,9 +1,9 @@
 "use client";
 
+import { Link } from "@tanstack/react-router";
 import { useEffect, useId, useState } from "react";
 import { CalendarDays, Monitor, Ticket, X } from "lucide-react";
 
-const APPLY_URL = "https://survey.wiseon.io/survey/218";
 const STORAGE_KEY = "kcf-privacy-webinar-popup-hide-until";
 
 const PROGRAMS = [
@@ -145,7 +145,7 @@ export function WebinarPromoPopup() {
           <div className="relative mt-3.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11.5px] font-medium text-[#e5eaf7] sm:text-[12.5px]">
               <CalendarDays className="h-3.5 w-3.5 shrink-0 text-[#FDE68A]" />
-              2026년 9월 30일(수) 14:00~16:20
+              2026년 9월 30일(수) 14:00~16:35 · 종료
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11.5px] font-medium text-[#e5eaf7] sm:text-[12.5px]">
               <Monitor className="h-3.5 w-3.5 shrink-0 text-[#FDE68A]" />
@@ -212,14 +212,14 @@ export function WebinarPromoPopup() {
         </div>
 
         <div className="shrink-0 border-t border-[#d6e3ef] bg-[#002B4E] px-5 py-3.5 sm:px-6 sm:py-4">
-          <a
-            href={APPLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/privacy-center/education/$slug"
+            params={{ slug: "2026-privacy-practice" }}
+            onClick={close}
             className="flex w-full items-center justify-center rounded-[10px] bg-[#FDE68A] px-4 py-3 text-[15px] font-extrabold text-[#002B4E] shadow-[0_8px_20px_rgba(253,230,138,0.28)] transition-colors hover:bg-[#fcd34d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#002B4E] sm:text-[16px]"
           >
-            웨비나 신청하기 →
-          </a>
+            지난 교육 보기 →
+          </Link>
           <button
             type="button"
             id="privacy-webinar-hide-today"

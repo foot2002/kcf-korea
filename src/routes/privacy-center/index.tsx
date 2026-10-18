@@ -1,10 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PrivacyCenterHomeSections } from "@/components/privacy/PrivacyCenterHomeSections";
-import { PrivacyHomeQuickNav } from "@/components/privacy/PrivacyHomeQuickNav";
-import {
-  PartnerLogosStrip,
-  PrivacyHero,
-} from "@/components/privacy/privacy-sections";
+import { PrivacyHero } from "@/components/privacy/privacy-sections";
 
 export const Route = createFileRoute("/privacy-center/")({
   head: () => ({
@@ -13,13 +9,12 @@ export const Route = createFileRoute("/privacy-center/")({
       {
         name: "description",
         content:
-          "한국컨설팅산업재단 개인정보보호진흥원 — SURE 안심 인증, 협단체 지원 바우처, 설문안심 자가진단을 운영하는 공익 플랫폼입니다.",
+          "한국컨설팅산업재단 산하 민간 공익조직인 개인정보보호진흥원. 개인정보 보호 실태 조사, 국민 권리 지원, 안전한 서비스 확산과 제도 개선을 추진합니다.",
       },
       { property: "og:title", content: "개인정보보호진흥원 | 한국컨설팅산업재단" },
       {
         property: "og:description",
-        content:
-          "온라인 설문·수집에서 국민 개인정보를 지키는 SURE 사업 — 안심마크, 바우처, 자가진단.",
+        content: "개인정보를 지키는 변화, 조사에서 정책으로, 국민의 참여로.",
       },
       { property: "og:url", content: "/privacy-center" },
     ],
@@ -33,7 +28,6 @@ function PrivacyCenterHomePage() {
     <>
       <PrivacyHero />
       <PrivacyCenterHomeSections />
-      <PartnerLogosStrip />
     </>
   );
 }

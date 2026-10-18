@@ -21,12 +21,12 @@ export function SureSelfCheckLanding() {
               <PcFeatureCard
                 icon={FileSearch}
                 title="내가 받은 설문 진단"
-                desc="참여한 설문이 개인정보를 과도하게 수집하거나 안전하지 않은 방식으로 운영되는지 확인합니다."
+                desc="참여한 설문에서 확인할 수 있는 수집 항목과 안내 문구를 살펴봅니다. 유출이나 법령 위반을 확정하지 않습니다."
               />
               <PcFeatureCard
                 icon={ClipboardCheck}
                 title="내가 만든 설문 진단"
-                desc="운영 중인 설문·접수가 수집 최소화, 동의, 보관·파기 기준을 충족하는지 점검합니다."
+                desc="운영 중인 설문·접수의 수집 항목, 안내 문구, 보관·파기 표시를 점검합니다. 안내가 없다는 사실만으로 위법이라고 보지 않습니다."
               />
             </div>
           </div>

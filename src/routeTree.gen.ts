@@ -19,10 +19,24 @@ import { Route as PrivacyCenterIndexRouteImport } from './routes/privacy-center/
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PrivacyCenterVoucherRouteImport } from './routes/privacy-center/voucher'
 import { Route as PrivacyCenterSureMarkRouteImport } from './routes/privacy-center/sure-mark'
+import { Route as PrivacyCenterSureCheckRouteImport } from './routes/privacy-center/sure-check'
 import { Route as PrivacyCenterSureCertifiedRouteImport } from './routes/privacy-center/sure-certified'
 import { Route as PrivacyCenterSelfCheckRouteImport } from './routes/privacy-center/self-check'
+import { Route as PrivacyCenterSecurityServicesRouteImport } from './routes/privacy-center/security-services'
+import { Route as PrivacyCenterRightsRouteImport } from './routes/privacy-center/rights'
+import { Route as PrivacyCenterResearchRouteImport } from './routes/privacy-center/research'
 import { Route as PrivacyCenterLawRouteImport } from './routes/privacy-center/law'
 import { Route as PrivacyCenterAssociationApplyRouteImport } from './routes/privacy-center/association-apply'
+import { Route as PrivacyCenterSupportIndexRouteImport } from './routes/privacy-center/support/index'
+import { Route as PrivacyCenterRightsIndexRouteImport } from './routes/privacy-center/rights/index'
+import { Route as PrivacyCenterPublicationsIndexRouteImport } from './routes/privacy-center/publications/index'
+import { Route as PrivacyCenterPolicyIndexRouteImport } from './routes/privacy-center/policy/index'
+import { Route as PrivacyCenterEducationIndexRouteImport } from './routes/privacy-center/education/index'
+import { Route as PrivacyCenterSupportApplyRouteImport } from './routes/privacy-center/support/apply'
+import { Route as PrivacyCenterPublicationsSlugRouteImport } from './routes/privacy-center/publications/$slug'
+import { Route as PrivacyCenterPolicySlugRouteImport } from './routes/privacy-center/policy/$slug'
+import { Route as PrivacyCenterEducationSlugRouteImport } from './routes/privacy-center/education/$slug'
+import { Route as PrivacyCenterRightsMonitorApplyRouteImport } from './routes/privacy-center/rights/monitor/apply'
 
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
@@ -74,6 +88,11 @@ const PrivacyCenterSureMarkRoute = PrivacyCenterSureMarkRouteImport.update({
   path: '/privacy-center/sure-mark',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyCenterSureCheckRoute = PrivacyCenterSureCheckRouteImport.update({
+  id: '/privacy-center/sure-check',
+  path: '/privacy-center/sure-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyCenterSureCertifiedRoute =
   PrivacyCenterSureCertifiedRouteImport.update({
     id: '/privacy-center/sure-certified',
@@ -83,6 +102,22 @@ const PrivacyCenterSureCertifiedRoute =
 const PrivacyCenterSelfCheckRoute = PrivacyCenterSelfCheckRouteImport.update({
   id: '/privacy-center/self-check',
   path: '/privacy-center/self-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyCenterSecurityServicesRoute =
+  PrivacyCenterSecurityServicesRouteImport.update({
+    id: '/privacy-center/security-services',
+    path: '/privacy-center/security-services',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterRightsRoute = PrivacyCenterRightsRouteImport.update({
+  id: '/privacy-center/rights',
+  path: '/privacy-center/rights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyCenterResearchRoute = PrivacyCenterResearchRouteImport.update({
+  id: '/privacy-center/research',
+  path: '/privacy-center/research',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyCenterLawRoute = PrivacyCenterLawRouteImport.update({
@@ -96,6 +131,65 @@ const PrivacyCenterAssociationApplyRoute =
     path: '/privacy-center/association-apply',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PrivacyCenterSupportIndexRoute =
+  PrivacyCenterSupportIndexRouteImport.update({
+    id: '/privacy-center/support/',
+    path: '/privacy-center/support/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterRightsIndexRoute =
+  PrivacyCenterRightsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => PrivacyCenterRightsRoute,
+  } as any)
+const PrivacyCenterPublicationsIndexRoute =
+  PrivacyCenterPublicationsIndexRouteImport.update({
+    id: '/privacy-center/publications/',
+    path: '/privacy-center/publications/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterPolicyIndexRoute =
+  PrivacyCenterPolicyIndexRouteImport.update({
+    id: '/privacy-center/policy/',
+    path: '/privacy-center/policy/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterEducationIndexRoute =
+  PrivacyCenterEducationIndexRouteImport.update({
+    id: '/privacy-center/education/',
+    path: '/privacy-center/education/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterSupportApplyRoute =
+  PrivacyCenterSupportApplyRouteImport.update({
+    id: '/privacy-center/support/apply',
+    path: '/privacy-center/support/apply',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterPublicationsSlugRoute =
+  PrivacyCenterPublicationsSlugRouteImport.update({
+    id: '/privacy-center/publications/$slug',
+    path: '/privacy-center/publications/$slug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterPolicySlugRoute = PrivacyCenterPolicySlugRouteImport.update({
+  id: '/privacy-center/policy/$slug',
+  path: '/privacy-center/policy/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyCenterEducationSlugRoute =
+  PrivacyCenterEducationSlugRouteImport.update({
+    id: '/privacy-center/education/$slug',
+    path: '/privacy-center/education/$slug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyCenterRightsMonitorApplyRoute =
+  PrivacyCenterRightsMonitorApplyRouteImport.update({
+    id: '/monitor/apply',
+    path: '/monitor/apply',
+    getParentRoute: () => PrivacyCenterRightsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,12 +200,26 @@ export interface FileRoutesByFullPath {
   '/history': typeof HistoryRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
+  '/privacy-center/research': typeof PrivacyCenterResearchRoute
+  '/privacy-center/rights': typeof PrivacyCenterRightsRouteWithChildren
+  '/privacy-center/security-services': typeof PrivacyCenterSecurityServicesRoute
   '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
   '/privacy-center/sure-certified': typeof PrivacyCenterSureCertifiedRoute
+  '/privacy-center/sure-check': typeof PrivacyCenterSureCheckRoute
   '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
   '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin/': typeof AdminIndexRoute
   '/privacy-center/': typeof PrivacyCenterIndexRoute
+  '/privacy-center/education/$slug': typeof PrivacyCenterEducationSlugRoute
+  '/privacy-center/policy/$slug': typeof PrivacyCenterPolicySlugRoute
+  '/privacy-center/publications/$slug': typeof PrivacyCenterPublicationsSlugRoute
+  '/privacy-center/support/apply': typeof PrivacyCenterSupportApplyRoute
+  '/privacy-center/education/': typeof PrivacyCenterEducationIndexRoute
+  '/privacy-center/policy/': typeof PrivacyCenterPolicyIndexRoute
+  '/privacy-center/publications/': typeof PrivacyCenterPublicationsIndexRoute
+  '/privacy-center/rights/': typeof PrivacyCenterRightsIndexRoute
+  '/privacy-center/support/': typeof PrivacyCenterSupportIndexRoute
+  '/privacy-center/rights/monitor/apply': typeof PrivacyCenterRightsMonitorApplyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,12 +230,25 @@ export interface FileRoutesByTo {
   '/history': typeof HistoryRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
+  '/privacy-center/research': typeof PrivacyCenterResearchRoute
+  '/privacy-center/security-services': typeof PrivacyCenterSecurityServicesRoute
   '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
   '/privacy-center/sure-certified': typeof PrivacyCenterSureCertifiedRoute
+  '/privacy-center/sure-check': typeof PrivacyCenterSureCheckRoute
   '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
   '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin': typeof AdminIndexRoute
   '/privacy-center': typeof PrivacyCenterIndexRoute
+  '/privacy-center/education/$slug': typeof PrivacyCenterEducationSlugRoute
+  '/privacy-center/policy/$slug': typeof PrivacyCenterPolicySlugRoute
+  '/privacy-center/publications/$slug': typeof PrivacyCenterPublicationsSlugRoute
+  '/privacy-center/support/apply': typeof PrivacyCenterSupportApplyRoute
+  '/privacy-center/education': typeof PrivacyCenterEducationIndexRoute
+  '/privacy-center/policy': typeof PrivacyCenterPolicyIndexRoute
+  '/privacy-center/publications': typeof PrivacyCenterPublicationsIndexRoute
+  '/privacy-center/rights': typeof PrivacyCenterRightsIndexRoute
+  '/privacy-center/support': typeof PrivacyCenterSupportIndexRoute
+  '/privacy-center/rights/monitor/apply': typeof PrivacyCenterRightsMonitorApplyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,12 +260,26 @@ export interface FileRoutesById {
   '/history': typeof HistoryRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
+  '/privacy-center/research': typeof PrivacyCenterResearchRoute
+  '/privacy-center/rights': typeof PrivacyCenterRightsRouteWithChildren
+  '/privacy-center/security-services': typeof PrivacyCenterSecurityServicesRoute
   '/privacy-center/self-check': typeof PrivacyCenterSelfCheckRoute
   '/privacy-center/sure-certified': typeof PrivacyCenterSureCertifiedRoute
+  '/privacy-center/sure-check': typeof PrivacyCenterSureCheckRoute
   '/privacy-center/sure-mark': typeof PrivacyCenterSureMarkRoute
   '/privacy-center/voucher': typeof PrivacyCenterVoucherRoute
   '/admin/': typeof AdminIndexRoute
   '/privacy-center/': typeof PrivacyCenterIndexRoute
+  '/privacy-center/education/$slug': typeof PrivacyCenterEducationSlugRoute
+  '/privacy-center/policy/$slug': typeof PrivacyCenterPolicySlugRoute
+  '/privacy-center/publications/$slug': typeof PrivacyCenterPublicationsSlugRoute
+  '/privacy-center/support/apply': typeof PrivacyCenterSupportApplyRoute
+  '/privacy-center/education/': typeof PrivacyCenterEducationIndexRoute
+  '/privacy-center/policy/': typeof PrivacyCenterPolicyIndexRoute
+  '/privacy-center/publications/': typeof PrivacyCenterPublicationsIndexRoute
+  '/privacy-center/rights/': typeof PrivacyCenterRightsIndexRoute
+  '/privacy-center/support/': typeof PrivacyCenterSupportIndexRoute
+  '/privacy-center/rights/monitor/apply': typeof PrivacyCenterRightsMonitorApplyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,12 +292,26 @@ export interface FileRouteTypes {
     | '/history'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
+    | '/privacy-center/research'
+    | '/privacy-center/rights'
+    | '/privacy-center/security-services'
     | '/privacy-center/self-check'
     | '/privacy-center/sure-certified'
+    | '/privacy-center/sure-check'
     | '/privacy-center/sure-mark'
     | '/privacy-center/voucher'
     | '/admin/'
     | '/privacy-center/'
+    | '/privacy-center/education/$slug'
+    | '/privacy-center/policy/$slug'
+    | '/privacy-center/publications/$slug'
+    | '/privacy-center/support/apply'
+    | '/privacy-center/education/'
+    | '/privacy-center/policy/'
+    | '/privacy-center/publications/'
+    | '/privacy-center/rights/'
+    | '/privacy-center/support/'
+    | '/privacy-center/rights/monitor/apply'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,12 +322,25 @@ export interface FileRouteTypes {
     | '/history'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
+    | '/privacy-center/research'
+    | '/privacy-center/security-services'
     | '/privacy-center/self-check'
     | '/privacy-center/sure-certified'
+    | '/privacy-center/sure-check'
     | '/privacy-center/sure-mark'
     | '/privacy-center/voucher'
     | '/admin'
     | '/privacy-center'
+    | '/privacy-center/education/$slug'
+    | '/privacy-center/policy/$slug'
+    | '/privacy-center/publications/$slug'
+    | '/privacy-center/support/apply'
+    | '/privacy-center/education'
+    | '/privacy-center/policy'
+    | '/privacy-center/publications'
+    | '/privacy-center/rights'
+    | '/privacy-center/support'
+    | '/privacy-center/rights/monitor/apply'
   id:
     | '__root__'
     | '/'
@@ -189,12 +351,26 @@ export interface FileRouteTypes {
     | '/history'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
+    | '/privacy-center/research'
+    | '/privacy-center/rights'
+    | '/privacy-center/security-services'
     | '/privacy-center/self-check'
     | '/privacy-center/sure-certified'
+    | '/privacy-center/sure-check'
     | '/privacy-center/sure-mark'
     | '/privacy-center/voucher'
     | '/admin/'
     | '/privacy-center/'
+    | '/privacy-center/education/$slug'
+    | '/privacy-center/policy/$slug'
+    | '/privacy-center/publications/$slug'
+    | '/privacy-center/support/apply'
+    | '/privacy-center/education/'
+    | '/privacy-center/policy/'
+    | '/privacy-center/publications/'
+    | '/privacy-center/rights/'
+    | '/privacy-center/support/'
+    | '/privacy-center/rights/monitor/apply'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -206,12 +382,24 @@ export interface RootRouteChildren {
   HistoryRoute: typeof HistoryRoute
   PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
   PrivacyCenterLawRoute: typeof PrivacyCenterLawRoute
+  PrivacyCenterResearchRoute: typeof PrivacyCenterResearchRoute
+  PrivacyCenterRightsRoute: typeof PrivacyCenterRightsRouteWithChildren
+  PrivacyCenterSecurityServicesRoute: typeof PrivacyCenterSecurityServicesRoute
   PrivacyCenterSelfCheckRoute: typeof PrivacyCenterSelfCheckRoute
   PrivacyCenterSureCertifiedRoute: typeof PrivacyCenterSureCertifiedRoute
+  PrivacyCenterSureCheckRoute: typeof PrivacyCenterSureCheckRoute
   PrivacyCenterSureMarkRoute: typeof PrivacyCenterSureMarkRoute
   PrivacyCenterVoucherRoute: typeof PrivacyCenterVoucherRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PrivacyCenterIndexRoute: typeof PrivacyCenterIndexRoute
+  PrivacyCenterEducationSlugRoute: typeof PrivacyCenterEducationSlugRoute
+  PrivacyCenterPolicySlugRoute: typeof PrivacyCenterPolicySlugRoute
+  PrivacyCenterPublicationsSlugRoute: typeof PrivacyCenterPublicationsSlugRoute
+  PrivacyCenterSupportApplyRoute: typeof PrivacyCenterSupportApplyRoute
+  PrivacyCenterEducationIndexRoute: typeof PrivacyCenterEducationIndexRoute
+  PrivacyCenterPolicyIndexRoute: typeof PrivacyCenterPolicyIndexRoute
+  PrivacyCenterPublicationsIndexRoute: typeof PrivacyCenterPublicationsIndexRoute
+  PrivacyCenterSupportIndexRoute: typeof PrivacyCenterSupportIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -286,6 +474,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyCenterSureMarkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-center/sure-check': {
+      id: '/privacy-center/sure-check'
+      path: '/privacy-center/sure-check'
+      fullPath: '/privacy-center/sure-check'
+      preLoaderRoute: typeof PrivacyCenterSureCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-center/sure-certified': {
       id: '/privacy-center/sure-certified'
       path: '/privacy-center/sure-certified'
@@ -298,6 +493,27 @@ declare module '@tanstack/react-router' {
       path: '/privacy-center/self-check'
       fullPath: '/privacy-center/self-check'
       preLoaderRoute: typeof PrivacyCenterSelfCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/security-services': {
+      id: '/privacy-center/security-services'
+      path: '/privacy-center/security-services'
+      fullPath: '/privacy-center/security-services'
+      preLoaderRoute: typeof PrivacyCenterSecurityServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/rights': {
+      id: '/privacy-center/rights'
+      path: '/privacy-center/rights'
+      fullPath: '/privacy-center/rights'
+      preLoaderRoute: typeof PrivacyCenterRightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/research': {
+      id: '/privacy-center/research'
+      path: '/privacy-center/research'
+      fullPath: '/privacy-center/research'
+      preLoaderRoute: typeof PrivacyCenterResearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-center/law': {
@@ -314,8 +530,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyCenterAssociationApplyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-center/support/': {
+      id: '/privacy-center/support/'
+      path: '/privacy-center/support'
+      fullPath: '/privacy-center/support/'
+      preLoaderRoute: typeof PrivacyCenterSupportIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/rights/': {
+      id: '/privacy-center/rights/'
+      path: '/'
+      fullPath: '/privacy-center/rights/'
+      preLoaderRoute: typeof PrivacyCenterRightsIndexRouteImport
+      parentRoute: typeof PrivacyCenterRightsRoute
+    }
+    '/privacy-center/publications/': {
+      id: '/privacy-center/publications/'
+      path: '/privacy-center/publications'
+      fullPath: '/privacy-center/publications/'
+      preLoaderRoute: typeof PrivacyCenterPublicationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/policy/': {
+      id: '/privacy-center/policy/'
+      path: '/privacy-center/policy'
+      fullPath: '/privacy-center/policy/'
+      preLoaderRoute: typeof PrivacyCenterPolicyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/education/': {
+      id: '/privacy-center/education/'
+      path: '/privacy-center/education'
+      fullPath: '/privacy-center/education/'
+      preLoaderRoute: typeof PrivacyCenterEducationIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/support/apply': {
+      id: '/privacy-center/support/apply'
+      path: '/privacy-center/support/apply'
+      fullPath: '/privacy-center/support/apply'
+      preLoaderRoute: typeof PrivacyCenterSupportApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/publications/$slug': {
+      id: '/privacy-center/publications/$slug'
+      path: '/privacy-center/publications/$slug'
+      fullPath: '/privacy-center/publications/$slug'
+      preLoaderRoute: typeof PrivacyCenterPublicationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/policy/$slug': {
+      id: '/privacy-center/policy/$slug'
+      path: '/privacy-center/policy/$slug'
+      fullPath: '/privacy-center/policy/$slug'
+      preLoaderRoute: typeof PrivacyCenterPolicySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/education/$slug': {
+      id: '/privacy-center/education/$slug'
+      path: '/privacy-center/education/$slug'
+      fullPath: '/privacy-center/education/$slug'
+      preLoaderRoute: typeof PrivacyCenterEducationSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-center/rights/monitor/apply': {
+      id: '/privacy-center/rights/monitor/apply'
+      path: '/monitor/apply'
+      fullPath: '/privacy-center/rights/monitor/apply'
+      preLoaderRoute: typeof PrivacyCenterRightsMonitorApplyRouteImport
+      parentRoute: typeof PrivacyCenterRightsRoute
+    }
   }
 }
+
+interface PrivacyCenterRightsRouteChildren {
+  PrivacyCenterRightsIndexRoute: typeof PrivacyCenterRightsIndexRoute
+  PrivacyCenterRightsMonitorApplyRoute: typeof PrivacyCenterRightsMonitorApplyRoute
+}
+
+const PrivacyCenterRightsRouteChildren: PrivacyCenterRightsRouteChildren = {
+  PrivacyCenterRightsIndexRoute: PrivacyCenterRightsIndexRoute,
+  PrivacyCenterRightsMonitorApplyRoute: PrivacyCenterRightsMonitorApplyRoute,
+}
+
+const PrivacyCenterRightsRouteWithChildren =
+  PrivacyCenterRightsRoute._addFileChildren(PrivacyCenterRightsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -326,12 +625,24 @@ const rootRouteChildren: RootRouteChildren = {
   HistoryRoute: HistoryRoute,
   PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
   PrivacyCenterLawRoute: PrivacyCenterLawRoute,
+  PrivacyCenterResearchRoute: PrivacyCenterResearchRoute,
+  PrivacyCenterRightsRoute: PrivacyCenterRightsRouteWithChildren,
+  PrivacyCenterSecurityServicesRoute: PrivacyCenterSecurityServicesRoute,
   PrivacyCenterSelfCheckRoute: PrivacyCenterSelfCheckRoute,
   PrivacyCenterSureCertifiedRoute: PrivacyCenterSureCertifiedRoute,
+  PrivacyCenterSureCheckRoute: PrivacyCenterSureCheckRoute,
   PrivacyCenterSureMarkRoute: PrivacyCenterSureMarkRoute,
   PrivacyCenterVoucherRoute: PrivacyCenterVoucherRoute,
   AdminIndexRoute: AdminIndexRoute,
   PrivacyCenterIndexRoute: PrivacyCenterIndexRoute,
+  PrivacyCenterEducationSlugRoute: PrivacyCenterEducationSlugRoute,
+  PrivacyCenterPolicySlugRoute: PrivacyCenterPolicySlugRoute,
+  PrivacyCenterPublicationsSlugRoute: PrivacyCenterPublicationsSlugRoute,
+  PrivacyCenterSupportApplyRoute: PrivacyCenterSupportApplyRoute,
+  PrivacyCenterEducationIndexRoute: PrivacyCenterEducationIndexRoute,
+  PrivacyCenterPolicyIndexRoute: PrivacyCenterPolicyIndexRoute,
+  PrivacyCenterPublicationsIndexRoute: PrivacyCenterPublicationsIndexRoute,
+  PrivacyCenterSupportIndexRoute: PrivacyCenterSupportIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

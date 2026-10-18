@@ -136,7 +136,8 @@ export function SureStartAssociationSection() {
             연락드립니다.
           </p>
           <Link
-            to="/privacy-center/association-apply"
+            to="/privacy-center/support/apply"
+            search={{ type: "association" }}
             className="btn-primary-kcf mt-6 inline-flex items-center gap-2"
           >
             협약/바우처 신청하기

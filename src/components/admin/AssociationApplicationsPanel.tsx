@@ -184,7 +184,7 @@ export function AssociationApplicationsPanel({
       </div>
 
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-        <p className="text-[14px] text-text-secondary">협단체·기업·공공기관 지원 신청 목록</p>
+        <p className="text-[14px] text-text-secondary">지원 신청 페이지의 협단체·기업·공공기관 접수입니다. 주민자치 신청은 별도 탭에 있습니다.</p>
         <div className="flex flex-wrap gap-2">
           <button type="button" onClick={() => void load()} disabled={loading} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
             <RefreshCw className={`mr-1.5 inline h-4 w-4 ${loading ? "animate-spin" : ""}`} />

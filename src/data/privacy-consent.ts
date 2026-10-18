@@ -28,6 +28,9 @@ export type PrivacyConsentVariant =
   | "contact-inquiry"
   | "privacy-inquiry"
   | "sure-partner-apply"
+  | "monitor-apply"
+  | "civic-support"
+  | "education-enroll"
   | `support-application-${ApplicationKind}`;
 
 export type PrivacyConsentNotice = {
@@ -85,6 +88,25 @@ const NOTICES: Record<PrivacyConsentVariant, PrivacyConsentNotice> = {
   "support-application-association": SUPPORT_NOTICES.association,
   "support-application-enterprise": SUPPORT_NOTICES.enterprise,
   "support-application-public": SUPPORT_NOTICES.public,
+  "monitor-apply": {
+    title: "개인정보 수집·이용 동의 (필수)",
+    purpose: "국민 개인정보보호 모니터링단 사전 신청 접수, 선발 연락 및 활동 안내",
+    requiredItems: "이름 또는 활동명, 이메일, 거주 시도, 관심 분야, 참여 동기, 희망 활동방식",
+    optionalItems: "연락처, 선택적 알림 수신",
+  },
+  "civic-support": {
+    title: "개인정보 수집·이용 동의 (필수)",
+    purpose: "주민자치 무료 지원 신청 접수, 서류 확인, 승인 여부 안내 및 사용권 발급",
+    requiredItems:
+      "모임명, 담당자, 이메일, 연락처, 신청 목적, 관할 지자체, 지원부서, 행사명, 행사 목적, 행사 기간, 예상 참여자, 개인정보 수집 항목",
+    optionalItems: "공공지원 확인자료 첨부파일",
+  },
+  "education-enroll": {
+    title: "개인정보 수집·이용 동의 (필수)",
+    purpose: "교육·웨비나 참가 신청 접수, 접수 확인 및 교육 안내",
+    requiredItems: "이름, 소속, 이메일",
+    optionalItems: "연락처",
+  },
 };
 
 export function getPrivacyConsentNotice(variant: PrivacyConsentVariant): PrivacyConsentNotice {

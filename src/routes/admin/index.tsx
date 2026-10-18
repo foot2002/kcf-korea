@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Download,
   FileText,
+  GraduationCap,
   Handshake,
   List,
   Loader2,
@@ -14,12 +15,14 @@ import {
   RefreshCw,
   ShieldCheck,
   Trash2,
+  Users,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { AssociationApplicationsPanel } from "@/components/admin/AssociationApplicationsPanel";
 import { ContactInquiriesPanel } from "@/components/admin/ContactInquiriesPanel";
 import { SurePartnerApplicationsPanel } from "@/components/admin/SurePartnerApplicationsPanel";
+import { CenterOpsPanel } from "@/components/admin/CenterOpsPanel";
 import { VoucherRegistryPanel } from "@/components/admin/VoucherRegistryPanel";
 import { verifyAdminPassword } from "@/lib/admin/auth";
 
@@ -36,7 +39,7 @@ import {
 
 const STORAGE_KEY = "kcf-privacy-admin-key";
 
-type AdminTab = "inquiries" | "associations" | "registry" | "contact" | "sure-partners";
+type AdminTab = "inquiries" | "associations" | "registry" | "contact" | "sure-partners" | "monitor" | "civic" | "education" | "center";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -204,7 +207,7 @@ function AdminPage() {
           <div className="label-eyebrow">Admin</div>
           <h1 className="text-navy">개인정보보호 관리</h1>
           <p className="mt-2 text-[14px] text-text-secondary">
-            문의함, Contact Us 문의, 지원 신청, 안심 파트너 심사를 관리합니다.
+            문의함, 지원 신청, 모니터링단, 주민자치 지원, 교육 참가, 안심 파트너 심사를 관리합니다.
           </p>
         </div>
         {activeTab === "inquiries" && !isStaticGitHubPages && (
@@ -227,6 +230,10 @@ function AdminPage() {
           activeTab === "registry" ||
           activeTab === "contact" ||
           activeTab === "sure-partners" ||
+          activeTab === "monitor" ||
+          activeTab === "civic" ||
+          activeTab === "education" ||
+          activeTab === "center" ||
           isStaticGitHubPages) && (
           <div className="flex gap-2">
             <button type="button" onClick={logout} className="btn-secondary-kcf !py-2.5 !px-4 text-[13px]">
@@ -256,6 +263,24 @@ function AdminPage() {
           label="지원 신청 관리"
         />
         <TabButton
+          active={activeTab === "monitor"}
+          onClick={() => setActiveTab("monitor")}
+          icon={Users}
+          label="모니터링단 신청"
+        />
+        <TabButton
+          active={activeTab === "civic"}
+          onClick={() => setActiveTab("civic")}
+          icon={Handshake}
+          label="주민자치 지원"
+        />
+        <TabButton
+          active={activeTab === "education"}
+          onClick={() => setActiveTab("education")}
+          icon={GraduationCap}
+          label="교육 참가 신청"
+        />
+        <TabButton
           active={activeTab === "sure-partners"}
           onClick={() => setActiveTab("sure-partners")}
           icon={ShieldCheck}
@@ -266,6 +291,12 @@ function AdminPage() {
           onClick={() => setActiveTab("registry")}
           icon={List}
           label="협약 기관 등록"
+        />
+        <TabButton
+          active={activeTab === "center"}
+          onClick={() => setActiveTab("center")}
+          icon={ShieldCheck}
+          label="진흥원 운영"
         />
       </div>
 
@@ -280,6 +311,14 @@ function AdminPage() {
       ) : activeTab === "sure-partners" ? (
         <div className="mt-8">
           <SurePartnerApplicationsPanel adminKey={adminKey} parentAuthed={authed} />
+        </div>
+      ) : activeTab === "monitor" || activeTab === "civic" || activeTab === "education" ? (
+        <div className="mt-8">
+          <CenterOpsPanel adminKey={adminKey} section={activeTab} />
+        </div>
+      ) : activeTab === "center" ? (
+        <div className="mt-8">
+          <CenterOpsPanel adminKey={adminKey} section="ops" />
         </div>
       ) : activeTab === "associations" ? (
         <div className="mt-8">

@@ -14,7 +14,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
-import { WebinarPromoPopup } from "../components/privacy/WebinarPromoPopup";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import { Toaster } from "../components/ui/sonner";
 
@@ -140,8 +139,6 @@ function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const hash = useRouterState({ select: (s) => s.location.hash });
   const isPrivacyCenter = pathname.startsWith("/privacy-center");
-  const isPrivacyCenterHome =
-    pathname === "/privacy-center" || pathname === "/privacy-center/";
   useEffect(() => {
     if (hash) return;
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -156,7 +153,6 @@ function RootComponent() {
         </main>
         <Footer />
         <Toaster position="top-center" richColors closeButton />
-        {isPrivacyCenterHome ? <WebinarPromoPopup /> : null}
       </div>
     </QueryClientProvider>
   );

@@ -27,6 +27,7 @@ import {
   LockKeyhole,
 } from "lucide-react";
 import heroPrivacy from "@/assets/hero-privacy.jpg";
+import { PRIVACY_VISUALS } from "@/components/privacy/privacy-visuals";
 import sureLogo from "@site-image/sure_logo.png";
 import sureMark from "@site-image/sure_mark.png";
 import sureDetail from "@site-image/sure_detail.png";
@@ -52,94 +53,37 @@ import { SECURE_COLLECTION_TOOL } from "@/data/privacy-center";
 
 /* ---------- Section 1. Hero ---------- */
 export function PrivacyHero() {
+  const guardian = PRIVACY_VISUALS.rights;
   return (
     <section className="privacy-hero-dark relative overflow-hidden bg-gradient-to-br from-[var(--pc-navy)] via-[#0b2540] to-[#115e59] text-white">
       <img
         src={heroPrivacy}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover opacity-25"
+        className="absolute inset-0 h-full w-full object-cover opacity-20"
       />
       <div className="absolute inset-0 grid-bg opacity-15" />
-      <div className="relative container-page py-16 md:py-24 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div className="relative container-page grid items-center gap-10 py-14 md:py-20 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
-          <div className="pc-eyebrow !text-teal-300">개인정보보호진흥원</div>
-          <h1 className="mt-2 text-white">국민의 개인정보를 지키는 공익 플랫폼</h1>
+          <div className="pc-eyebrow !text-teal-300">한국컨설팅산업재단 산하 민간 공익조직</div>
+          <h1 className="mt-2 max-w-full text-balance text-white !text-[1.85rem] !leading-[1.25] sm:!text-[2.55rem] lg:!text-[3.35rem]">개인정보를 지키는 변화, 조사에서 참여로, 제도로.</h1>
           <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-white/85 md:text-[17px]">
-            온라인 설문·접수·신청 과정에서 발생하는 개인정보 수집 리스크를 줄이고,
-            협회·단체와 회원사가 안전한 정보 수집 환경을 운영할 수 있도록 지원합니다.
+            개인정보보호진흥원은 실태를 조사하고, 국민의 권리행사를 도우며, 안전한 서비스와 제도 개선을 이어 갑니다.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/privacy-center/association-apply" className="btn-hero-light !px-5 !py-3 text-[14px]">
-              협단체 협약 신청하기 <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link to="/privacy-center/voucher" className="btn-hero-outline !px-5 !py-3 text-[14px]">
-              SURE START 지원사업
-            </Link>
-            <Link to="/privacy-center/sure-mark" className="btn-hero-outline !px-5 !py-3 text-[14px]">
-              SURE 안심마크
-            </Link>
+            <a href="#programs" className="btn-hero-light !px-5 !py-3 text-[14px]">
+              사업 계획 보기 <ArrowRight className="h-4 w-4" />
+            </a>
+            <a href="#guardian" className="btn-hero-outline !px-5 !py-3 text-[14px]">
+              국민 개인정보 지키미
+            </a>
           </div>
         </div>
-        <HeroShieldVisual />
+        <div className="mx-auto w-full max-w-[420px] rounded-[32px] bg-white p-3 shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
+          <img src={guardian.src} alt={guardian.alt} className="h-auto w-full object-contain" />
+        </div>
       </div>
     </section>
-  );
-}
-
-function HeroShieldVisual() {
-  const nodes = [
-    { label: "국민", x: "12%", y: "20%" },
-    { label: "기업", x: "85%", y: "18%" },
-    { label: "공공기관", x: "8%", y: "72%" },
-    { label: "법제도", x: "88%", y: "75%" },
-    { label: "데이터", x: "50%", y: "8%" },
-    { label: "포럼", x: "50%", y: "92%" },
-  ];
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[540px]">
-      {/* Outer ring */}
-      <div className="absolute inset-6 rounded-full border border-white/15" />
-      <div className="absolute inset-16 rounded-full border border-white/10" />
-      {/* Nodes */}
-      {nodes.map((n) => (
-        <div
-          key={n.label}
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/8 border border-white/25 px-3 py-1.5 text-[12px] font-semibold text-white backdrop-blur"
-          style={{ left: n.x, top: n.y }}
-        >
-          {n.label}
-        </div>
-      ))}
-      {/* Central shield */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative h-44 w-44 rounded-[44px] bg-gradient-to-br from-trust-blue to-privacy-green shadow-[0_30px_60px_rgba(13,148,136,0.35)] flex items-center justify-center">
-          <Shield className="h-20 w-20 text-white" strokeWidth={1.5} />
-          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-[#5EEAD4] px-3 py-1 text-[11px] font-bold text-navy">
-            PROTECT
-          </div>
-        </div>
-      </div>
-      {/* Dashboard card */}
-      <div className="absolute -right-2 bottom-6 hidden sm:block w-[58%] rounded-2xl border border-white/15 bg-white/8 p-4 backdrop-blur-md">
-        <div className="flex items-center justify-between">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5EEAD4]">
-            Monitoring
-          </div>
-          <div className="h-2 w-2 rounded-full bg-[#5EEAD4] animate-pulse" />
-        </div>
-        <div className="mt-3 space-y-1.5">
-          {[70, 45, 88].map((w, i) => (
-            <div key={i} className="h-1.5 w-full rounded-full bg-white/15">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-[#5EEAD4] to-trust-blue"
-                style={{ width: `${w}%` }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -571,20 +515,21 @@ export function SafeSurveyMarkDetail() {
 
             <div className="mt-7 flex flex-wrap gap-2">
               <Link
-                to="/privacy-center/voucher"
+                to="/privacy-center/support"
+                hash="association"
                 className="inline-flex items-center gap-1.5 rounded-full bg-navy px-5 py-2.5 text-[13.5px] font-bold text-white hover:bg-[#0B2540]"
               >
                 협단체 바우처 안내 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
               <Link
-                to="/privacy-center/voucher"
+                to="/privacy-center/support"
                 hash="member-search"
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#0B2540]/20 bg-white px-5 py-2.5 text-[13.5px] font-bold text-navy hover:bg-soft-sky"
               >
                 회원사 지원 검색
               </Link>
               <Link
-                to="/privacy-center/voucher"
+                to="/privacy-center/support"
                 hash="collection-tool-detail"
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#0F766E]/30 bg-white px-5 py-2.5 text-[13.5px] font-bold text-[#0F766E] hover:bg-[#ECFEFB]"
               >
