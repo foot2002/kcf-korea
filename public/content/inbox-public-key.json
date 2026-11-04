@@ -1,0 +1,15 @@
+{
+  "keyId": "d20dadab6e277aad17874fbbe9e46bfbf3e2a24ab1404b570507c56f72382b7f",
+  "alg": "RSA-OAEP-256",
+  "jwk": {
+    "key_ops": [
+      "wrapKey"
+    ],
+    "ext": true,
+    "alg": "RSA-OAEP-256",
+    "kty": "RSA",
+    "n": "mY_Xg6yy2l9Eo_YT9BBVnaCG2iNG-3gqf8medwQojHLpyG0X3TEqlg0j1qmAWbfUztsG8O1pZvujf_dFKqWcLgWYxb8A9AuIKzyrxh0HSJH7rFfuLDebjVkt4aXEt6ZhdnDqjAhNPSlSOxLpXyKGthKV-DvMIS910cvKBZ-q8uFAJp198jYYXIVGpzY-8jmvdJ2HHI0mtyZsk_t8GhMQKBO3lPSqAqZ45ZIXnrzRHQGIdPq7YfFqy403uexI-q1SRg0TIj05CaQV93lS7RWKDafLndI7iSL8bgSRJbekBI5h5EKBTsBG4l0Tb8-ZTwBYvyeo9BzI2-hQAgrQTtKw2I1ksAmT5Q0B0XhTAXNY2yZyB1TwkFlz3Wa_Uklzmq10O3-zPrHXvtbg8i8K3m5tJLNHythtlYYNompjby4dtnKAm-qNLjZiYS9XoUxsmipGfltz9GQ-aFz0B0MUwsC6QPPLTsxsfzl-qc6ipK67PL_XuTc3OA-BTPiUJgyMiz7x",
+    "e": "AQAB"
+  },
+  "createdAt": "2026-11-04T13:52:56.574Z"
+}
