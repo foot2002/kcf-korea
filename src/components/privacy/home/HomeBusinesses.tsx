@@ -6,7 +6,7 @@ import { BUSINESSES, HOME_UI } from "@/data/privacy-home";
 
 export function HomeBusinesses() {
   return (
-    <section className="bg-white">
+    <section id="businesses" className="bg-white">
       <div className="container-page py-12 md:py-16">
         <h2 className="text-navy">{HOME_UI.businessTitle}</h2>
         <p className="mt-2 text-[16px] text-[#374151]">{HOME_UI.businessLead}</p>

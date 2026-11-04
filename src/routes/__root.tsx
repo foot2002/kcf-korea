@@ -123,12 +123,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const site = pathname.startsWith("/privacy-center") ? "privacy" : "foundation";
   return (
-    <html lang="ko">
+    <html lang="ko" data-site={site}>
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body data-site={site}>
         {children}
         <Scripts />
       </body>
@@ -151,7 +153,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col bg-background">
+      <div className="flex min-h-screen flex-col bg-background" data-site={isPrivacyCenter ? "privacy" : "foundation"}>
         <Header />
         <main className={isPrivacyCenter ? "privacy-center flex-1" : "flex-1"}>
           <Outlet />

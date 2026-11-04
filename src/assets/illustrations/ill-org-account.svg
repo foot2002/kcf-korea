@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360" role="img" aria-label="기관 계정 아래 담당자들이 함께 쓰는 보안 플랫폼">
+  <path d="M50 190 c-10 -90 70 -150 180 -150 c120 0 210 50 200 150 c-8 96 -120 136 -220 130 c-90 -6 -150 -46 -160 -130 z" fill="#F6F1E7"/>
+  <!-- building (institution) -->
+  <path d="M190 64 l50 -26 l50 26 z" fill="#0B3A6E"/>
+  <rect x="196" y="64" width="88" height="8" fill="#0B3A6E"/>
+  <rect x="204" y="74" width="10" height="34" fill="#0B3A6E"/>
+  <rect x="226" y="74" width="10" height="34" fill="#0B3A6E"/>
+  <rect x="246" y="74" width="10" height="34" fill="#0B3A6E"/>
+  <rect x="266" y="74" width="10" height="34" fill="#0B3A6E"/>
+  <rect x="192" y="108" width="96" height="10" rx="2" fill="#0B3A6E"/>
+  <path d="M240 118 v28" stroke="#0B3A6E" stroke-width="3"/>
+  <!-- platform card with shield -->
+  <rect x="160" y="146" width="160" height="104" rx="14" fill="#FFFFFF" stroke="#0F766E" stroke-width="3"/>
+  <path d="M240 162 l26 10 v18 c0 16 -11 26 -26 31 c-15 -5 -26 -15 -26 -31 v-18 z" fill="#0F766E"/>
+  <path d="M228 190 l9 9 l16 -18" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="190" y="230" width="100" height="8" rx="4" fill="#CBD5E1"/>
+  <!-- connectors -->
+  <path d="M160 214 C 130 220, 110 240, 96 262" fill="none" stroke="#0F766E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M240 250 v30" fill="none" stroke="#0F766E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M320 214 C 350 220, 370 240, 384 262" fill="none" stroke="#0F766E" stroke-width="3" stroke-linecap="round"/>
+  <!-- staff avatars -->
+  <g>
+    <circle cx="90" cy="290" r="28" fill="#FFFFFF" stroke="#0B3A6E" stroke-width="3"/>
+    <circle cx="90" cy="282" r="9" fill="#F2C9A5"/>
+    <path d="M74 304 c3 -10 9 -13 16 -13 s13 3 16 13" fill="#0B3A6E"/>
+    <circle cx="240" cy="306" r="28" fill="#FFFFFF" stroke="#0B3A6E" stroke-width="3"/>
+    <circle cx="240" cy="298" r="9" fill="#E0AC85"/>
+    <path d="M224 320 c3 -10 9 -13 16 -13 s13 3 16 13" fill="#0F766E"/>
+    <circle cx="390" cy="290" r="28" fill="#FFFFFF" stroke="#0B3A6E" stroke-width="3"/>
+    <circle cx="390" cy="282" r="9" fill="#F2C9A5"/>
+    <path d="M374 304 c3 -10 9 -13 16 -13 s13 3 16 13" fill="#0B3A6E"/>
+  </g>
+  <!-- sub-id tags -->
+  <rect x="58" y="248" width="40" height="14" rx="7" fill="#0F766E"/>
+  <rect x="358" y="248" width="40" height="14" rx="7" fill="#0F766E"/>
+  <!-- lock + cloud -->
+  <path d="M360 120 a18 18 0 0 1 32 -12 a13 13 0 0 1 22 8 a11 11 0 0 1 -2 22 h-48 a11 11 0 0 1 -4 -18 z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="380" y="118" width="16" height="13" rx="2.5" fill="#0B3A6E"/>
+  <path d="M383 118 v-4 a5 5 0 0 1 10 0 v4" fill="none" stroke="#0B3A6E" stroke-width="2.2"/>
+  <circle cx="90" cy="110" r="6" fill="#C9A24A"/>
+  <circle cx="420" cy="70" r="4" fill="#5EC4B6"/>
+</svg>

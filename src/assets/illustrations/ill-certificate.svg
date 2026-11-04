@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360" role="img" aria-label="우수기관 인증서와 메달">
+  <path d="M56 196 c-12 -94 68 -156 178 -156 c118 0 206 52 198 154 c-8 94 -120 134 -218 130 c-90 -4 -146 -42 -158 -128 z" fill="#F6F1E7"/>
+  <!-- certificate -->
+  <rect x="96" y="60" width="250" height="210" rx="6" fill="#FFFFFF"/>
+  <rect x="96" y="60" width="250" height="210" rx="6" fill="none" stroke="#1B2D6B" stroke-width="7"/>
+  <rect x="110" y="74" width="222" height="182" fill="none" stroke="#C9A24A" stroke-width="1.5"/>
+  <circle cx="221" cy="108" r="18" fill="#E8EEF6" stroke="#0B3A6E" stroke-width="2.5"/>
+  <path d="M221 97 l10 4 v7 c0 6 -4 10 -10 12 c-6 -2 -10 -6 -10 -12 v-7 z" fill="#0F766E"/>
+  <rect x="181" y="136" width="80" height="6" rx="3" fill="#C9A24A"/>
+  <rect x="151" y="150" width="140" height="12" rx="6" fill="#1B2D6B"/>
+  <rect x="171" y="170" width="100" height="6" rx="3" fill="#2E7D3C"/>
+  <rect x="166" y="190" width="110" height="10" rx="5" fill="#0B3A6E"/>
+  <rect x="146" y="210" width="150" height="5" rx="2.5" fill="#CBD5E1"/>
+  <rect x="156" y="222" width="130" height="5" rx="2.5" fill="#CBD5E1"/>
+  <rect x="298" y="226" width="22" height="22" rx="2" fill="#B91C1C" fill-opacity="0.15" stroke="#B91C1C" stroke-width="2"/>
+  <!-- medal with ribbons -->
+  <path d="M352 210 l-20 70 l18 -10 l10 18 l14 -62 z" fill="#0F766E"/>
+  <path d="M392 210 l20 70 l-18 -10 l-10 18 l-14 -62 z" fill="#0B3A6E"/>
+  <circle cx="372" cy="200" r="40" fill="#C9A24A"/>
+  <circle cx="372" cy="200" r="30" fill="#E3C56E"/>
+  <path d="M372 180 l6 13 l14 1 l-11 9 l4 14 l-13 -8 l-13 8 l4 -14 l-11 -9 l14 -1 z" fill="#FFFFFF"/>
+  <!-- confetti -->
+  <rect x="70" y="80" width="10" height="4" rx="2" fill="#5EC4B6" transform="rotate(30 75 82)"/>
+  <rect x="400" y="80" width="10" height="4" rx="2" fill="#C9A24A" transform="rotate(-20 405 82)"/>
+  <circle cx="430" cy="130" r="5" fill="#0F766E"/>
+  <circle cx="80" cy="250" r="5" fill="#C9A24A"/>
+  <rect x="420" y="290" width="10" height="4" rx="2" fill="#0B3A6E" transform="rotate(45 425 292)"/>
+  <path d="M60 150 l6 0 M63 147 l0 6" stroke="#0B3A6E" stroke-width="2" stroke-linecap="round"/>
+</svg>

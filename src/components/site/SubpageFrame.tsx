@@ -52,7 +52,7 @@ export function SubpageFrame({
 
   return (
     <div className="contents">
-      <section className="subvisual bg-navy text-white">
+      <section className="subvisual bg-[var(--site-accent)] text-white">
         <div className="container-page flex min-h-40 flex-col justify-center py-8">
           {eyebrow ? (
             <p className="text-[13px] font-semibold tracking-wide text-[#E8EEF6]">{eyebrow}</p>

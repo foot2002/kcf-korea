@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360" role="img" aria-label="개인 계정과 PC에 흩어진 응답 파일">
+  <path d="M50 190 c-10 -90 70 -150 180 -150 c120 0 210 50 200 150 c-8 96 -120 136 -220 130 c-90 -6 -150 -46 -160 -130 z" fill="#F6F1E7"/>
+  <!-- center form -->
+  <rect x="190" y="110" width="100" height="130" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="206" y="128" width="50" height="8" rx="4" fill="#0B3A6E"/>
+  <rect x="206" y="146" width="68" height="12" rx="3" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <rect x="206" y="166" width="68" height="12" rx="3" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <rect x="206" y="186" width="68" height="12" rx="3" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <rect x="206" y="210" width="68" height="16" rx="4" fill="#94A3B8"/>
+  <!-- dashed leaks -->
+  <path d="M190 150 C 140 130, 120 100, 100 86" fill="none" stroke="#E07A2F" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round"/>
+  <path d="M290 150 C 340 130, 360 100, 384 84" fill="none" stroke="#E07A2F" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round"/>
+  <path d="M200 240 C 170 270, 140 280, 110 286" fill="none" stroke="#E07A2F" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round"/>
+  <path d="M280 240 C 310 270, 340 280, 372 284" fill="none" stroke="#E07A2F" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round"/>
+  <!-- personal account avatar -->
+  <circle cx="86" cy="70" r="30" fill="#FFFFFF" stroke="#0B3A6E" stroke-width="3"/>
+  <circle cx="86" cy="62" r="10" fill="#0B3A6E"/>
+  <path d="M68 88 c4 -12 12 -16 18 -16 s14 4 18 16" fill="#0B3A6E"/>
+  <!-- laptop PC -->
+  <rect x="352" y="52" width="76" height="50" rx="6" fill="#0B3A6E"/>
+  <rect x="358" y="58" width="64" height="38" rx="3" fill="#E8EEF6"/>
+  <rect x="366" y="66" width="22" height="28" rx="2" fill="#FFFFFF" stroke="#94A3B8"/>
+  <rect x="392" y="66" width="22" height="28" rx="2" fill="#FFFFFF" stroke="#94A3B8"/>
+  <path d="M344 102 h92 l-8 8 h-76 z" fill="#94A3B8"/>
+  <!-- USB -->
+  <rect x="70" y="270" width="44" height="26" rx="5" fill="#0B3A6E"/>
+  <rect x="114" y="277" width="14" height="12" rx="2" fill="#94A3B8"/>
+  <rect x="80" y="279" width="16" height="8" rx="2" fill="#FFFFFF" fill-opacity="0.5"/>
+  <!-- downloaded sheet copies -->
+  <g transform="rotate(8 390 290)">
+    <rect x="360" y="262" width="54" height="64" rx="5" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+    <rect x="368" y="274" width="38" height="5" rx="2.5" fill="#0F766E"/>
+    <rect x="368" y="286" width="38" height="4" rx="2" fill="#CBD5E1"/>
+    <rect x="368" y="296" width="38" height="4" rx="2" fill="#CBD5E1"/>
+    <rect x="368" y="306" width="26" height="4" rx="2" fill="#CBD5E1"/>
+  </g>
+  <rect x="372" y="250" width="54" height="64" rx="5" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+  <rect x="380" y="262" width="38" height="5" rx="2.5" fill="#0F766E"/>
+  <rect x="380" y="274" width="38" height="4" rx="2" fill="#CBD5E1"/>
+  <rect x="380" y="284" width="38" height="4" rx="2" fill="#CBD5E1"/>
+  <!-- warning badge -->
+  <path d="M240 46 l24 42 h-48 z" fill="#E07A2F" stroke="#E07A2F" stroke-width="6" stroke-linejoin="round"/>
+  <rect x="238" y="58" width="4" height="16" rx="2" fill="#FFFFFF"/>
+  <circle cx="240" cy="80" r="2.6" fill="#FFFFFF"/>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 440" width="560" height="440" role="img" aria-label="웨비나 다시보기">
+  <circle cx="280" cy="210" r="190" fill="#FFFFFF" fill-opacity="0.06"/>
+  <!-- player -->
+  <rect x="60" y="56" width="440" height="260" rx="16" fill="#0A2240"/>
+  <rect x="72" y="68" width="416" height="214" rx="8" fill="#E8EEF6"/>
+  <!-- stage: presentation slide -->
+  <rect x="96" y="92" width="200" height="130" rx="6" fill="#FFFFFF"/>
+  <rect x="112" y="108" width="110" height="10" rx="5" fill="#0B3A6E"/>
+  <rect x="112" y="128" width="160" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="112" y="142" width="140" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="112" y="166" width="20" height="40" rx="3" fill="#0F766E"/>
+  <rect x="140" y="178" width="20" height="28" rx="3" fill="#5EC4B6"/>
+  <rect x="168" y="186" width="20" height="20" rx="3" fill="#94A3B8"/>
+  <!-- speaker -->
+  <circle cx="390" cy="140" r="26" fill="#E0AC85"/>
+  <path d="M364 132 a26 26 0 0 1 52 0 c-6 -12 -18 -16 -26 -16 s-20 4 -26 16 z" fill="#1F2937"/>
+  <path d="M336 282 c0 -60 24 -96 54 -96 s54 36 54 96 z" fill="#0B3A6E"/>
+  <path d="M382 186 l8 22 l8 -22 z" fill="#FFFFFF"/>
+  <rect x="300" y="236" width="70" height="46" rx="4" fill="#C9A24A" fill-opacity="0.9"/>
+  <rect x="330" y="214" width="6" height="22" fill="#94A3B8"/>
+  <circle cx="333" cy="210" r="6" fill="#1F2937"/>
+  <!-- play button -->
+  <circle cx="280" cy="176" r="34" fill="#0F766E"/>
+  <circle cx="280" cy="176" r="34" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="5"/>
+  <path d="M270 160 l26 16 l-26 16 z" fill="#FFFFFF"/>
+  <!-- progress -->
+  <rect x="84" y="294" width="392" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="84" y="294" width="150" height="6" rx="3" fill="#5EC4B6"/>
+  <circle cx="234" cy="297" r="7" fill="#FFFFFF"/>
+  <!-- session thumbnails strip -->
+  <g>
+    <rect x="40" y="338" width="88" height="56" rx="8" fill="#FFFFFF"/>
+    <rect x="40" y="338" width="88" height="56" rx="8" fill="#0B3A6E" fill-opacity="0.08"/>
+    <path d="M78 356 l14 10 l-14 10 z" fill="#0B3A6E"/>
+    <rect x="138" y="338" width="88" height="56" rx="8" fill="#FFFFFF"/>
+    <path d="M176 356 l14 10 l-14 10 z" fill="#0B3A6E"/>
+    <rect x="236" y="338" width="88" height="56" rx="8" fill="#0F766E"/>
+    <path d="M274 356 l14 10 l-14 10 z" fill="#FFFFFF"/>
+    <rect x="334" y="338" width="88" height="56" rx="8" fill="#FFFFFF"/>
+    <path d="M372 356 l14 10 l-14 10 z" fill="#0B3A6E"/>
+    <rect x="432" y="338" width="88" height="56" rx="8" fill="#FFFFFF"/>
+    <path d="M470 356 l14 10 l-14 10 z" fill="#0B3A6E"/>
+  </g>
+  <circle cx="520" cy="40" r="5" fill="#C9A24A"/>
+  <circle cx="30" cy="200" r="4" fill="#FFFFFF" fill-opacity="0.6"/>
+</svg>

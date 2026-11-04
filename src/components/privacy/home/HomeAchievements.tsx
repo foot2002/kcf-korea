@@ -2,7 +2,7 @@ import { ACHIEVEMENTS } from "@/data/privacy-home";
 
 export function HomeAchievements() {
   return (
-    <section className="bg-white">
+    <section id="achievements" className="bg-white">
       <ul className="container-page grid gap-0 py-10 md:grid-cols-4 md:py-12">
         {ACHIEVEMENTS.map((item, index) => (
           <li

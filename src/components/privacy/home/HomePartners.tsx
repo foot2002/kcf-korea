@@ -35,7 +35,7 @@ export function PartnerLogoGrid({ mobileLimit }: { mobileLimit?: number }) {
 
 export function HomePartners() {
   return (
-    <section className="border-t border-[#D1D5DB] bg-white">
+    <section id="partners" className="border-t border-[#D1D5DB] bg-white">
       <div className="container-page py-12 md:py-16">
         <h2 className="text-navy">{HOME_UI.partnersTitle}</h2>
         <div className="mt-8">

@@ -110,7 +110,10 @@
   --gray-300: #D1D5DB;
   --gray-100: #F3F4F6;
   --section-bg: #F3F4F6;
-  --header-height: 108px;
+  --header-height: 103px;
+  --site-foundation: #0B3A6E;
+  --site-privacy: #0F766E;
+  --site-accent: var(--site-foundation);
   --accent-teal: #0F766E;
   --accent-sky: #E6F4F2;
   --navy-deep-bg: #072A52;
@@ -754,6 +757,9 @@ html.js-reveal .reveal-stagger.is-visible > * {
     transform: none !important;
     transition: none !important;
   }
+  .site-org-bar {
+    transition: none !important;
+  }
 }
 
 .research-page section[id],
@@ -803,8 +809,11 @@ html.js-reveal .reveal-stagger.is-visible > * {
   }
 }
 
+[data-site="foundation"] { --site-accent: var(--site-foundation); }
+[data-site="privacy"] { --site-accent: var(--site-privacy); }
+
 @media (min-width: 1024px) {
-  :root { --header-height: 200px; }
+  :root { --header-height: 123px; }
 }
 
 .subvisual h1 { color: #ffffff; }
