@@ -44,11 +44,20 @@ function format(n: number, withComma: boolean) {
 export function CountUp({ value, duration = 1800, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const [started, setStarted] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [motionOk, setMotionOk] = useState(false);
+  const [progress, setProgress] = useState(1);
   const segments = parseSegments(value);
 
   useEffect(() => {
-    if (!ref.current) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setMotionOk(!media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!motionOk || !ref.current) return;
     const el = ref.current;
     const io = new IntersectionObserver(
       (entries) => {
@@ -63,22 +72,22 @@ export function CountUp({ value, duration = 1800, className }: CountUpProps) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [started]);
+  }, [motionOk, started]);
 
   useEffect(() => {
-    if (!started) return;
+    if (!started || !motionOk) return;
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
-      // easeOutCubic
       const eased = 1 - Math.pow(1 - t, 3);
       setProgress(eased);
       if (t < 1) raf = requestAnimationFrame(tick);
     };
+    setProgress(0);
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [started, duration]);
+  }, [started, motionOk, duration]);
 
   return (
     <span ref={ref} className={className}>

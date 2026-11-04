@@ -9,11 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as R404RouteImport } from './routes/404'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivacyCenterIndexRouteImport } from './routes/privacy-center/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -38,6 +41,16 @@ import { Route as PrivacyCenterPolicySlugRouteImport } from './routes/privacy-ce
 import { Route as PrivacyCenterEducationSlugRouteImport } from './routes/privacy-center/education/$slug'
 import { Route as PrivacyCenterRightsMonitorApplyRouteImport } from './routes/privacy-center/rights/monitor/apply'
 
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -61,6 +74,11 @@ const AchievementsRoute = AchievementsRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const R404Route = R404RouteImport.update({
+  id: '/404',
+  path: '/404',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -193,11 +211,14 @@ const PrivacyCenterRightsMonitorApplyRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/404': typeof R404Route
   '/about': typeof AboutRoute
   '/achievements': typeof AchievementsRoute
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap': typeof SitemapRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -223,11 +244,14 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/404': typeof R404Route
   '/about': typeof AboutRoute
   '/achievements': typeof AchievementsRoute
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap': typeof SitemapRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -253,11 +277,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/404': typeof R404Route
   '/about': typeof AboutRoute
   '/achievements': typeof AchievementsRoute
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap': typeof SitemapRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -285,11 +312,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/404'
     | '/about'
     | '/achievements'
     | '/business'
     | '/contact'
     | '/history'
+    | '/privacy-policy'
+    | '/sitemap'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -315,11 +345,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/404'
     | '/about'
     | '/achievements'
     | '/business'
     | '/contact'
     | '/history'
+    | '/privacy-policy'
+    | '/sitemap'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -344,11 +377,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/404'
     | '/about'
     | '/achievements'
     | '/business'
     | '/contact'
     | '/history'
+    | '/privacy-policy'
+    | '/sitemap'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -375,11 +411,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  R404Route: typeof R404Route
   AboutRoute: typeof AboutRoute
   AchievementsRoute: typeof AchievementsRoute
   BusinessRoute: typeof BusinessRoute
   ContactRoute: typeof ContactRoute
   HistoryRoute: typeof HistoryRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  SitemapRoute: typeof SitemapRoute
   PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
   PrivacyCenterLawRoute: typeof PrivacyCenterLawRoute
   PrivacyCenterResearchRoute: typeof PrivacyCenterResearchRoute
@@ -404,6 +443,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/history': {
       id: '/history'
       path: '/history'
@@ -437,6 +490,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/404': {
+      id: '/404'
+      path: '/404'
+      fullPath: '/404'
+      preLoaderRoute: typeof R404RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -618,11 +678,14 @@ const PrivacyCenterRightsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  R404Route: R404Route,
   AboutRoute: AboutRoute,
   AchievementsRoute: AchievementsRoute,
   BusinessRoute: BusinessRoute,
   ContactRoute: ContactRoute,
   HistoryRoute: HistoryRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  SitemapRoute: SitemapRoute,
   PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
   PrivacyCenterLawRoute: PrivacyCenterLawRoute,
   PrivacyCenterResearchRoute: PrivacyCenterResearchRoute,

@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
-import { EducationDetail } from "@/components/privacy/EducationViews";
-import { EDUCATION_SEED } from "@/data/privacy-program";
+import { EducationSeries } from "@/components/privacy/EducationSeriesView";
+import { EDUCATION_PAGE } from "@/data/privacy-program";
+import { bundledEducation } from "@/lib/content/load";
 
 export const Route = createFileRoute("/privacy-center/education/$slug")({
   head: ({ params }) => {
-    const item = EDUCATION_SEED.find((education) => education.slug === params.slug);
+    const item = bundledEducation.find((education) => education.slug === params.slug);
     return {
       meta: [
-        { title: `${item?.title ?? "교육"} | 개인정보보호진흥원` },
-        { name: "description", content: item?.summary ?? "개인정보보호진흥원 교육" },
+        { title: `${item?.title ?? EDUCATION_PAGE.title} | 개인정보보호진흥원` },
+        { name: "description", content: item?.summary ?? EDUCATION_PAGE.description },
       ],
     };
   },
@@ -17,8 +18,8 @@ export const Route = createFileRoute("/privacy-center/education/$slug")({
     const { slug } = Route.useParams();
     return (
       <>
-        <PrivacySubPageHeader eyebrow="Education" title="교육 상세" visual="education" />
-        <EducationDetail slug={slug} />
+        <PrivacySubPageHeader title={EDUCATION_PAGE.title} description={EDUCATION_PAGE.description} />
+        <EducationSeries focusSlug={slug} />
       </>
     );
   },

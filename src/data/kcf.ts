@@ -1,6 +1,12 @@
 // 한국컨설팅산업재단 콘텐츠 데이터 (KCF)
 // 자료 원문 100% 반영을 위한 단일 소스
 
+import cardConsulting from "@/assets/card-consulting.jpg";
+import cardNbo from "@/assets/card-nbo.jpg";
+import heroFreePlatform from "@/assets/illustrations/hero-free-platform.svg";
+import { HERO } from "@/data/free-platform";
+import type { HomeSlide } from "@/data/privacy-home";
+
 export const foundation = {
   nameKo: "재단법인 한국컨설팅산업재단",
   nameEn: "Korea Consultancy Foundation",
@@ -9,9 +15,12 @@ export const foundation = {
   bizNo: "206-82-10927",
   tel: "02-555-9091",
   fax: "02-455-0090",
-  /** 재단 공식 주소 (footer 등 최소 노출) */
-  addressOfficial: "서울 송파구 올림픽로 362 (방이동) 4층 401호",
+  /** 재단·진흥원 공식 주소 */
+  addressOfficial: "서울특별시 송파구 양재대로71길 20-30, 2층",
 };
+
+/** 재단과 진흥원이 같은 주소를 쓸 때 화면에 보이는 한 줄 */
+export const SHARED_OFFICE_ADDRESS = `재단·진흥원 ${foundation.addressOfficial}`;
 
 /** 재정경제부 지정 비영리 공익법인 (기부금 세제 혜택) */
 export const publicInterestCorporation = {
@@ -27,11 +36,11 @@ export const publicInterestCorporation = {
 
 export const privacyOffice = {
   name: "개인정보보호진흥원",
-  addressRegistered: "서울시 강남구 봉은사로 57길 13",
-  address: "서울시 강남구 언주로 309 기성빌딩 3층",
-  tel: "02-558-5144",
+  addressRegistered: foundation.addressOfficial,
+  address: foundation.addressOfficial,
+  tel: "02-501-2906", // 이전: 02-558-5144
   fax: "02-558-5146",
-  email: "wiseon@wiseinc.co.kr",
+  email: "cs@kcf-korea.org",
 };
 
 /** Contact Us 페이지 전용 연락처 */
@@ -47,6 +56,7 @@ export const contactPage = {
     telLabel: "TEL",
   },
   address: foundation.addressOfficial,
+  addressLine: SHARED_OFFICE_ADDRESS,
 } as const;
 
 export const heroBadges = [
@@ -357,11 +367,10 @@ export const generalInfo: { label: string; value: string }[] = [
     label: "면허/허가/등록증",
     value: "재단법인설립허가증 · 산업통상자원부 장관 · 2010년",
   },
-  { label: "재단 공식 주소", value: "서울 송파구 올림픽로 362 (방이동) 4층 401호" },
-  { label: "개인정보보호진흥원 (등록)", value: "서울시 강남구 봉은사로 57길 13" },
+  { label: "주소", value: SHARED_OFFICE_ADDRESS },
   {
     label: "개인정보보호진흥원 (연락)",
-    value: "서울시 강남구 언주로 309 기성빌딩 3층 · 02-558-5144 · wiseon@wiseinc.co.kr",
+    value: `${foundation.addressOfficial} · 02-501-2906 · cs@kcf-korea.org`,
   },
 ];
 
@@ -422,3 +431,101 @@ export const certifications = [
   "경기교육청 청소년 진로체험학습기관 지정서",
   "서울특별시교육청 중학생 진로체험학습기관 지정서",
 ];
+
+export const FOUNDATION_META_TITLE = "한국컨설팅산업재단 | 공익법인";
+
+export const FOUNDATION_PUBLIC_BAND = `재정경제부 지정 공익법인 제${publicInterestCorporation.designationNo}호 · 기부금 영수증 발급 및 세제 혜택`;
+
+export const FOUNDATION_PRIVACY_RIBBON = "무상제공 상시 접수";
+
+const foundationFoundedYear = foundation.founded.slice(0, 4);
+const foundationEducationBadge = heroBadges.find((item) => item.includes("교육수료")) ?? "";
+const foundationEducationValue = foundationEducationBadge.includes("26만") ? "26만+" : foundationEducationBadge;
+
+export const FOUNDATION_SLIDES: readonly HomeSlide[] = [
+  {
+    id: "foundation",
+    eyebrow: "공익법인 (재)한국컨설팅산업재단",
+    eyebrowTone: "navy",
+    title: "대한민국 지식서비스산업을 선도하는 공익법인",
+    body: "한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여합니다.",
+    tab: "재단 소개",
+    layout: "split",
+    panel: "navy",
+    photo: cardConsulting,
+    figures: [
+      { value: foundationFoundedYear, label: "설립" },
+      { value: foundationEducationValue, label: "교육 수료" },
+      { value: `제${publicInterestCorporation.designationNo}호`, label: "지정 공익법인", inverse: true },
+    ],
+    primary: { label: "재단 소개", to: "/about" },
+    secondary: { label: "주요 사업", to: "/business" },
+  },
+  {
+    id: "nbo",
+    eyebrow: "NBO 사무국",
+    eyebrowTone: "navy",
+    title: "전국상업경진대회 (NBO) 사무국",
+    body: "재단은 교육부가 주최하는 전국상업경진대회(NBO: National Business Olympiad)의 공식 재정 사무국을 담당합니다. NBO 대회정관 제11조에 따라, 재단 소속 재정분과 사무부국장이 대회 예산 운영 전반에 관한 대행 업무를 수행합니다.",
+    tab: "NBO 사무국",
+    layout: "split",
+    panel: "navy",
+    photo: cardNbo,
+    primary: { label: "자세히 보기", to: "/business", hash: "nbo" },
+  },
+  {
+    id: "privacy",
+    eyebrow: "부설 개인정보보호진흥원",
+    eyebrowTone: "mint",
+    title: "정부인증 온라인조사플랫폼\n무상제공 · 상시 접수",
+    body: HERO.sub,
+    tab: "개인정보보호진흥원",
+    layout: "split",
+    panel: "teal",
+    visual: heroFreePlatform,
+    primary: { label: "진흥원으로 이동", to: "/privacy-center" },
+  },
+];
+
+export const FOUNDATION_QUICK_MENU = [
+  { label: "재단 소개", to: "/about", icon: "Landmark" },
+  { label: "연혁", to: "/history", icon: "History" },
+  { label: "주요사업", to: "/business", icon: "Briefcase" },
+  { label: "실적·자료", to: "/achievements", icon: "Award" },
+  { label: "개인정보보호진흥원", to: "/privacy-center", icon: "ShieldCheck" },
+  { label: "문의", to: "/contact", icon: "Mail" },
+] as const;
+
+export const FOUNDATION_PRIVACY_BANNER = {
+  title: "개인정보보호진흥원",
+  lines: ["우수기관 7곳 선정", "무상제공 상시 접수"],
+  primary: { label: "우수기관 보기", to: "/privacy-center/sure-mark" },
+  secondary: { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply-form" },
+} as const;
+
+export const CONTACT_TABLE_HEADERS = ["구분", "주소", "전화", "전자우편"] as const;
+
+export const CONTACT_ROWS = [
+  {
+    name: contactPage.foundation.name,
+    address: SHARED_OFFICE_ADDRESS,
+    tel: foundation.tel,
+    fax: foundation.fax,
+    // TODO(확인): 재단 대표 전자우편
+    email: "",
+  },
+  {
+    name: privacyOffice.name,
+    address: SHARED_OFFICE_ADDRESS,
+    tel: privacyOffice.tel,
+    fax: privacyOffice.fax,
+    email: privacyOffice.email,
+  },
+] as const;
+
+export const CONTACT_MAIL = {
+  button: "이메일로 문의하기",
+  href: `mailto:${privacyOffice.email}?subject=${encodeURIComponent("[문의] 소속·이름")}`,
+  hint: "문의 시 적어 주실 내용: 소속, 이름, 연락처, 문의 내용",
+  policy: "개인정보처리방침",
+} as const;

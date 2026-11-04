@@ -1,119 +1,72 @@
 import { Link } from "@tanstack/react-router";
-import { contactPage, foundation, publicInterestCorporation } from "@/data/kcf";
-import { KcfLogo } from "@/components/site/KcfLogo";
 
-const footerLinks = [
-  { label: "재단 소개", to: "/about" as const },
-  { label: "연혁", to: "/history" as const },
-  { label: "사업", to: "/business" as const },
-  { label: "개인정보보호진흥원", to: "/privacy-center" as const, accent: true },
-  { label: "실적·자료", to: "/achievements" as const },
-  { label: "Contact Us", to: "/contact" as const },
+import { foundation, privacyOffice, publicInterestCorporation, SHARED_OFFICE_ADDRESS } from "@/data/kcf";
+
+const RELATED_SITES = [
+  { label: "개인정보보호위원회", href: "https://www.pipc.go.kr" },
+  { label: "개인정보침해신고센터", href: "https://privacy.kisa.or.kr" },
+  { label: "개인정보분쟁조정위원회", href: "https://www.kopico.go.kr" },
 ];
 
 export function Footer() {
-  const { foundation: foundationContact, privacyOffice } = contactPage;
-
   return (
-    <footer className="border-t border-white/10 bg-navy text-white">
-      <div className="container-page py-14 md:py-16">
-        <div className="grid gap-10 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <div className="flex items-center">
-              <KcfLogo variant="footer" className="rounded-lg bg-white px-2 py-1.5" />
-            </div>
-            <p className="mt-5 max-w-md text-[14px] leading-relaxed text-white/75">
-              컨설팅을 통해 선도적 지식산업을 창출하고, 산업계의 지식고도화와
-              지식시장 창출을 촉진하는 비영리 공익법인입니다.
-            </p>
-          </div>
+    <footer className="site-footer bg-[#072A52] text-[#F3F4F6]">
+      <div className="container-page flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-white/15 py-4 text-[15px]">
+        <Link to="/privacy-policy" className="font-bold text-[#99F6E4] hover:underline">
+          개인정보처리방침
+        </Link>
+        <span aria-hidden="true" className="text-[#D1D5DB]">
+          |
+        </span>
+        <span>이메일무단수집거부</span>
+        <span aria-hidden="true" className="text-[#D1D5DB]">
+          |
+        </span>
+        <Link to="/sitemap" className="hover:underline">
+          사이트맵
+        </Link>
+      </div>
 
-          <div>
-            <div className="mb-4 text-[13px] font-semibold tracking-wide text-white/90">
-              주요 메뉴
-            </div>
-            <ul className="space-y-2.5 text-[14px]">
-              {footerLinks.map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    className={`transition-colors hover:text-white ${
-                      link.accent
-                        ? "text-accent-teal hover:text-accent-teal/90"
-                        : "text-white/75"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <div className="container-page py-5 text-[15px] leading-[1.7]">
+        <p>
+          공익법인 (재)한국컨설팅산업재단 · 재정경제부 지정 공익법인 제
+          {publicInterestCorporation.designationNo}호 · 사업자등록번호 {foundation.bizNo}
+        </p>
+        <p>
+          {SHARED_OFFICE_ADDRESS} ·{" "}
+          <a href={`tel:${privacyOffice.tel}`} className="hover:underline">
+            {privacyOffice.tel}
+          </a>{" "}
+          ·{" "}
+          <a href={`mailto:${privacyOffice.email}`} className="hover:underline">
+            {privacyOffice.email}
+          </a>
+        </p>
+      </div>
 
-          <div>
-            <div className="mb-4 text-[13px] font-semibold tracking-wide text-white/90">
-              연락처
-            </div>
-            <div className="space-y-6">
-              <div>
-                <div className="text-[14px] font-semibold text-white/90">
-                  {foundationContact.name}
-                </div>
-                <ul className="mt-2 space-y-2 text-[14px] text-white/75">
-                  <li>
-                    <a
-                      href={`tel:${foundationContact.tel}`}
-                      className="transition-colors hover:text-white"
-                    >
-                      전화: {foundationContact.tel}
-                    </a>
-                  </li>
-                  <li>팩스: {foundationContact.fax}</li>
-                  <li>사업자등록번호 {foundation.bizNo}</li>
-                </ul>
-              </div>
-              <div>
-                <div className="text-[14px] font-semibold text-accent-teal">
-                  {privacyOffice.name}
-                </div>
-                <p className="mt-1 text-[12.5px] leading-relaxed text-white/60">
-                  한국컨설팅산업재단 산하 민간 공익조직
-                </p>
-                <ul className="mt-2 space-y-2 text-[14px] text-white/75">
-                  <li>
-                    <a
-                      href={`tel:${privacyOffice.tel}`}
-                      className="transition-colors hover:text-white"
-                    >
-                      {privacyOffice.telLabel}: {privacyOffice.tel}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 rounded-lg border border-white/10 bg-white/[0.04] px-5 py-4 text-[12.5px] leading-relaxed text-white/60">
-          <div className="font-semibold text-white/85">
-            {publicInterestCorporation.displayName}
-          </div>
-          <p className="mt-1.5">
-            {publicInterestCorporation.taxBenefitNote} · 지정번호{" "}
-            {publicInterestCorporation.designationNo}호 · 관할{" "}
-            {publicInterestCorporation.taxOffice}
-          </p>
-          <p className="mt-1">
-            대상 {publicInterestCorporation.entityName} · 지정일{" "}
-            {publicInterestCorporation.designatedAt} · 지정기간{" "}
-            {publicInterestCorporation.period}
-          </p>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-[12px] text-white/55">
-          <div>© {new Date().getFullYear()} {foundation.nameKo}. All rights reserved.</div>
-          <div className="text-white/45">{foundation.addressOfficial}</div>
-        </div>
+      <div className="container-page flex flex-wrap items-center justify-between gap-3 border-t border-white/15 py-4 text-[14px]">
+        <label className="flex items-center gap-2">
+          <span className="sr-only">관련 사이트 바로가기</span>
+          <select
+            aria-label="관련 사이트 바로가기"
+            defaultValue=""
+            className="h-10 rounded-md border border-[#D1D5DB] bg-white px-3 text-[14px] text-[#111827]"
+            onChange={(event) => {
+              const url = event.target.value;
+              if (!url) return;
+              window.open(url, "_blank", "noopener,noreferrer");
+              event.target.value = "";
+            }}
+          >
+            <option value="">관련 사이트 바로가기</option>
+            {RELATED_SITES.map((site) => (
+              <option key={site.href} value={site.href}>
+                {site.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <p>© {new Date().getFullYear()} {foundation.nameKo}. All rights reserved.</p>
       </div>
     </footer>
   );

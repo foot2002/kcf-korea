@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-04T00:00:00.000Z",
+  "items": [
+    {
+      "slug": "2026-privacy-practice",
+      "title": "강화되는 개인정보보호법과 기업·기관의 실전 대응 및 적용",
+      "subtitle": "공공기관과 기업이 모두 준비해야 하는 핵심 대응 전략",
+      "lawNote": "2026년 9월 11일 시행 개정 개인정보 보호법 대응",
+      "date": "2026-09-30",
+      "timeLabel": "14:00~16:20",
+      "year": 2026,
+      "topics": ["개인정보 보호법", "공공·기업 실무"],
+      "mode": "온라인 웨비나",
+      "fee": "무료",
+      "status": "종료",
+      "host": "개인정보보호진흥원(한국컨설팅산업재단)",
+      "organizers": ["법무법인 율촌", "㈜파수", "㈜와이즈인컴퍼니", "㈜타이거컴퍼니", "㈜피앤피시큐어", "㈜프리모데이터"],
+      "cohosts": ["한국서비스산업연합회", "한국SW·ICT연합회 산하 30개 협회"],
+      "applicantsLabel": "860개 이상 기관·기업",
+      "participantsLabel": null,
+      "summary": "법률의 주요 변화와 함께, 기업과 기관이 실제 업무에서 적용할 수 있는 개인정보보호 대응체계와 보안인증 SaaS 활용방안을 법률·보안·정보수집·협업·시스템 DB 분야 전문가가 안내한 온라인 웨비나입니다.",
+      "capacity": null,
+      "youtubeId": "",
+      "sessions": [
+        {
+          "no": "01",
+          "start": "14:10",
+          "end": "14:40",
+          "field": "법률",
+          "title": "강화되는 개인정보보호법과 기업·기관의 대응",
+          "summary": "개인정보보호 법적 책임, 위탁·재위탁, 외부 SaaS 활용, 개인정보 유출 및 기관·기업의 준비사항",
+          "speaker": "법무법인 율촌",
+          "logo": "yulchon",
+          "youtubeId": "",
+          "startSec": null,
+          "durationLabel": "30분"
+        },
+        {
+          "no": "02",
+          "start": "14:40",
+          "end": "15:10",
+          "field": "업무흐름",
+          "title": "기업과 기관의 개인정보·보안 대응 실전",
+          "summary": "개인정보 수집·협업·DB·외주·백업·파기 등 업무 흐름별 위험과 대응방안",
+          "speaker": "㈜파수",
+          "logo": "fasoo",
+          "youtubeId": "",
+          "startSec": null,
+          "durationLabel": "30분"
+        },
+        {
+          "no": "03",
+          "start": "15:10",
+          "end": "15:30",
+          "field": "정보수집",
+          "title": "외부 정보수집의 보안 공백과 WiseON 적용",
+          "summary": "설문·신청·접수·조사의 개인정보보호 이슈와 보안인증 정보수집 SaaS 활용",
+          "speaker": "㈜와이즈인컴퍼니",
+          "logo": "wisein",
+          "youtubeId": "",
+          "startSec": null,
+          "durationLabel": "20분"
+        },
+        {
+          "no": "04",
+          "start": "15:30",
+          "end": "15:45",
+          "field": "내부협업",
+          "title": "조직 내부 협업과 문서공유의 보안 전환",
+          "summary": "개인 메일·메신저·파일공유를 기관 계정과 보안인증 협업환경으로 전환하는 방법",
+          "speaker": "㈜타이거컴퍼니",
+          "logo": "tigris",
+          "youtubeId": "",
+          "startSec": null,
+          "durationLabel": "15분"
+        },
+        {
+          "no": "05",
+          "start": "15:45",
+          "end": "16:00",
+          "field": "시스템DB",
+          "title": "자체 시스템과 핵심 DB의 개인정보보호",
+          "summary": "DB 접근통제·암호화·마스킹·접속기록·외주접속·백업 등 시스템 DB 보호방안",
+          "speaker": "㈜피앤피시큐어",
+          "logo": "pnp",
+          "youtubeId": "",
+          "startSec": null,
+          "durationLabel": "15분"
+        }
+      ],
+      "materials": [
+        { "label": "발표자료", "file": "downloads/education/2026-09/slides.pdf", "ready": false },
+        { "label": "개인정보보호 실무 체크리스트", "file": "downloads/education/2026-09/checklist.pdf", "ready": false },
+        { "label": "업무 흐름별 대응 가이드", "file": "downloads/education/2026-09/workflow-guide.pdf", "ready": false }
+      ],
+      "highlights": [
+        "법률과 실무를 연계한 통합 프로그램 — 개인정보보호법의 주요 변화와 실제 조직의 대응방안을 함께 제시",
+        "업무 흐름에 따른 구체적인 실행방안 — 외부 정보수집, 내부 협업, 시스템 DB, 외부 위탁, 백업·복구 등 단계별 위험과 대응방법",
+        "보안인증 SaaS 및 전문 솔루션 적용사례 — 실제 업무에 적용할 수 있는 보안인증 서비스 소개",
+        "조직별 맞춤형 대응체계 — 모든 솔루션을 일괄 도입하는 방식이 아니라 조직의 업무와 위험에 맞는 우선순위와 적용방법",
+        "전문가 질의응답 및 도입상담 연계 — 법률·보안·SaaS·DB·컨설팅 전문가가 실무질문에 공동으로 답변"
+      ],
+      "vendorNotice": "주관사 발표에는 각 사 서비스 소개가 포함되어 있으며, 개인정보보호진흥원의 제품 보증이 아닙니다.",
+      "published": true,
+      "publishAt": ""
+    }
+  ]
+}

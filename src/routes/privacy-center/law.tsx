@@ -5,6 +5,7 @@ import {
   PrivacyLawChangeSection,
   PrivacyMissionSection,
 } from "@/components/privacy/privacy-sections";
+import { absoluteUrl } from "@/lib/site-url";
 
 export const Route = createFileRoute("/privacy-center/law")({
   head: () => ({
@@ -15,9 +16,9 @@ export const Route = createFileRoute("/privacy-center/law")({
         content:
           "온라인 설문·수집에서 알아야 할 개인정보보호법과 제도 변화, 실무 Q&A를 안내합니다.",
       },
-      { property: "og:url", content: "/privacy-center/law" },
+      { property: "og:url", content: absoluteUrl("/privacy-center/law") },
     ],
-    links: [{ rel: "canonical", href: "/privacy-center/law" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/privacy-center/law") }],
   }),
   component: PrivacyLawPage,
 });
@@ -30,7 +31,6 @@ function PrivacyLawPage() {
         title="개인정보보호법과 온라인 설문·수집 제도"
         description="온라인 설문, 행사 접수, 교육 신청 등 일상 업무에서도 개인정보 보호가
           필요합니다. 개인정보보호 환경 변화와 실무에서 자주 묻는 질문을 정리했습니다."
-        visual="policy"
       />
       <PrivacyMissionSection />
       <PrivacyLawChangeSection />

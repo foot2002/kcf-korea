@@ -9,7 +9,7 @@
 const SHEET_ID = "YOUR_GOOGLE_SHEET_ID";
 const SHEET_NAME = "applications";
 const ADMIN_TOKEN = "YOUR_SECURE_ADMIN_TOKEN";
-const ADMIN_EMAIL = "wiseon@wiseinc.co.kr";
+const ADMIN_EMAIL = "cs@kcf-korea.org";
 
 const HEADERS = [
   "id",

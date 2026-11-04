@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-06T00:00:00.000Z",
+  "items": [
+    {
+      "certNo": "SURE-2026-4970",
+      "name": "대한무역투자진흥공사",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "해당 설문을 즉시 종료하고, 전 부서에 CSAP 인증 플랫폼 사용을 안내(2026. 9. 21. 전사 공지)했으며, 파기 시점·문의처 표시와 응답 자료 접근 통제 등 개선 방안을 마련했습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-4970.pdf",
+      "published": true
+    },
+    {
+      "certNo": "SURE-2026-9326",
+      "name": "과학기술정보통신부 우정사업본부",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "개선 권고를 적극 수용해 온라인 정보수집 과정의 개인정보 보호 조치를 개선하고, 국가가 인증한 클라우드서비스보안인증(CSAP)을 활용해 선제적인 개인정보 보호에 앞장섰습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-9326.pdf",
+      "published": true
+    },
+    {
+      "certNo": "SURE-2026-1982",
+      "name": "의정부시",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "개선 권고를 적극 수용해 온라인 정보수집 과정의 개인정보 보호 조치를 개선하고, 국가가 인증한 클라우드서비스보안인증(CSAP)을 활용해 선제적인 개인정보 보호에 앞장섰습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-1982.pdf",
+      "published": true
+    },
+    {
+      "certNo": "SURE-2026-6197",
+      "name": "천안시",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "개선 권고를 적극 수용해 온라인 정보수집 과정의 개인정보 보호 조치를 개선하고, 국가가 인증한 클라우드서비스보안인증(CSAP)을 활용해 선제적인 개인정보 보호에 앞장섰습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-6197.pdf",
+      "published": true
+    },
+    {
+      "certNo": "SURE-2026-3643",
+      "name": "아산시시설관리공단",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "개선 권고를 적극 수용해 온라인 정보수집 과정의 개인정보 보호 조치를 개선하고, 국가가 인증한 클라우드서비스보안인증(CSAP)을 활용해 선제적인 개인정보 보호에 앞장섰습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-3643.pdf",
+      "published": true
+    },
+    {
+      "certNo": "SURE-2026-4827",
+      "name": "천안도시공사",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "개선 권고를 적극 수용해 온라인 정보수집 과정의 개인정보 보호 조치를 개선하고, 국가가 인증한 클라우드서비스보안인증(CSAP)을 활용해 선제적인 개인정보 보호에 앞장섰습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-4827.pdf",
+      "published": true
+    },
+    {
+      "certNo": "SURE-2026-9214",
+      "name": "한국재정정보원",
+      "tier": "우수기관",
+      "selectedAt": "2026-11-06",
+      "status": "유효",
+      "reason": "개선 권고를 적극 수용해 온라인 정보수집 과정의 개인정보 보호 조치를 개선하고, 국가가 인증한 클라우드서비스보안인증(CSAP)을 활용해 선제적인 개인정보 보호에 앞장섰습니다.",
+      "certFile": "downloads/certificates/cert-SURE-2026-9214.pdf",
+      "published": true
+    }
+  ]
+}

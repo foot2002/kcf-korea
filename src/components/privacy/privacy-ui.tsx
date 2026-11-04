@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-import { Check } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 /* ── Section ── */
 
@@ -25,7 +25,7 @@ export function PcSection({
           ? "bg-[var(--pc-mint)]"
           : "";
   return (
-    <section id={id} className={`pc-section scroll-mt-28 ${bg} ${className}`}>
+    <section id={id} className={`pc-section ${bg} ${className}`}>
       <div className="container-page">{children}</div>
     </section>
   );
@@ -45,12 +45,10 @@ export function PcSectionHeader({
   className?: string;
 }) {
   return (
-    <div className={`${center ? "text-center mx-auto max-w-3xl" : "max-w-3xl"} ${className}`}>
-      {eyebrow && (
-        <div className={`pc-eyebrow ${center ? "justify-center" : ""}`}>{eyebrow}</div>
-      )}
-      <h2 className="pc-section-title text-navy">{title}</h2>
-      {description && <p className="pc-body mt-4">{description}</p>}
+    <div className={`pc-section-head${center ? " is-center" : ""} ${className}`}>
+      {eyebrow ? <p className="pc-eyebrow">{eyebrow}</p> : null}
+      <h2 className="pc-section-title">{title}</h2>
+      {description ? <p className="pc-section-desc">{description}</p> : null}
     </div>
   );
 }
@@ -244,51 +242,158 @@ const DEFAULT_NAV = [
   { id: "faq", label: "FAQ" },
 ] as const;
 
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export function PcMiniNav({ items = DEFAULT_NAV }: { items?: readonly { id: string; label: string }[] }) {
   const [active, setActive] = useState(items[0]?.id ?? "");
+  const [stuck, setStuck] = useState(false);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  function updateFades() {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    for (const item of items) {
-      const el = document.getElementById(item.id);
-      if (!el) continue;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry?.isIntersecting) setActive(item.id);
-        },
-        { rootMargin: "-30% 0px -55% 0px", threshold: 0 },
-      );
-      obs.observe(el);
-      observers.push(obs);
-    }
-    return () => observers.forEach((o) => o.disconnect());
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash && items.some((item) => item.id === hash)) setActive(hash);
   }, [items]);
 
-  function scrollTo(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    function headerHeight() {
+      return Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) || 0;
+    }
+    function updateStuck() {
+      if (!nav) return;
+      const top = nav.getBoundingClientRect().top;
+      setStuck(Math.abs(top - headerHeight()) <= 2);
+    }
+    function updateActive() {
+      const navHeight = nav?.offsetHeight ?? 0;
+      const line = headerHeight() + navHeight + 120;
+      let current = items[0]?.id ?? "";
+      for (const item of items) {
+        const el = document.getElementById(item.id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= line) current = item.id;
+      }
+      if (current) setActive(current);
+    }
+    function onScroll() {
+      updateStuck();
+      updateActive();
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [items]);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const button = scroller?.querySelector<HTMLButtonElement>(`[data-section="${active}"]`);
+    if (!scroller || !button) return;
+    const target = button.offsetLeft - (scroller.clientWidth - button.offsetWidth) / 2;
+    scroller.scrollTo({ left: Math.max(0, target), behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  }, [active]);
+
+  useEffect(() => {
+    updateFades();
+    const el = scrollerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(() => updateFades());
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [items]);
+
+  function scrollToSection(id: string) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+    const next = `${window.location.pathname}${window.location.search}#${id}`;
+    window.history.replaceState(window.history.state, "", next);
     setActive(id);
   }
 
+  function scrollTabs(direction: -1 | 1) {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * 180, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  }
+
+  function onTabsKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    const buttons = [...(scrollerRef.current?.querySelectorAll<HTMLButtonElement>("button[data-section]") ?? [])];
+    const index = buttons.findIndex((button) => button === document.activeElement);
+    if (index < 0) return;
+    event.preventDefault();
+    const next =
+      event.key === "ArrowRight" ? (index + 1) % buttons.length : (index - 1 + buttons.length) % buttons.length;
+    buttons[next]?.focus();
+  }
+
+  const overflow = canLeft || canRight;
+
   return (
-    <nav className="sticky-below-header z-40 border-b border-[var(--pc-border)] bg-white/95 backdrop-blur-md">
-      <div className="container-page">
-        <div className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {items.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => scrollTo(item.id)}
-              className={[
-                "shrink-0 rounded-full px-4 py-2 text-[13px] font-semibold transition",
-                active === item.id
-                  ? "bg-[var(--pc-navy)] text-white shadow-sm"
-                  : "bg-[var(--pc-soft-blue)] text-text-secondary hover:text-navy",
-              ].join(" ")}
-            >
-              {item.label}
-            </button>
-          ))}
+    <nav ref={navRef} className={stuck ? "pc-mini-nav is-stuck" : "pc-mini-nav"} aria-label="페이지 안 섹션">
+      <div className="pc-mini-bar">
+        {overflow ? (
+          <button
+            type="button"
+            className="pc-mini-arrow is-prev"
+            aria-label="이전 섹션 탭"
+            disabled={!canLeft}
+            onClick={() => scrollTabs(-1)}
+          >
+            <ChevronLeft aria-hidden="true" />
+          </button>
+        ) : null}
+        <div className={canLeft ? "pc-mini-fade is-left is-on" : "pc-mini-fade is-left"} aria-hidden="true" />
+        <div
+          ref={scrollerRef}
+          className={overflow ? "pc-mini-scroller is-overflow" : "pc-mini-scroller"}
+          onScroll={updateFades}
+          onKeyDown={onTabsKeyDown}
+        >
+          <div className="pc-mini-track">
+            {items.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                data-section={item.id}
+                aria-current={active === item.id ? "true" : undefined}
+                className={active === item.id ? "pc-mini-tab is-current" : "pc-mini-tab"}
+                onClick={() => scrollToSection(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
+        <div className={canRight ? "pc-mini-fade is-right is-on" : "pc-mini-fade is-right"} aria-hidden="true" />
+        {overflow ? (
+          <button
+            type="button"
+            className="pc-mini-arrow is-next"
+            aria-label="다음 섹션 탭"
+            disabled={!canRight}
+            onClick={() => scrollTabs(1)}
+          >
+            <ChevronRight aria-hidden="true" />
+          </button>
+        ) : null}
       </div>
     </nav>
   );
