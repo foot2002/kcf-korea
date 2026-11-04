@@ -20,11 +20,17 @@ const FILES_DIR = path.join(DATA_DIR, "files");
 const JSON_PATH = path.join(DATA_DIR, "inquiries.json");
 
 function getAdminKey(): string {
-  return (process.env.PRIVACY_ADMIN_KEY ?? "kcf2026").trim();
+  return (process.env.PRIVACY_ADMIN_KEY ?? "").trim();
+}
+
+function matchesAdminKey(adminKey: string): boolean {
+  const expected = getAdminKey();
+  const given = adminKey.trim();
+  return expected.length > 0 && given === expected;
 }
 
 function assertAdmin(adminKey: string) {
-  if (adminKey.trim() !== getAdminKey()) {
+  if (!matchesAdminKey(adminKey)) {
     throw new Error("관리자 인증에 실패했습니다.");
   }
 }
@@ -147,7 +153,7 @@ const adminKeySchema = z.object({
 export const verifyPrivacyAdmin = createServerFn({ method: "POST" })
   .validator((data: unknown) => adminKeySchema.parse(data))
   .handler(async ({ data }) => {
-    return { ok: data.adminKey.trim() === getAdminKey() };
+    return { ok: matchesAdminKey(data.adminKey) };
   });
 
 export const listPrivacyInquiries = createServerFn({ method: "POST" })

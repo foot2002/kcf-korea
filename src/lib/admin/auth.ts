@@ -1,9 +1,8 @@
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 
-/** GitHub Pages 등 정적 배포에서 클라이언트 로그인에 사용 (빌드 시 주입) */
+/** GitHub Pages 등 정적 배포에서 클라이언트 로그인에 사용 (빌드 시 주입). 없으면 빈 문자열. */
 export function getClientAdminKey(): string {
-  const fromEnv = import.meta.env.VITE_PRIVACY_ADMIN_KEY?.trim();
-  return fromEnv || "kcf2026";
+  return import.meta.env.VITE_PRIVACY_ADMIN_KEY?.trim() ?? "";
 }
 
 export async function verifyAdminPassword(adminKey: string): Promise<boolean> {
@@ -11,7 +10,9 @@ export async function verifyAdminPassword(adminKey: string): Promise<boolean> {
   if (!key) return false;
 
   if (isStaticGitHubPages) {
-    return key === getClientAdminKey();
+    const expected = getClientAdminKey();
+    if (!expected) return false;
+    return key === expected;
   }
 
   const { verifyPrivacyAdmin } = await import("@/lib/privacy-inquiry/actions");

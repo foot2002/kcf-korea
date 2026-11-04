@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 import {
   getPrivacyConsentNotice,
   PRIVACY_COLLECTION_METHOD,
@@ -108,6 +110,19 @@ export function PrivacyConsentBlock({
           위 개인정보 수집·이용 내용을 충분히 읽고 이해하였으며, 이에 동의합니다.
         </span>
       </label>
+
+      <p className={`mt-3 ${valueClass}`}>
+        <Link
+          to="/privacy-policy"
+          className={
+            isDark
+              ? "font-semibold text-accent-teal underline underline-offset-2"
+              : "font-semibold text-trust-blue underline underline-offset-2"
+          }
+        >
+          자세한 내용은 개인정보처리방침을 확인해 주세요
+        </Link>
+      </p>
     </div>
   );
 }

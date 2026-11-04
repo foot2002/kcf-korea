@@ -24,8 +24,10 @@ import { ContactInquiriesPanel } from "@/components/admin/ContactInquiriesPanel"
 import { SurePartnerApplicationsPanel } from "@/components/admin/SurePartnerApplicationsPanel";
 import { CenterOpsPanel } from "@/components/admin/CenterOpsPanel";
 import { VoucherRegistryPanel } from "@/components/admin/VoucherRegistryPanel";
+import { GithubContentAdmin } from "@/components/admin/GithubContentAdmin";
 import { verifyAdminPassword } from "@/lib/admin/auth";
 
+import { publicationTypeLabel } from "@/data/privacy-program";
 import { formatBytes } from "@/lib/privacy-inquiry/config";
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import { formatUserError } from "@/lib/privacy-inquiry/errors";
@@ -43,12 +45,20 @@ type AdminTab = "inquiries" | "associations" | "registry" | "contact" | "sure-pa
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
-    meta: [{ title: "문의 관리 | 개인정보보호진흥원" }],
+    meta: [
+      { title: "콘텐츠 관리 | 개인정보보호진흥원" },
+      { name: "robots", content: "noindex" },
+    ],
   }),
   component: AdminPage,
 });
 
 function AdminPage() {
+  if (isStaticGitHubPages) return <GithubContentAdmin />;
+  return <LocalAdminPage />;
+}
+
+function LocalAdminPage() {
   const [activeTab, setActiveTab] = useState<AdminTab>(
     isStaticGitHubPages ? "associations" : "inquiries",
   );
@@ -371,7 +381,7 @@ function AdminPage() {
                       {item.name}
                     </span>
                   </div>
-                  <div className="mt-1 truncate text-[12.5px] text-text-muted">{item.type}</div>
+                  <div className="mt-1 truncate text-[12.5px] text-text-muted">{publicationTypeLabel(item.type)}</div>
                   <div className="mt-1 text-[11.5px] text-text-muted">
                     {new Date(item.createdAt).toLocaleString("ko-KR")}
                   </div>

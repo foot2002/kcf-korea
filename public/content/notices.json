@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-04T00:00:00.000Z",
+  "items": [
+    {
+      "id": "notice-default-1",
+      "title": "2026 개인정보보호실천 우수기관 7개 기관 선정",
+      "date": "2026-11-06",
+      "link": "/privacy-center/sure-mark",
+      "body": "",
+      "published": true
+    },
+    {
+      "id": "notice-default-2",
+      "title": "정부인증 온라인조사플랫폼 무상제공 사업 안내 (상시 접수)",
+      "date": "2026-11-03",
+      "link": "/privacy-center/security-services",
+      "body": "",
+      "published": true
+    },
+    {
+      "id": "notice-default-3",
+      "title": "공공기관 온라인 개인정보 수집 실태조사 결과 국정감사 인용",
+      "date": "2026-10-13",
+      "link": "/privacy-center/research",
+      "body": "",
+      "published": true
+    },
+    {
+      "id": "notice-recruit-planned",
+      "title": "국민 개인정보보호 모니터링단은 모집 예정입니다",
+      "date": "2026-10-18",
+      "link": "/privacy-center/rights",
+      "body": "선발 일정이 정해지면 이 게시판에 올립니다. 그 전에 남긴 신청은 사전 참여 의사로 접수됩니다.",
+      "published": true
+    }
+  ]
+}

@@ -1,70 +1,134 @@
 import { Link } from "@tanstack/react-router";
-import { FormEvent, useState } from "react";
+import { ChevronRight, Info } from "lucide-react";
+import { FormEvent, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
 import { ApplyFrame, Field, applyInput } from "@/components/privacy/apply-ui";
 import { PrivacyConsentBlock } from "@/components/privacy/PrivacyConsentBlock";
-import { PRIVACY_VISUALS } from "@/components/privacy/privacy-visuals";
-import { OrgNotice } from "@/components/privacy/survey-visuals";
-import { usePublicContent } from "@/components/privacy/use-public-content";
-import { PcSection, PcSectionHeader } from "@/components/privacy/privacy-ui";
-import { KOREA_REGIONS, MONITOR_ACTIVITIES, MONITOR_INTERESTS, MONITOR_MODES } from "@/data/privacy-program";
+import { PcMiniNav, PcSection } from "@/components/privacy/privacy-ui";
+import {
+  DATA_SUBJECT_RIGHTS,
+  KOREA_REGIONS,
+  MONITOR_ACTIVITIES,
+  MONITOR_INTERESTS,
+  MONITOR_MODES,
+  MONITOR_PAGE,
+  MONITOR_RULES,
+} from "@/data/privacy-program";
 import { lookupMonitorApplication, submitMonitorApplication } from "@/lib/center-ops/api";
 
+function Section({ id, children, tone = "white" }: { id?: string; children: ReactNode; tone?: "white" | "soft" }) {
+  const bg = tone === "soft" ? "bg-[#F3F4F6]" : "bg-white";
+  return (
+    <section id={id} className={`scroll-mt-40 border-t border-[#D1D5DB] ${bg}`}>
+      <div className="container-page py-12 md:py-16">{children}</div>
+    </section>
+  );
+}
+
 export function RightsView() {
-  const content = usePublicContent();
+  const about = MONITOR_PAGE.nav[0];
+  const join = MONITOR_PAGE.nav[1];
+  const preApply = MONITOR_PAGE.nav[2];
+  const rules = MONITOR_PAGE.nav[3];
   return (
     <>
-      <PcSection variant="white">
-        <div className="grid items-center gap-6 rounded-[28px] bg-[var(--pc-soft-blue)] p-4 md:grid-cols-[240px_1fr] md:p-6">
-          <img src={PRIVACY_VISUALS.rights.src} alt={PRIVACY_VISUALS.rights.alt} className="mx-auto h-56 w-auto object-contain" />
-          <div>
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-amber-100 px-3 py-1 text-[12px] font-bold text-amber-900">모집 예정</span>
-              <span className="text-[13px] text-text-secondary">선발 공지 전입니다. 신청은 사전 접수입니다.</span>
-            </div>
-            <h2 className="mt-4 text-[28px] font-bold text-navy">국민 개인정보 지키미</h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-text-secondary">
-              공개된 수집 화면을 살피고, 정보주체가 권리를 행사하는 방법을 안내하는 국민 참여입니다.
-            </p>
-          </div>
-        </div>
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-          {MONITOR_ACTIVITIES.map((item) => (
-            <li key={item} className="rounded-2xl border border-border px-4 py-3 text-[15px] font-medium text-navy">{item}</li>
-          ))}
-        </ul>
-        <Link to="/privacy-center/rights/monitor/apply" className="btn-primary-kcf mt-8">사전 참여 신청</Link>
-      </PcSection>
-      <PcSection variant="white">
-        <PcSectionHeader title="모니터링단 공지" />
-        <ul className="mt-6 space-y-3">
-          {content.notices.length === 0 ? <li className="text-text-secondary">등록된 공지가 없습니다.</li> : null}
-          {content.notices.map((notice) => (
-            <li key={notice.id} className="rounded-2xl border border-border p-5">
-              <h3 className="font-bold text-navy">{notice.title}</h3>
-              <p className="mt-2 whitespace-pre-wrap text-[14px] leading-relaxed text-text-secondary">{notice.body}</p>
+      <PcMiniNav items={MONITOR_PAGE.nav} />
+      <Section id={about.id}>
+        <h2 className="text-navy">{about.label}</h2>
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {MONITOR_PAGE.about.map((item) => (
+            <li key={item.title} className="rounded-md border border-[#D1D5DB] bg-white p-5">
+              <h3 className="text-[18px] font-bold text-navy">{item.title}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#374151]">{item.body}</p>
             </li>
           ))}
         </ul>
-        <h3 className="mt-10 text-[22px] font-bold text-navy">활동자료</h3>
-        <ul className="mt-4 space-y-3">
-          {content.activities.length === 0 ? <li className="text-[14px] text-text-secondary">등록된 활동자료가 없습니다.</li> : null}
-          {content.activities.map((post) => (
-            <li key={post.id} className="rounded-2xl border border-border p-5">
-              <h3 className="font-bold text-navy">{post.title}</h3>
-              <p className="mt-2 whitespace-pre-wrap text-[14px] leading-relaxed text-text-secondary">{post.body}</p>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-10 border-t border-border pt-6 text-[14px] leading-relaxed text-text-secondary">
-          공식 침해 신고는{" "}
-          <a className="font-semibold text-trust-blue" href="https://privacy.go.kr" target="_blank" rel="noopener noreferrer">privacy.go.kr</a>
-          {" "}또는 국번 없이 118입니다. 진흥원 활동은 그 신고를 대신하지 않으며, 신청서에 피해 경위나 민감정보는 받지 않습니다. 활동은 합법적인 공동의견과 권리행사 안내로 한정하고, 동의 없는 개인정보 게시나 반복 민원은 받지 않습니다.
+        <Link to="/privacy-center/sure-check" className="btn-primary-kcf mt-6">
+          {MONITOR_PAGE.sureCheck}
+        </Link>
+      </Section>
+      <Section id={join.id} tone="soft">
+        <h2 className="text-navy">{join.label}</h2>
+        <p className="mt-4 flex gap-2 rounded-md border border-[#D1D5DB] bg-white p-4 text-[15px] leading-relaxed text-[#111827]">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#0B3A6E]" aria-hidden="true" />
+          <span>{MONITOR_PAGE.pendingNote}</span>
         </p>
-        <div className="mt-8"><OrgNotice /></div>
-      </PcSection>
+        <ul aria-label={MONITOR_PAGE.activitiesLabel} className="mt-6 flex flex-wrap gap-2">
+          {MONITOR_ACTIVITIES.map((item) => (
+            <li key={item} className="rounded-md border border-[#D1D5DB] bg-white px-3 py-2 text-[14px] font-semibold text-navy">
+              {item}
+            </li>
+          ))}
+        </ul>
+      </Section>
+      <Section id={preApply.id}>
+        <h2 className="text-navy">{MONITOR_PAGE.preApply.title}</h2>
+        <p className="mt-4 max-w-3xl text-[16px] leading-relaxed text-[#374151]">{MONITOR_PAGE.preApply.body}</p>
+        <ol className="mt-6 grid max-w-3xl gap-2">
+          {MONITOR_PAGE.preApply.items.map((item, index) => (
+            <li key={item} className="flex gap-3 rounded-md border border-[#D1D5DB] px-4 py-3 text-[15px] text-[#111827]">
+              <span className="font-bold text-[#0B3A6E]">{index + 1}.</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ol>
+        <a href={MONITOR_PAGE.preApply.mailto} className="btn-primary-kcf mt-6 px-8 py-4 text-[16px]">
+          {MONITOR_PAGE.mailtoLabel}
+        </a>
+        <p className="mt-4 max-w-3xl text-[14px] leading-relaxed text-[#374151]">
+          {MONITOR_PAGE.preApply.privacy}{" "}
+          <Link to="/privacy-policy" className="font-bold text-navy underline">
+            {MONITOR_PAGE.privacyPolicy}
+          </Link>
+        </p>
+      </Section>
+      <Section id={rules.id} tone="soft">
+        <h2 className="text-navy">{rules.label}</h2>
+        <ol className="mt-6 grid max-w-3xl gap-2">
+          {MONITOR_RULES.map((rule, index) => (
+            <li key={rule} className="flex gap-3 rounded-md border border-[#D1D5DB] bg-white px-4 py-3 text-[15px] leading-relaxed text-[#111827]">
+              <span className="font-bold text-[#0B3A6E]">{index + 1}.</span>
+              <span>{rule}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-6 flex gap-2 rounded-md border border-[#0F766E] border-l-4 bg-white p-4 text-[15px] font-semibold leading-relaxed text-[#111827]">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#0F766E]" aria-hidden="true" />
+          <span>{MONITOR_PAGE.officialReport}</span>
+        </p>
+        <details className="mt-8 max-w-3xl rounded-md border border-[#D1D5DB] bg-white">
+          <summary className="cursor-pointer px-4 py-3 text-[16px] font-bold text-navy">{DATA_SUBJECT_RIGHTS.title}</summary>
+          <div className="border-t border-[#D1D5DB] px-4 py-4">
+            <p className="text-[15px] leading-relaxed text-[#374151]">{DATA_SUBJECT_RIGHTS.lead}</p>
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              {DATA_SUBJECT_RIGHTS.items.map((item) => (
+                <li key={item} className="rounded-md border border-[#D1D5DB] px-3 py-2 text-[15px] font-bold text-navy">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      </Section>
     </>
+  );
+}
+
+export function MonitorApplyStatic() {
+  return (
+    <section className="border-t border-[#D1D5DB] bg-white">
+      <div className="container-page max-w-3xl py-12 md:py-16">
+        <p className="text-[18px] font-bold text-navy">{MONITOR_PAGE.staticApplyNote}</p>
+        <a href={MONITOR_PAGE.preApply.mailto} className="btn-primary-kcf mt-6">
+          {MONITOR_PAGE.mailtoLabel}
+        </a>
+        <Link to="/privacy-center/rights" hash="pre-apply" className="mt-4 inline-flex items-center gap-1 font-bold text-navy underline">
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          {MONITOR_PAGE.staticApplyLink}
+        </Link>
+      </div>
+    </section>
   );
 }
 

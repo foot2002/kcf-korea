@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { PageHero } from "@/components/site/PageHero";
-import heroBusiness from "@/assets/hero-business.jpg";
+import { SubpageFrame } from "@/components/site/SubpageFrame";
 import cardNbo from "@/assets/card-nbo.jpg";
 
 import consulting1 from "@/assets/card-consulting-1.jpg";
@@ -66,16 +65,15 @@ function BusinessPage() {
 
   return (
     <>
-      <PageHero
+      <SubpageFrame
+        area="foundation"
         eyebrow="주요 사업"
         title="기업·공공기관·청소년을 잇는 지식서비스 사업"
-        desc="전국상업경진대회(NBO) 사무국 운영, 기업 컨설팅 교육, 청소년 경영교육의 3대 핵심 사업을 운영합니다."
-        bgImage={heroBusiness}
+        description="전국상업경진대회(NBO) 사무국 운영, 기업 컨설팅 교육, 청소년 경영교육의 3대 핵심 사업을 운영합니다."
       />
 
-      {/* Tabs */}
-      <div className="sticky-below-header border-b border-border bg-white/95 backdrop-blur">
-        <div className="container-page flex gap-1 overflow-x-auto py-2">
+      <div className="border-b border-[#D1D5DB] bg-white">
+        <div className="container-page flex flex-wrap gap-1 py-2">
           {tabs.map((t) => {
             const Icon = t.icon;
             const isActive = active === t.id;
@@ -86,7 +84,7 @@ function BusinessPage() {
                   setActive(t.id);
                   document.getElementById(t.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }}
-                className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-medium transition ${
+                className={`inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-[14px] font-medium ${
                   isActive
                     ? "bg-navy text-white"
                     : "text-text-secondary hover:bg-blue-gray hover:text-navy"
@@ -107,17 +105,13 @@ function BusinessPage() {
         <div className="container-page">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
             <div>
-              <div className="relative mb-6 overflow-hidden rounded-3xl">
+              <div className="relative mb-6 overflow-hidden rounded-md border border-[#D1D5DB]">
                 <img
                   src={cardNbo}
                   alt="NBO 대회"
                   loading="lazy"
                   className="aspect-[16/10] w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent" />
-                <div className="absolute left-5 bottom-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider text-navy">
-                  <Trophy className="h-3.5 w-3.5" /> National Business Olympiad
-                </div>
               </div>
               <div className="label-eyebrow">NBO 사무국</div>
               <h2 className="text-navy">전국상업경진대회 (NBO) 사무국</h2>
@@ -181,27 +175,36 @@ function BusinessPage() {
           {/* 연혁 표 */}
           <div className="mt-14">
             <h3 className="text-navy">NBO 대회 연혁</h3>
-            <div className="mt-6 overflow-hidden rounded-2xl border border-[#E5E7EB]">
-              <table className="w-full text-left text-[14.5px]">
+            <div className="mt-6">
+              <table className="hidden w-full border-collapse text-left text-[14.5px] md:table">
                 <thead className="bg-navy text-white">
                   <tr>
-                    <th className="px-5 py-3 font-semibold">회차</th>
-                    <th className="px-5 py-3 font-semibold">연도</th>
-                    <th className="px-5 py-3 font-semibold">주관/장소</th>
-                    <th className="px-5 py-3 font-semibold">규모</th>
+                    <th className="px-4 py-3 font-semibold">회차</th>
+                    <th className="px-4 py-3 font-semibold">연도</th>
+                    <th className="px-4 py-3 font-semibold">주관/장소</th>
+                    <th className="px-4 py-3 font-semibold">규모</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {nboHistory.map((r, i) => (
-                    <tr key={r.round} className={i % 2 === 0 ? "bg-white" : "bg-[#F8FAFC]"}>
-                      <td className="px-5 py-3 font-semibold text-navy border-b border-[#E5E7EB]">{r.round}</td>
-                      <td className="px-5 py-3 border-b border-[#E5E7EB]">{r.year}</td>
-                      <td className="px-5 py-3 border-b border-[#E5E7EB]">{r.region}</td>
-                      <td className="px-5 py-3 border-b border-[#E5E7EB]">{r.scale}</td>
+                  {nboHistory.map((r) => (
+                    <tr key={r.round} className="border-b border-[#D1D5DB]">
+                      <td className="px-4 py-3 font-semibold text-navy">{r.round}</td>
+                      <td className="px-4 py-3">{r.year}</td>
+                      <td className="px-4 py-3">{r.region}</td>
+                      <td className="px-4 py-3">{r.scale}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <ul className="space-y-3 md:hidden">
+                {nboHistory.map((r) => (
+                  <li key={r.round} className="rounded-md border border-[#D1D5DB] bg-white p-4">
+                    <p className="font-bold text-navy">{r.round} · {r.year}</p>
+                    <p className="mt-2 text-[14.5px] text-[#374151]">{r.region}</p>
+                    <p className="mt-1 text-[14.5px] text-[#374151]">{r.scale}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

@@ -25,8 +25,9 @@ import type { OpsDb } from "@/lib/center-ops/types";
 const DATA_PATH = path.join(process.cwd(), "data", "privacy-center-ops", "store.json");
 
 function assertAdmin(adminKey: string) {
-  const expected = (process.env.PRIVACY_ADMIN_KEY ?? "kcf2026").trim();
-  if (adminKey.trim() !== expected) throw new Error("관리자 인증에 실패했습니다.");
+  const expected = (process.env.PRIVACY_ADMIN_KEY ?? "").trim();
+  const given = adminKey.trim();
+  if (!expected || given !== expected) throw new Error("관리자 인증에 실패했습니다.");
 }
 
 async function loadDb(): Promise<OpsDb> {

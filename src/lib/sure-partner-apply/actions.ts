@@ -10,11 +10,13 @@ const DATA_DIR = path.join(process.cwd(), "data", "sure-partner-applications");
 const JSON_PATH = path.join(DATA_DIR, "applications.json");
 
 function getAdminKey(): string {
-  return (process.env.PRIVACY_ADMIN_KEY ?? "kcf2026").trim();
+  return (process.env.PRIVACY_ADMIN_KEY ?? "").trim();
 }
 
 function assertAdmin(adminKey: string) {
-  if (adminKey.trim() !== getAdminKey()) {
+  const expected = getAdminKey();
+  const given = adminKey.trim();
+  if (!expected || given !== expected) {
     throw new Error("관리자 인증에 실패했습니다.");
   }
 }

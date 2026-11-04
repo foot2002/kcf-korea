@@ -6,7 +6,7 @@ import {
   MONITOR_INTERESTS,
   MONITOR_MODES,
   MONITOR_STATUSES,
-  POLICY_ITEMS,
+  POLICY_DETAILS,
   POLICY_STATUSES,
   PUBLICATION_SEED,
   type CampaignStatus,
@@ -308,7 +308,7 @@ export function buildPublicContent(db: OpsDb, now: number | null): PublicContent
   ]
     .filter((item) => isItemVisible(item.published, item.publishAt, now))
     .sort((a, b) => b.date.localeCompare(a.date));
-  const policies = POLICY_ITEMS.map((item) => ({ ...item, ...db.policyOverrides[item.slug] }));
+  const policies = POLICY_DETAILS.map((item) => ({ ...item, ...db.policyOverrides[item.slug] }));
   const seedNotices: BoardPost[] = [
     {
       id: "notice-recruit-planned",
@@ -369,7 +369,7 @@ export function applyPublicationPatch(db: OpsDb, slug: string, patch: Partial<Pu
 
 export function applyPolicyPatch(db: OpsDb, slug: string, patch: Partial<PolicyItem>): OpsDb {
   if (patch.status && !POLICY_STATUSES.includes(patch.status)) throw new Error("정책 상태가 올바르지 않습니다.");
-  if (!POLICY_ITEMS.some((item) => item.slug === slug)) throw new Error("정책 제안을 찾을 수 없습니다.");
+  if (!POLICY_DETAILS.some((item) => item.slug === slug)) throw new Error("정책 제안을 찾을 수 없습니다.");
   return { ...db, policyOverrides: { ...db.policyOverrides, [slug]: { ...db.policyOverrides[slug], ...patch } } };
 }
 

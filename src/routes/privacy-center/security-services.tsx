@@ -1,18 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
 import { SecurityServicesView } from "@/components/privacy/SecurityServicesView";
+import { FREE_PLATFORM_PAGE, HERO } from "@/data/free-platform";
+import { PRIVACY_CENTER_PAGES } from "@/data/privacy-center";
+
+const toolGroup = PRIVACY_CENTER_PAGES.find((page) => page.to === "/privacy-center/security-services");
+const toolChild = toolGroup?.children?.find((child) => child.to === "/privacy-center/security-services");
 
 export const Route = createFileRoute("/privacy-center/security-services")({
   head: () => ({
     meta: [
-      { title: "우수 보안서비스 연계·보급 | 개인정보보호진흥원" },
-      { name: "description", content: "CSAP, 국가정보원 도입 가능 목록, SURE Mark를 구분하고 연계 서비스를 안내합니다." },
+      { title: `${FREE_PLATFORM_PAGE.title} | 개인정보보호진흥원` },
+      { name: "description", content: HERO.sub },
     ],
   }),
   component: function SecurityPage() {
     return (
       <>
-        <PrivacySubPageHeader eyebrow="Services" title="우수 보안서비스 연계·보급" description="진흥원의 안내는 특정 기업의 상업적 보증이 아닙니다. 확인되지 않은 인증번호는 표시하지 않습니다." dark visual="services" />
+        <PrivacySubPageHeader
+          title={FREE_PLATFORM_PAGE.title}
+          description={FREE_PLATFORM_PAGE.description}
+          badge={FREE_PLATFORM_PAGE.badge}
+          crumbLabel={toolChild?.label}
+          middleCrumbs={
+            toolGroup
+              ? [{ label: toolGroup.label, to: "/privacy-center/security-services" }]
+              : undefined
+          }
+        />
         <SecurityServicesView />
       </>
     );

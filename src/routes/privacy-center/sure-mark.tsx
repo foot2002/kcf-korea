@@ -1,35 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
-import { SureMarkExtra } from "@/components/privacy/SecurityServicesView";
-import { SafeSurveyMarkDetail } from "@/components/privacy/privacy-sections";
+import { SureMarkView } from "@/components/privacy/SureMarkView";
+import { PRIVACY_CENTER_PAGES } from "@/data/privacy-center";
+import { SURE_MARK, SURE_MARK_PAGE } from "@/data/sure-mark";
+
+const toolGroup = PRIVACY_CENTER_PAGES.find((page) => page.to === "/privacy-center/security-services");
+const toolChild = toolGroup?.children?.find((child) => child.to === "/privacy-center/sure-mark");
 
 export const Route = createFileRoute("/privacy-center/sure-mark")({
+  validateSearch: (search: Record<string, unknown>): { no?: string } => ({
+    no: typeof search.no === "string" && search.no.length > 0 ? search.no : undefined,
+  }),
   head: () => ({
     meta: [
-      { title: "안심 인증 SURE Mark | 개인정보보호진흥원" },
-      {
-        name: "description",
-        content:
-          "개인정보보호 SURE 안심마크의 의미, 부여 대상, 운영 기준과 부여 흐름을 안내합니다.",
-      },
-      { property: "og:url", content: "/privacy-center/sure-mark" },
+      { title: SURE_MARK_PAGE.metaTitle },
+      { name: "description", content: `${SURE_MARK_PAGE.descriptionLead} ${SURE_MARK.disclaimer}` },
     ],
-    links: [{ rel: "canonical", href: "/privacy-center/sure-mark" }],
   }),
-  component: SureMarkPage,
+  component: function SureMarkPage() {
+    const { no } = Route.useSearch();
+    return (
+      <>
+        <PrivacySubPageHeader
+          title={SURE_MARK_PAGE.title}
+          description={`${SURE_MARK_PAGE.descriptionLead} ${SURE_MARK.disclaimer}`}
+          crumbLabel={toolChild?.label}
+          middleCrumbs={
+            toolGroup ? [{ label: toolGroup.label, to: "/privacy-center/security-services" }] : undefined
+          }
+        />
+        <SureMarkView initialCertNo={no ?? ""} />
+      </>
+    );
+  },
 });
-
-function SureMarkPage() {
-  return (
-    <>
-      <PrivacySubPageHeader
-        eyebrow="SURE Mark"
-        title="안심 인증 SURE Mark란?"
-        description="SURE Mark는 개인정보보호진흥원이 부여하는 민간 자체 표시입니다. 법정 인증이나 정부 인증을 대신하지 않습니다."
-        visual="services"
-      />
-      <SafeSurveyMarkDetail />
-      <SureMarkExtra />
-    </>
-  );
-}

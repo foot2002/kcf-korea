@@ -1,8 +1,4 @@
-import {
-  canUseLocalAssociationStorage,
-  useClientAssociationStorage,
-  useGithubAssociationStorage,
-} from "./config";
+import { canUseLocalAssociationStorage, useClientAssociationStorage } from "./config";
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import type {
   ApplicationStatus,
@@ -17,11 +13,6 @@ export async function submitAssociationApplication(
   if (canUseLocalAssociationStorage()) {
     const { submitAssociationApplicationLocal } = await import("./actions");
     return submitAssociationApplicationLocal({ data });
-  }
-
-  if (useGithubAssociationStorage()) {
-    const { submitAssociationApplicationGithub } = await import("./github-storage");
-    return submitAssociationApplicationGithub(data);
   }
 
   if (useClientAssociationStorage()) {
@@ -47,11 +38,6 @@ export async function fetchAssociationApplications(
     return listAssociationApplicationsLocal({ data: { adminKey: _token } });
   }
 
-  if (useGithubAssociationStorage()) {
-    const { fetchAssociationApplicationsGithub } = await import("./github-storage");
-    return fetchAssociationApplicationsGithub();
-  }
-
   if (useClientAssociationStorage()) {
     const { hydrateAssociationApplicationsClient } = await import("./client-storage");
     return hydrateAssociationApplicationsClient();
@@ -71,12 +57,6 @@ export async function updateAssociationApplicationStatus(
     return;
   }
 
-  if (useGithubAssociationStorage()) {
-    const { updateAssociationApplicationStatusGithub } = await import("./github-storage");
-    await updateAssociationApplicationStatusGithub(id, status);
-    return;
-  }
-
   if (useClientAssociationStorage()) {
     const { updateAssociationApplicationStatusClient } = await import("./client-storage");
     updateAssociationApplicationStatusClient(id, status);
@@ -92,12 +72,6 @@ export async function updateAssociationApplicationMemo(
   if (canUseLocalAssociationStorage()) {
     const { updateAssociationApplicationMemoLocal } = await import("./actions");
     await updateAssociationApplicationMemoLocal({ data: { adminKey: token, id, adminMemo } });
-    return;
-  }
-
-  if (useGithubAssociationStorage()) {
-    const { updateAssociationApplicationMemoGithub } = await import("./github-storage");
-    await updateAssociationApplicationMemoGithub(id, adminMemo);
     return;
   }
 

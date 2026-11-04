@@ -28,7 +28,7 @@ GitHub Pages(정적 호스팅)에서는 서버가 없으므로, 신청 저장·�
 |-------------|-----|
 | `ASSOCIATION_APPLICATION_API_URL` | GAS 웹 앱 URL (`.../exec`) |
 | `ASSOCIATION_ADMIN_TOKEN` | GAS의 `ADMIN_TOKEN`과 동일 |
-| `PRIVACY_ADMIN_KEY` | (선택) `/admin` 로그인 비밀번호. 미설정 시 `kcf2026` |
+| `PRIVACY_ADMIN_KEY` | `/admin` 로그인 비밀번호. 예시 `change-me`. 값이 없으면 로그인할 수 없습니다. |
 
 `main` 브랜치에 푸시되면 Actions가 자동으로 다시 빌드·배포합니다.
 
@@ -37,7 +37,7 @@ GitHub Pages(정적 호스팅)에서는 서버가 없으므로, 신청 저장·�
 `.env` 파일 예시:
 
 ```env
-PRIVACY_ADMIN_KEY=kcf2026
+PRIVACY_ADMIN_KEY=change-me
 VITE_ASSOCIATION_APPLICATION_API_URL=https://script.google.com/macros/s/.../exec
 VITE_ASSOCIATION_ADMIN_TOKEN=your-admin-token
 ```
@@ -47,5 +47,5 @@ GAS URL이 없으면 로컬에서는 `data/association-applications/applications
 ## 5. 확인
 
 1. https://www.kcf-korea.org/privacy-center/association-apply 에서 테스트 신청
-2. https://www.kcf-korea.org/admin/ — 비밀번호 `kcf2026` (또는 설정한 값)
+2. https://www.kcf-korea.org/admin/ — 비밀번호는 설정한 값(예시 `change-me`)
 3. **협단체 협약 신청 관리** 탭에서 신청 목록 확인

@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHero } from "@/components/site/PageHero";
+import { SubpageFrame } from "@/components/site/SubpageFrame";
 import { coreValues, generalInfo, foundation } from "@/data/kcf";
 import { Building2, Target, Eye } from "lucide-react";
-import heroAbout from "@/assets/hero-about.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -24,11 +23,11 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   return (
     <>
-      <PageHero
+      <SubpageFrame
+        area="foundation"
         eyebrow="재단 소개"
         title="컨설팅을 통해 지식산업의 성장을 이끕니다"
-        desc="2010년 설립 이후 한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하고 있습니다."
-        bgImage={heroAbout}
+        description="2010년 설립 이후 한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하고 있습니다."
       />
 
       {/* 재단 개요 */}
@@ -57,7 +56,7 @@ function AboutPage() {
       </section>
 
       {/* 설립목적 */}
-      <section id="purpose" className="section-y scroll-mt-24 border-y border-border bg-section-bg">
+      <section id="purpose" className="section-y scroll-mt-40 border-y border-border bg-section-bg">
         <div className="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <div>
             <div className="label-eyebrow">설립목적</div>
@@ -86,7 +85,7 @@ function AboutPage() {
       </section>
 
       {/* 비전·미션·핵심가치 */}
-      <section id="vision" className="section-y scroll-mt-24">
+      <section id="vision" className="section-y scroll-mt-40">
         <div className="container-page">
           <div className="max-w-3xl">
             <div className="label-eyebrow">비전 · 미션</div>
@@ -126,13 +125,13 @@ function AboutPage() {
       </section>
 
       {/* 일반현황 */}
-      <section id="status" className="section-y scroll-mt-24">
+      <section id="status" className="section-y scroll-mt-40">
         <div className="container-page">
           <div className="max-w-3xl">
             <div className="label-eyebrow">일반현황</div>
             <h2 className="text-navy">일반현황</h2>
           </div>
-          <div className="mt-10 overflow-hidden rounded-2xl border border-[#E5E7EB]">
+          <div className="mt-10 overflow-hidden rounded-md border border-[#D1D5DB]">
             <table className="w-full text-left">
               <tbody>
                 {generalInfo.map((row, i) => (

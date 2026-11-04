@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHero } from "@/components/site/PageHero";
+import { SubpageFrame } from "@/components/site/SubpageFrame";
 import {
   Accordion,
   AccordionContent,
@@ -16,7 +16,6 @@ import {
   certifications,
 } from "@/data/kcf";
 import { Award, BookOpen } from "lucide-react";
-import heroAchievements from "@/assets/hero-achievements.jpg";
 import cardTeacher from "@/assets/card-teacher.jpg";
 import cardCorporate from "@/assets/card-corporate.jpg";
 import cardYouth from "@/assets/card-youth.jpg";
@@ -42,11 +41,11 @@ export const Route = createFileRoute("/achievements")({
 function AchievementsPage() {
   return (
     <>
-      <PageHero
+      <SubpageFrame
+        area="foundation"
         eyebrow="실적·자료"
         title="26만명 이상이 경험한 KCF의 교육·컨설팅 실적"
-        desc="2006년부터 현재까지 청소년, 단체, 기업, 지자체, 대학교, 교사·교육공무원을 대상으로 축적해 온 실적입니다."
-        bgImage={heroAchievements}
+        description="2006년부터 현재까지 청소년, 단체, 기업, 지자체, 대학교, 교사·교육공무원을 대상으로 축적해 온 실적입니다."
       />
 
       {/* Top stats */}
@@ -58,7 +57,7 @@ function AchievementsPage() {
             { v: "17", l: "협력 시·도 교육청" },
             { v: "200+", l: "교보재 보유" },
           ].map((s) => (
-            <div key={s.l} className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
+            <div key={s.l} className="rounded-md border border-[#D1D5DB] bg-white p-6">
               <div className="text-[30px] font-bold text-navy leading-none">{s.v}</div>
               <div className="mt-2 text-[14px] text-text-secondary">{s.l}</div>
             </div>
@@ -69,7 +68,8 @@ function AchievementsPage() {
       {/* Accordion 실적 */}
       <section className="section-y">
         <div className="container-page max-w-5xl">
-          <Accordion type="multiple" defaultValue={["youth"]} className="space-y-3">
+          <h2 className="text-navy">사업별 실적</h2>
+          <Accordion type="multiple" defaultValue={["youth"]} className="mt-8 space-y-3">
             <AccordionCardItem id="youth" title="청소년교육, 정부정책사업" items={achievementsYouth} />
             <AccordionCardItem id="group" title="단체교육, 정부정책사업" items={achievementsGroup} />
             <AccordionCardItem id="corporate" title="기업교육" items={achievementsCorporate} />
@@ -77,7 +77,7 @@ function AchievementsPage() {
             <AccordionItem
               id="career"
               value="career"
-              className="rounded-2xl border border-[#E5E7EB] bg-white overflow-hidden"
+              className="overflow-hidden rounded-md border border-[#D1D5DB] bg-white scroll-mt-40"
             >
               <AccordionTrigger className="px-6 py-5 text-left text-[18px] font-bold text-navy hover:no-underline">
                 청소년 진로·취업·창업 교육사업
@@ -174,11 +174,7 @@ function AchievementsPage() {
             {achievementsTeacher.map((t, i) => (
               <div
                 key={t}
-                className="kcf-card kcf-card-hover !p-6 relative overflow-hidden"
-                style={{
-                  background:
-                    "linear-gradient(160deg, #ffffff 0%, #ffffff 65%, #EAF3FF 100%)",
-                }}
+                className="relative overflow-hidden rounded-md border border-[#D1D5DB] bg-white p-6"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-navy text-white text-[13px] font-bold">
                   {String(i + 1).padStart(2, "0")}
@@ -199,15 +195,14 @@ function AchievementsPage() {
               {[cardTeacher, cardCorporate, cardYouth, cardConsulting, cardCorporate, cardTeacher, cardConsulting, cardYouth].map((src, i) => (
                 <div
                   key={i}
-                  className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#E5E7EB] bg-navy group"
+                  className="relative aspect-[4/3] overflow-hidden rounded-md border border-[#D1D5DB] bg-white"
                 >
                   <img
                     src={src}
                     alt=""
                     loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover opacity-95 transition-transform duration-700 group-hover:scale-110"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-navy/0 to-navy/0" />
                 </div>
               ))}
             </div>
@@ -232,7 +227,7 @@ function AchievementsPage() {
             {partnerLogos.map((p) => (
               <div
                 key={p}
-                className="flex h-20 items-center justify-center rounded-2xl border border-[#E5E7EB] bg-white text-[15px] font-semibold text-navy"
+                className="flex h-20 items-center justify-center rounded-md border border-[#D1D5DB] bg-white px-2 text-center text-[15px] font-semibold text-navy"
               >
                 {p}
               </div>
@@ -240,6 +235,37 @@ function AchievementsPage() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
+
+function RecordTable({ items }: { items: string[] }) {
+  return (
+    <>
+      <table className="hidden w-full text-left text-[15px] md:table">
+        <caption className="sr-only">실적 목록</caption>
+        <thead>
+          <tr className="border-b border-[#D1D5DB] text-[#374151]">
+            <th scope="col" className="w-16 py-2 font-semibold">번호</th>
+            <th scope="col" className="py-2 font-semibold">내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item, index) => (
+            <tr key={item} className="border-b border-[#D1D5DB]">
+              <th scope="row" className="py-2 font-semibold text-navy">{index + 1}</th>
+              <td className="py-2 text-[#374151]">{item}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ul className="space-y-2 md:hidden">
+        {items.map((item) => (
+          <li key={item} className="rounded-md border border-[#D1D5DB] bg-white px-4 py-3 text-[15px] text-[#111827]">
+            {item}
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
@@ -257,20 +283,13 @@ function AccordionCardItem({
     <AccordionItem
       id={id}
       value={id}
-      className="rounded-2xl border border-[#E5E7EB] bg-white overflow-hidden scroll-mt-32"
+      className="scroll-mt-40 overflow-hidden rounded-md border border-[#D1D5DB] bg-white"
     >
       <AccordionTrigger className="px-6 py-5 text-left text-[18px] font-bold text-navy hover:no-underline">
         {title}
       </AccordionTrigger>
       <AccordionContent className="px-6 pb-6">
-        <ul className="space-y-2 text-text-secondary">
-          {items.map((it) => (
-            <li key={it} className="flex gap-2.5">
-              <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-trust-blue" />
-              <span>{it}</span>
-            </li>
-          ))}
-        </ul>
+        <RecordTable items={items} />
       </AccordionContent>
     </AccordionItem>
   );

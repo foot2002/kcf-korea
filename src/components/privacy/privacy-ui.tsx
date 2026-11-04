@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { Check } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* ── Section ── */
 
@@ -246,6 +246,7 @@ const DEFAULT_NAV = [
 
 export function PcMiniNav({ items = DEFAULT_NAV }: { items?: readonly { id: string; label: string }[] }) {
   const [active, setActive] = useState(items[0]?.id ?? "");
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -264,25 +265,34 @@ export function PcMiniNav({ items = DEFAULT_NAV }: { items?: readonly { id: stri
     return () => observers.forEach((o) => o.disconnect());
   }, [items]);
 
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const button = scroller?.querySelector<HTMLButtonElement>(`[data-section="${active}"]`);
+    if (!scroller || !button) return;
+    const target = button.offsetLeft - (scroller.clientWidth - button.offsetWidth) / 2;
+    scroller.scrollTo({ left: Math.max(0, target) });
+  }, [active]);
+
   function scrollTo(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActive(id);
   }
 
   return (
-    <nav className="sticky-below-header z-40 border-b border-[var(--pc-border)] bg-white/95 backdrop-blur-md">
+    <nav className="sticky-below-header z-40 border-b border-[#D1D5DB] bg-white" aria-label="페이지 안 섹션">
       <div className="container-page">
-        <div className="flex gap-2 overflow-x-auto py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div ref={scrollerRef} className="flex gap-1 overflow-x-auto">
           {items.map((item) => (
             <button
               key={item.id}
               type="button"
+              data-section={item.id}
               onClick={() => scrollTo(item.id)}
               className={[
-                "shrink-0 rounded-full px-4 py-2 text-[13px] font-semibold transition",
+                "shrink-0 border-b-2 px-3 py-3 text-[14px] font-semibold",
                 active === item.id
-                  ? "bg-[var(--pc-navy)] text-white shadow-sm"
-                  : "bg-[var(--pc-soft-blue)] text-text-secondary hover:text-navy",
+                  ? "border-navy text-navy"
+                  : "border-transparent text-[#374151] hover:text-navy",
               ].join(" ")}
             >
               {item.label}

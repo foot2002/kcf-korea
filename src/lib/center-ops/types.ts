@@ -170,12 +170,9 @@ export type EducationOverrideInput = {
   slug: string;
   status?: EducationStatus;
   capacity?: number | null;
-  recordedApplicants?: number | null;
-  recordedParticipants?: number | null;
-  figuresAreApproximate?: boolean;
-  materialUrl?: string;
-  materialName?: string;
-  videoUrl?: string;
+  applicantsLabel?: string;
+  participantsLabel?: string | null;
+  youtubeId?: string;
   published?: boolean;
   publishAt?: string;
   summary?: string;

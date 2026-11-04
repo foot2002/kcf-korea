@@ -225,7 +225,7 @@ function ContentEditor({ adminKey, db, onSaved }: { adminKey: string; db: OpsDb;
       <section>
         <h3 className="font-bold text-navy">교육 운영 수치·자료</h3>
         {view.education.map((item) => (
-          <EducationRow key={item.slug} itemSlug={item.slug} db={db} onSave={persist} applicants={item.recordedApplicants} participants={item.recordedParticipants} status={item.status} materialUrl={item.materialUrl} videoUrl={item.videoUrl} published={item.published} publishAt={item.publishAt} />
+          <EducationRow key={item.slug} itemSlug={item.slug} db={db} onSave={persist} applicantsLabel={item.applicantsLabel} participantsLabel={item.participantsLabel} status={item.status} youtubeId={item.youtubeId} published={item.published} publishAt={item.publishAt} />
         ))}
       </section>
       <section>
@@ -289,28 +289,26 @@ function ContentEditor({ adminKey, db, onSaved }: { adminKey: string; db: OpsDb;
 }
 
 function EducationRow({
-  itemSlug, db, onSave, applicants, participants, status, materialUrl, videoUrl, published, publishAt,
+  itemSlug, db, onSave, applicantsLabel, participantsLabel, status, youtubeId, published, publishAt,
 }: {
   itemSlug: string;
   db: OpsDb;
   onSave: (db: OpsDb) => Promise<void>;
-  applicants: number | null;
-  participants: number | null;
+  applicantsLabel: string;
+  participantsLabel: string | null;
   status: string;
-  materialUrl: string;
-  videoUrl: string;
+  youtubeId: string;
   published: boolean;
   publishAt: string;
 }) {
-  const [row, setRow] = useState({ applicants: applicants ?? "", participants: participants ?? "", status, materialUrl, videoUrl, published, publishAt });
+  const [row, setRow] = useState({ applicantsLabel, participantsLabel: participantsLabel ?? "", status, youtubeId, published, publishAt });
   return (
     <div className="mt-3 grid gap-2 rounded-xl border border-border p-3 md:grid-cols-3">
       <div className="md:col-span-3 text-[13px] font-bold text-navy">{itemSlug}</div>
-      <label>신청 기관 수<input value={row.applicants} onChange={(event) => setRow({ ...row, applicants: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
-      <label>참여 기관 수<input value={row.participants} onChange={(event) => setRow({ ...row, participants: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
+      <label>신청<input value={row.applicantsLabel} onChange={(event) => setRow({ ...row, applicantsLabel: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
+      <label>참여<input value={row.participantsLabel} onChange={(event) => setRow({ ...row, participantsLabel: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
       <label>상태<select value={row.status} onChange={(event) => setRow({ ...row, status: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3"><option>예정</option><option>접수중</option><option>종료</option></select></label>
-      <label>자료 URL<input value={row.materialUrl} onChange={(event) => setRow({ ...row, materialUrl: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
-      <label>영상 URL<input value={row.videoUrl} onChange={(event) => setRow({ ...row, videoUrl: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
+      <label>YouTube ID<input value={row.youtubeId} onChange={(event) => setRow({ ...row, youtubeId: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
       <label>공개 예약<input type="datetime-local" value={row.publishAt} onChange={(event) => setRow({ ...row, publishAt: event.target.value })} className="mt-1 h-10 w-full rounded-lg border px-3" /></label>
       <label className="flex items-center gap-2"><input type="checkbox" checked={row.published} onChange={(event) => setRow({ ...row, published: event.target.checked })} />공개</label>
       <button type="button" className="btn-secondary-kcf" onClick={() => void onSave({
@@ -319,14 +317,12 @@ function EducationRow({
           ...db.educationOverrides,
           [itemSlug]: {
             ...db.educationOverrides[itemSlug],
-            recordedApplicants: row.applicants === "" ? null : Number(row.applicants),
-            recordedParticipants: row.participants === "" ? null : Number(row.participants),
+            applicantsLabel: row.applicantsLabel,
+            participantsLabel: row.participantsLabel === "" ? null : row.participantsLabel,
             status: row.status as "예정" | "접수중" | "종료",
-            materialUrl: row.materialUrl,
-            videoUrl: row.videoUrl,
+            youtubeId: row.youtubeId,
             published: row.published,
             publishAt: row.publishAt,
-            figuresAreApproximate: true,
           },
         },
       })}>교육 저장</button>

@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessRouteImport } from './routes/business'
@@ -38,6 +40,16 @@ import { Route as PrivacyCenterPolicySlugRouteImport } from './routes/privacy-ce
 import { Route as PrivacyCenterEducationSlugRouteImport } from './routes/privacy-center/education/$slug'
 import { Route as PrivacyCenterRightsMonitorApplyRouteImport } from './routes/privacy-center/rights/monitor/apply'
 
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -198,6 +210,8 @@ export interface FileRoutesByFullPath {
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap': typeof SitemapRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -228,6 +242,8 @@ export interface FileRoutesByTo {
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap': typeof SitemapRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -258,6 +274,8 @@ export interface FileRoutesById {
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap': typeof SitemapRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -290,6 +308,8 @@ export interface FileRouteTypes {
     | '/business'
     | '/contact'
     | '/history'
+    | '/privacy-policy'
+    | '/sitemap'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -320,6 +340,8 @@ export interface FileRouteTypes {
     | '/business'
     | '/contact'
     | '/history'
+    | '/privacy-policy'
+    | '/sitemap'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -349,6 +371,8 @@ export interface FileRouteTypes {
     | '/business'
     | '/contact'
     | '/history'
+    | '/privacy-policy'
+    | '/sitemap'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -380,6 +404,8 @@ export interface RootRouteChildren {
   BusinessRoute: typeof BusinessRoute
   ContactRoute: typeof ContactRoute
   HistoryRoute: typeof HistoryRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  SitemapRoute: typeof SitemapRoute
   PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
   PrivacyCenterLawRoute: typeof PrivacyCenterLawRoute
   PrivacyCenterResearchRoute: typeof PrivacyCenterResearchRoute
@@ -404,6 +430,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/history': {
       id: '/history'
       path: '/history'
@@ -623,6 +663,8 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessRoute: BusinessRoute,
   ContactRoute: ContactRoute,
   HistoryRoute: HistoryRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  SitemapRoute: SitemapRoute,
   PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
   PrivacyCenterLawRoute: PrivacyCenterLawRoute,
   PrivacyCenterResearchRoute: PrivacyCenterResearchRoute,
