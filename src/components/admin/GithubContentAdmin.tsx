@@ -1,38 +1,61 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useState, useEffect, type FormEvent, type ReactNode } from "react";
 import { Lock } from "lucide-react";
 
+import { ContentDashboard, DeployStatus, FileHistory } from "@/components/admin/content-widgets";
+import { MarkdownText } from "@/components/site/MarkdownText";
 import type { EducationItem } from "@/data/privacy-program";
 import type { Institution } from "@/data/sure-mark";
-import { GithubConflictError, readContentFile, verifyContentToken, writeContentFile } from "@/lib/content/github";
+import { findForbiddenCopy, findPersonalData } from "@/lib/content/guard";
+import { fileToBase64, GithubConflictError, readContentAt, readContentFile, uploadRepoFile, verifyContentToken, writeContentFile } from "@/lib/content/github";
 import {
-  sourceEducation,
+  bundledBanner,
   bundledInstitutions,
+  bundledMonitor,
   bundledNotices,
   bundledPledges,
   bundledPublications,
+  bundledSlides,
   bundledStats,
+  sourceEducation,
 } from "@/lib/content/load";
-import { parseEducation, parseInstitutions, parseNotices, parsePledges, parsePublications, parseStats, safeParse } from "@/lib/content/parse";
+import { parseBanner, parseEducation, parseInstitutions, parseMonitor, parseNotices, parsePledges, parsePublications, parseSlides, parseStats, safeParse } from "@/lib/content/parse";
+import { romanizeFileName, todayStamp } from "@/lib/content/slug";
 import {
   CONTENT_FILES,
+  SLIDE_IMAGE_OPTIONS,
+  type BannerContent,
+  type BannerTone,
   type BoardType,
   type ContentName,
+  type ContentSlide,
+  type MonitorContent,
+  type MonitorStatus,
   type NoticeItem,
   type PublicationContentItem,
+  type SlideImageId,
   type StatItem,
 } from "@/lib/content/types";
 
 const TOKEN_KEY = "kcf-github-content-token";
 const LOGIN_KEY = "kcf-github-content-login";
 
-const TABS: { id: ContentName; label: string }[] = [
+type AdminView = "dashboard" | ContentName;
+
+const MENU: { id: AdminView; label: string }[] = [
+  { id: "dashboard", label: "대시보드" },
   { id: "notices", label: "공지사항" },
   { id: "publications", label: "소식·자료" },
   { id: "education", label: "교육·웨비나" },
   { id: "institutions", label: "실천·우수기관" },
   { id: "pledges", label: "실천선언 참여 기관" },
+  { id: "monitor", label: "모니터링단 안내" },
+  { id: "slides", label: "메인 슬라이드" },
+  { id: "banner", label: "띠 공지" },
   { id: "stats", label: "성과 수치" },
 ];
+
+const MONITOR_STATUSES: MonitorStatus[] = ["모집 예정", "모집 중", "모집 마감"];
+const UPLOAD_EXT = new Set(["pdf", "png", "jpg", "jpeg", "gif", "webp"]);
 
 const BOARD_TYPES: BoardType[] = ["보도자료", "보고서·자료", "관련 보도", "보도참고"];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -78,6 +101,24 @@ function newCertNo(existing: string[]) {
 
 function inputClass(error?: string) {
   return `mt-1 h-10 w-full rounded-md border px-3 text-[15px] font-normal ${error ? "border-[#B91C1C]" : "border-[#D1D5DB]"}`;
+}
+
+function FilePick({ label, accept, onPick }: { label: string; accept: string; onPick: (file: File) => void }) {
+  return (
+    <label className="mt-2 inline-flex cursor-pointer rounded-md border border-[#D1D5DB] bg-white px-3 py-1.5 text-[13px] font-bold text-[#0B3A6E]">
+      {label}
+      <input
+        type="file"
+        accept={accept}
+        className="sr-only"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          event.target.value = "";
+          if (file) onPick(file);
+        }}
+      />
+    </label>
+  );
 }
 
 function Field({ label, error, children }: { label: string; error?: string; children: ReactNode }) {
@@ -127,7 +168,7 @@ export function GithubContentAdmin() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [tab, setTab] = useState<ContentName>("notices");
+  const [tab, setTab] = useState<AdminView>("dashboard");
   const [sha, setSha] = useState<string | null>(null);
   const [notices, setNotices] = useState<NoticeItem[]>(bundledNotices);
   const [publications, setPublications] = useState<PublicationContentItem[]>(bundledPublications);
@@ -135,10 +176,15 @@ export function GithubContentAdmin() {
   const [institutions, setInstitutions] = useState<Institution[]>(bundledInstitutions);
   const [pledges, setPledges] = useState(bundledPledges);
   const [stats, setStats] = useState<StatItem[]>(bundledStats);
+  const [monitor, setMonitor] = useState<MonitorContent>(bundledMonitor);
+  const [slides, setSlides] = useState<ContentSlide[]>(bundledSlides);
+  const [banner, setBanner] = useState<BannerContent>(bundledBanner);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [message, setMessage] = useState("");
   const [commitUrl, setCommitUrl] = useState("");
   const [conflict, setConflict] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [historyKey, setHistoryKey] = useState(0);
 
   useEffect(() => {
     const saved = readSession(TOKEN_KEY);
@@ -159,7 +205,7 @@ export function GithubContentAdmin() {
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || tab === "dashboard") return;
     void loadFile(tab, token).catch((error: unknown) => {
       setMessage(error instanceof Error ? error.message : "파일을 불러오지 못했습니다.");
     });
@@ -185,6 +231,9 @@ export function GithubContentAdmin() {
     if (name === "institutions") setInstitutions(safeParse(parseInstitutions, data) ?? bundledInstitutions);
     if (name === "pledges") setPledges(safeParse(parsePledges, data) ?? bundledPledges);
     if (name === "stats") setStats(safeParse(parseStats, data) ?? bundledStats);
+    if (name === "monitor") setMonitor(safeParse(parseMonitor, data) ?? bundledMonitor);
+    if (name === "slides") setSlides(safeParse(parseSlides, data) ?? bundledSlides);
+    if (name === "banner") setBanner(safeParse(parseBanner, data) ?? bundledBanner);
   }
 
   async function onLogin(event: FormEvent) {
@@ -224,6 +273,7 @@ export function GithubContentAdmin() {
       notices.forEach((item, index) => {
         if (!item.title.trim()) next[`${index}.title`] = "제목을 입력하세요.";
         if (!validDate(item.date)) next[`${index}.date`] = "날짜는 YYYY-MM-DD 형식이어야 합니다.";
+        if (item.publishAt && !validDate(item.publishAt)) next[`${index}.publishAt`] = "공개 시작일은 YYYY-MM-DD 형식이어야 합니다.";
         if (item.link && !item.link.startsWith("/") && !validUrl(item.link)) next[`${index}.link`] = "링크는 /로 시작하거나 http(s) 주소여야 합니다.";
       });
     }
@@ -266,6 +316,25 @@ export function GithubContentAdmin() {
         if (!item.value.trim()) next[`${index}.value`] = "값을 입력하세요.";
       });
     }
+    if (tab === "monitor") {
+      if (monitor.noticeLink && !monitor.noticeLink.startsWith("/") && !validUrl(monitor.noticeLink)) {
+        next.noticeLink = "링크는 /로 시작하거나 http(s) 주소여야 합니다.";
+      }
+    }
+    if (tab === "banner") {
+      if (banner.published && !banner.text.trim()) next.text = "문구를 입력하세요.";
+      if (banner.start && !validDate(banner.start)) next.start = "시작일은 YYYY-MM-DD 형식이어야 합니다.";
+      if (banner.end && !validDate(banner.end)) next.end = "종료일은 YYYY-MM-DD 형식이어야 합니다.";
+      if (banner.link && !banner.link.startsWith("/") && !validUrl(banner.link)) next.link = "링크는 /로 시작하거나 http(s) 주소여야 합니다.";
+    }
+    if (tab === "slides") {
+      slides.forEach((item, index) => {
+        if (item.published && !item.title.trim()) next[`${index}.title`] = "공개 슬라이드는 제목이 필요합니다.";
+        if (item.buttonLink && !item.buttonLink.startsWith("/") && !validUrl(item.buttonLink) && !item.buttonLink.startsWith("/")) {
+          next[`${index}.buttonLink`] = "링크는 /로 시작하거나 http(s) 주소여야 합니다.";
+        }
+      });
+    }
     return next;
   }
 
@@ -275,23 +344,43 @@ export function GithubContentAdmin() {
     if (tab === "education") return education;
     if (tab === "institutions") return institutions;
     if (tab === "pledges") return pledges;
+    if (tab === "slides") return slides;
     return stats;
   }
 
+  function draftText() {
+    const updatedAt = new Date().toISOString();
+    if (tab === "monitor") {
+      return JSON.stringify(
+        { ...monitor, version: 1, updatedAt, benefits: monitor.benefits.map((item) => item.trim()).filter(Boolean) },
+        null,
+        2,
+      );
+    }
+    if (tab === "banner") return JSON.stringify({ ...banner, version: 1, updatedAt }, null, 2);
+    return JSON.stringify({ version: 1, updatedAt, items: currentItems() }, null, 2);
+  }
+
   async function save() {
+    if (tab === "dashboard") return;
     const nextErrors = validate();
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
+    const text = `${draftText()}\n`;
+    const warnings = [...findPersonalData(text).map((item) => `개인정보 형식: ${item}`), ...findForbiddenCopy(text)];
+    if (warnings.length > 0) {
+      const proceed = window.confirm(`${warnings.join("\n")}\n\n그래도 저장할까요?`);
+      if (!proceed) return;
+    }
     setBusy(true);
     setMessage("");
     setCommitUrl("");
     try {
-      const text = JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), items: currentItems() }, null, 2);
-      const tabLabel = TABS.find((item) => item.id === tab)?.label ?? tab;
+      const tabLabel = MENU.find((item) => item.id === tab)?.label ?? tab;
       const result = await writeContentFile({
         token,
         fileName: CONTENT_FILES[tab],
-        text: `${text}\n`,
+        text,
         message: `content: ${tabLabel} 수정 (${login})`,
         sha,
       });
@@ -299,6 +388,7 @@ export function GithubContentAdmin() {
       setMessage("저장했습니다. 1~2분 뒤 사이트에 반영됩니다.");
       const latest = await readContentFile(token, CONTENT_FILES[tab]);
       setSha(latest?.sha ?? null);
+      setHistoryKey((value) => value + 1);
     } catch (error) {
       if (error instanceof GithubConflictError) {
         setConflict(true);
@@ -310,6 +400,91 @@ export function GithubContentAdmin() {
       setBusy(false);
     }
   }
+
+  async function revert(targetSha: string) {
+    if (tab === "dashboard") return;
+    const tabLabel = MENU.find((item) => item.id === tab)?.label ?? tab;
+    if (!window.confirm(`${tabLabel}을 이 버전으로 되돌릴까요? 새 커밋으로 저장됩니다.`)) return;
+    setBusy(true);
+    setMessage("");
+    try {
+      const text = await readContentAt(token, CONTENT_FILES[tab], targetSha);
+      if (!text) {
+        setMessage("그 버전의 파일을 읽지 못했습니다.");
+        return;
+      }
+      const result = await writeContentFile({
+        token,
+        fileName: CONTENT_FILES[tab],
+        text,
+        message: `content: ${tabLabel} 되돌리기 (${login})`,
+        sha,
+      });
+      setCommitUrl(result.commitUrl);
+      await loadFile(tab, token);
+      setHistoryKey((value) => value + 1);
+      setMessage("되돌렸습니다. 1~2분 뒤 사이트에 반영됩니다.");
+    } catch (error) {
+      if (error instanceof GithubConflictError) {
+        setConflict(true);
+        setMessage("다른 관리자가 먼저 수정했습니다. 최신 내용을 불러올까요?");
+      } else {
+        setMessage(error instanceof Error ? error.message : "되돌리기에 실패했습니다.");
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function uploadPublicationFile(index: number, file: File, kind: "file" | "thumbnail") {
+    if (file.size > 10 * 1024 * 1024) {
+      setMessage("10MB 이하 파일만 올릴 수 있습니다.");
+      return;
+    }
+    const ext = (file.name.split(".").pop() ?? "").toLowerCase();
+    if (!UPLOAD_EXT.has(ext)) {
+      setMessage("PDF 또는 이미지(png, jpg, gif, webp)만 올릴 수 있습니다.");
+      return;
+    }
+    const item = publications[index];
+    const folder = item.boardType === "보고서·자료" ? "reports" : "press";
+    const day = validDate(item.date) ? item.date.replaceAll("-", "") : todayStamp();
+    const slug = romanizeFileName(file.name);
+    const storedExt = ext === "jpeg" ? "jpg" : ext;
+    const repoPath = `public/downloads/${folder}/${day}-${slug}.${storedExt}`;
+    setBusy(true);
+    setMessage("");
+    try {
+      await uploadRepoFile({
+        token,
+        path: repoPath,
+        base64: await fileToBase64(file),
+        message: `content: 자료 파일 업로드 (${login})`,
+      });
+      const stored = repoPath.replace(/^public\//, "");
+      setPublications(publications.map((row, rowIndex) => (rowIndex === index ? { ...row, [kind]: stored } : row)));
+      setMessage("파일을 올렸습니다. 경로를 채웠습니다. 글 내용은 저장을 눌러야 반영됩니다.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "파일 업로드에 실패했습니다.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const dashboardRows = useMemo(
+    () => [
+      { label: "공지사항", count: `${notices.length}건`, path: "public/content/notices.json" },
+      { label: "소식·자료", count: `${publications.length}건`, path: "public/content/publications.json" },
+      { label: "교육·웨비나", count: `${education.length}건`, path: "public/content/education.json" },
+      { label: "실천·우수기관", count: `${institutions.length}건`, path: "public/content/institutions.json" },
+      { label: "실천선언 참여 기관", count: `${pledges.length}건`, path: "public/content/pledges.json" },
+      { label: "모니터링단 안내", count: monitor.status, path: "public/content/monitor.json" },
+      { label: "메인 슬라이드", count: `공개 ${slides.filter((item) => item.published).length}건`, path: "public/content/slides.json" },
+      { label: "띠 공지", count: banner.published ? "공개" : "비공개", path: "public/content/banner.json" },
+      { label: "성과 수치", count: `${stats.length}건`, path: "public/content/stats.json" },
+    ],
+    [banner.published, education.length, institutions.length, monitor.status, notices.length, pledges.length, publications.length, slides, stats.length],
+  );
 
   if (!ready) return <p className="px-4 py-16 text-center text-[15px] text-[#374151]">확인 중…</p>;
 
@@ -341,40 +516,125 @@ export function GithubContentAdmin() {
     );
   }
 
-  return (
-    <div className="container-page py-10">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-[13px] font-bold text-[#0F766E]">Admin</p>
-          <h1 className="text-navy">콘텐츠 관리</h1>
-          <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-[#374151]">
-            PDF·이미지는 저장소의 public/downloads/ 폴더에 올린 뒤 경로를 입력하세요.
-          </p>
+  function previewBody() {
+    if (tab === "notices") {
+      return (
+        <ul className="space-y-3">
+          {notices.filter((item) => item.published).map((item) => (
+            <li key={item.id} className="border-b border-[#D1D5DB] pb-3">
+              <p className="font-bold text-[#111827]">{item.pinned ? "[고정] " : ""}{item.title || "(제목 없음)"}</p>
+              <p className="text-[13px] text-[#374151]">{item.date}{item.publishAt ? ` · 공개 시작 ${item.publishAt}` : ""}</p>
+              {item.body ? <div className="mt-2"><MarkdownText source={item.body} /></div> : null}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (tab === "publications") {
+      return (
+        <ul className="space-y-3">
+          {publications.filter((item) => item.published).map((item) => (
+            <li key={item.slug} className="flex gap-3 border-b border-[#D1D5DB] pb-3">
+              {item.thumbnail ? <img src={`${import.meta.env.BASE_URL}${item.thumbnail}`} alt="" className="h-12 w-12 rounded-md border border-[#D1D5DB] object-cover" /> : null}
+              <div>
+                <p className="text-[12px] font-bold text-[#0B3A6E]">{item.boardType}</p>
+                <p className="font-bold text-[#111827]">{item.title || "(제목 없음)"}</p>
+                <p className="text-[13px] text-[#374151]">{item.date} · {item.source}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (tab === "banner") {
+      const tone = banner.tone === "중요" ? "bg-[#7F1D1D] text-white" : "bg-[#E8EEF6] text-[#0B3A6E]";
+      return <p className={`rounded-md px-3 py-2 text-[14px] font-semibold ${tone}`}>{banner.text || "(문구 없음)"}</p>;
+    }
+    if (tab === "monitor") {
+      return (
+        <div className="text-[15px] text-[#111827]">
+          <p className="font-bold text-[#0B3A6E]">{monitor.status}</p>
+          <p className="mt-2">모집 기간 {monitor.recruitPeriod || "선발 공지 때 안내"}</p>
+          <p>활동 기간 {monitor.activityPeriod || "선발 공지 때 안내"}</p>
+          <p>모집 인원 {monitor.headcount || "선발 공지 때 안내"}</p>
+          <p>활동 혜택 {monitor.benefits.length ? monitor.benefits.join(", ") : "선발 공지 때 안내"}</p>
         </div>
-        <div className="text-right">
-          <p className="text-[14px] font-bold text-navy">{login}</p>
-          <button type="button" onClick={logout} className="btn-secondary-kcf mt-2">
+      );
+    }
+    if (tab === "slides") {
+      const visible = slides.filter((item) => item.published);
+      if (visible.length === 0) return <p className="text-[15px] text-[#374151]">공개 슬라이드가 없으면 사이트의 기본 슬라이드를 씁니다.</p>;
+      return (
+        <ul className="space-y-3">
+          {visible.map((item) => (
+            <li key={item.id} className="rounded-md border border-[#D1D5DB] p-3">
+              <p className="text-[12px] font-bold text-[#0F766E]">{item.area === "foundation" ? "재단" : "진흥원"} · {item.eyebrow}</p>
+              <p className="mt-1 font-bold text-navy">{item.title}</p>
+              <p className="mt-1 text-[14px] text-[#374151]">{item.body}</p>
+              <p className="mt-2 text-[13px] font-bold text-[#0B3A6E]">{item.buttonLabel || "자세히 보기"}</p>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (tab === "stats") {
+      return (
+        <ul className="grid gap-2 sm:grid-cols-2">
+          {stats.map((item) => (
+            <li key={item.label} className="rounded-md border border-[#D1D5DB] p-3">
+              <p className="text-[13px] text-[#374151]">{item.label}</p>
+              <p className="text-[20px] font-bold text-navy">{item.value}</p>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    const titles = tab === "education" ? education.map((item) => item.title) : tab === "institutions" ? institutions.map((item) => item.name) : pledges.map((item) => item.name);
+    return (
+      <ul className="space-y-2">
+        {titles.map((title, index) => (
+          <li key={`${title}-${index}`} className="border-b border-[#D1D5DB] py-2 text-[15px] font-semibold text-[#111827]">{title || "(이름 없음)"}</li>
+        ))}
+      </ul>
+    );
+  }
+
+  const menu = (
+    <nav aria-label="관리자 메뉴">
+      <p className="px-4 pb-2 pt-4 text-[12px] font-bold text-white">메뉴</p>
+      <button type="button" aria-current={tab === "dashboard" ? "page" : undefined} className={`block w-full px-4 py-2.5 text-left text-[14px] font-semibold ${tab === "dashboard" ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => setTab("dashboard")}>
+        대시보드
+      </button>
+      <p className="px-4 pb-1 pt-4 text-[12px] font-bold text-white">콘텐츠</p>
+      {MENU.filter((item) => item.id !== "dashboard").map((item) => (
+        <button key={item.id} type="button" aria-current={tab === item.id ? "page" : undefined} className={`block w-full px-4 py-2.5 text-left text-[14px] font-semibold ${tab === item.id ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => setTab(item.id)}>
+          {item.label}
+        </button>
+      ))}
+    </nav>
+  );
+
+  return (
+    <div className="flex min-h-[calc(100vh-var(--header-height))] bg-[#F8FAFC]">
+      <aside className="hidden w-60 shrink-0 bg-[#0B3A6E] lg:block">
+        <div className="sticky top-[var(--header-height)] max-h-[calc(100vh-var(--header-height))] overflow-y-auto">
+          {menu}
+        </div>
+      </aside>
+      <div className="min-w-0 flex-1">
+        <div className="bg-[#0B3A6E] lg:hidden">{menu}</div>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D1D5DB] bg-white px-6 py-4">
+          <p className="text-[14px] text-[#111827]">
+            <span className="mr-2 inline-flex rounded-md border border-[#0F766E] px-2 py-0.5 text-[12px] font-bold text-[#0F766E]">연결됨</span>
+            {login}
+          </p>
+          <button type="button" onClick={logout} className="btn-secondary-kcf">
             로그아웃
           </button>
         </div>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-2 border-b border-[#D1D5DB]" role="tablist">
-        {TABS.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === item.id}
-            className={`border-b-2 px-3 py-3 text-[14px] font-semibold ${tab === item.id ? "border-[#0B3A6E] text-[#0B3A6E]" : "border-transparent text-[#374151]"}`}
-            onClick={() => setTab(item.id)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-6 space-y-4">
+        <div className="px-6 py-6">
+      {tab === "dashboard" ? <ContentDashboard token={token} rows={dashboardRows} /> : null}
+      <div className="space-y-4">
         {tab === "notices"
           ? notices.map((item, index) => (
               <article key={item.id} className="rounded-md border border-[#D1D5DB] bg-white p-4">
@@ -388,14 +648,27 @@ export function GithubContentAdmin() {
                   <Field label="링크(선택)" error={errors[`${index}.link`]}>
                     <input value={item.link} onChange={(event) => setNotices(notices.map((row, rowIndex) => rowIndex === index ? { ...row, link: event.target.value } : row))} className={inputClass(errors[`${index}.link`])} />
                   </Field>
+                  <Field label="공개 시작일" error={errors[`${index}.publishAt`]}>
+                    <input value={item.publishAt ?? ""} onChange={(event) => setNotices(notices.map((row, rowIndex) => rowIndex === index ? { ...row, publishAt: event.target.value } : row))} className={inputClass(errors[`${index}.publishAt`])} placeholder="YYYY-MM-DD" />
+                  </Field>
                   <label className="flex items-center gap-2 text-[14px] font-semibold text-[#111827]">
                     <input type="checkbox" checked={item.published} onChange={(event) => setNotices(notices.map((row, rowIndex) => rowIndex === index ? { ...row, published: event.target.checked } : row))} />
                     공개
                   </label>
+                  <label className="flex items-center gap-2 text-[14px] font-semibold text-[#111827]">
+                    <input type="checkbox" checked={item.pinned === true} onChange={(event) => setNotices(notices.map((row, rowIndex) => rowIndex === index ? { ...row, pinned: event.target.checked } : row))} />
+                    상단 고정
+                  </label>
                 </div>
-                <Field label="본문(선택)">
-                  <textarea value={item.body} onChange={(event) => setNotices(notices.map((row, rowIndex) => rowIndex === index ? { ...row, body: event.target.value } : row))} className="mt-1 min-h-24 w-full rounded-md border border-[#D1D5DB] px-3 py-2 text-[15px] font-normal" />
+                <Field label="본문 (굵게 **글**, 목록은 - 로 시작, 링크는 [글](주소))">
+                  <textarea value={item.body} onChange={(event) => setNotices(notices.map((row, rowIndex) => rowIndex === index ? { ...row, body: event.target.value } : row))} className="mt-1 min-h-28 w-full rounded-md border border-[#D1D5DB] px-3 py-2 text-[15px] font-normal" />
                 </Field>
+                {item.body.trim() ? (
+                  <div className="mt-3 rounded-md border border-[#D1D5DB] bg-[#F8FAFC] p-3">
+                    <p className="mb-2 text-[13px] font-bold text-[#374151]">본문 미리보기</p>
+                    <MarkdownText source={item.body} />
+                  </div>
+                ) : null}
                 <button type="button" className="mt-3 text-[14px] font-bold text-[#9A3412] underline" onClick={() => setNotices(notices.filter((_, rowIndex) => rowIndex !== index))}>이 공지 빼기</button>
               </article>
             ))
@@ -422,9 +695,18 @@ export function GithubContentAdmin() {
                   <Field label="URL" error={errors[`${index}.url`]}>
                     <input value={item.url} onChange={(event) => setPublications(publications.map((row, rowIndex) => rowIndex === index ? { ...row, url: event.target.value } : row))} className={inputClass(errors[`${index}.url`])} />
                   </Field>
-                  <Field label="첨부 파일 경로">
-                    <input value={item.file} onChange={(event) => setPublications(publications.map((row, rowIndex) => rowIndex === index ? { ...row, file: event.target.value } : row))} className={inputClass()} />
-                  </Field>
+                  <div>
+                    <Field label="첨부 파일 경로">
+                      <input value={item.file} onChange={(event) => setPublications(publications.map((row, rowIndex) => rowIndex === index ? { ...row, file: event.target.value } : row))} className={inputClass()} />
+                    </Field>
+                    <FilePick label="첨부 파일 선택" accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,application/pdf,image/*" onPick={(file) => void uploadPublicationFile(index, file, "file")} />
+                  </div>
+                  <div>
+                    <Field label="대표 이미지">
+                      <input value={item.thumbnail ?? ""} onChange={(event) => setPublications(publications.map((row, rowIndex) => rowIndex === index ? { ...row, thumbnail: event.target.value } : row))} className={inputClass()} />
+                    </Field>
+                    <FilePick label="대표 이미지 선택" accept=".png,.jpg,.jpeg,.gif,.webp,image/*" onPick={(file) => void uploadPublicationFile(index, file, "thumbnail")} />
+                  </div>
                   <label className="flex items-center gap-2 text-[14px] font-semibold text-[#111827]">
                     <input type="checkbox" checked={item.published} onChange={(event) => setPublications(publications.map((row, rowIndex) => rowIndex === index ? { ...row, published: event.target.checked } : row))} />
                     공개
@@ -578,25 +860,143 @@ export function GithubContentAdmin() {
               </article>
             ))
           : null}
+
+        {tab === "monitor" ? (
+          <article className="rounded-md border border-[#D1D5DB] bg-white p-4">
+            <div className="grid gap-3 md:grid-cols-2">
+              <Field label="모집 상태">
+                <select value={monitor.status} onChange={(event) => setMonitor({ ...monitor, status: event.target.value as MonitorStatus })} className={inputClass()}>
+                  {MONITOR_STATUSES.map((status) => <option key={status}>{status}</option>)}
+                </select>
+              </Field>
+              <Field label="모집 인원">
+                <input value={monitor.headcount} onChange={(event) => setMonitor({ ...monitor, headcount: event.target.value })} className={inputClass()} />
+              </Field>
+              <Field label="모집 기간">
+                <input value={monitor.recruitPeriod} onChange={(event) => setMonitor({ ...monitor, recruitPeriod: event.target.value })} className={inputClass()} />
+              </Field>
+              <Field label="활동 기간">
+                <input value={monitor.activityPeriod} onChange={(event) => setMonitor({ ...monitor, activityPeriod: event.target.value })} className={inputClass()} />
+              </Field>
+              <Field label="선발 공지 링크" error={errors.noticeLink}>
+                <input value={monitor.noticeLink} onChange={(event) => setMonitor({ ...monitor, noticeLink: event.target.value })} className={inputClass(errors.noticeLink)} />
+              </Field>
+            </div>
+            <Field label="활동 혜택 (한 줄에 하나)">
+              <textarea value={monitor.benefits.join("\n")} onChange={(event) => setMonitor({ ...monitor, benefits: event.target.value.split("\n") })} className="mt-1 min-h-28 w-full rounded-md border border-[#D1D5DB] px-3 py-2 text-[15px] font-normal" />
+            </Field>
+          </article>
+        ) : null}
+
+        {tab === "slides"
+          ? slides.map((item, index) => (
+              <article key={item.id} className="rounded-md border border-[#D1D5DB] bg-white p-4">
+                <div className="grid gap-3 md:grid-cols-2">
+                  <Field label="영역">
+                    <select value={item.area} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, area: event.target.value as ContentSlide["area"] } : row))} className={inputClass()}>
+                      <option value="privacy">진흥원</option>
+                      <option value="foundation">재단</option>
+                    </select>
+                  </Field>
+                  <Field label="순서">
+                    <input value={item.order} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, order: Number(event.target.value) || 0 } : row))} className={inputClass()} />
+                  </Field>
+                  <Field label="그림">
+                    <select value={item.image} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, image: event.target.value as SlideImageId } : row))} className={inputClass()}>
+                      {SLIDE_IMAGE_OPTIONS.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                    </select>
+                  </Field>
+                  <label className="flex items-center gap-2 text-[14px] font-semibold text-[#111827]">
+                    <input type="checkbox" checked={item.published} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, published: event.target.checked } : row))} />
+                    공개
+                  </label>
+                  <Field label="eyebrow">
+                    <input value={item.eyebrow} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, eyebrow: event.target.value } : row))} className={inputClass()} />
+                  </Field>
+                  <Field label="제목" error={errors[`${index}.title`]}>
+                    <input value={item.title} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, title: event.target.value } : row))} className={inputClass(errors[`${index}.title`])} />
+                  </Field>
+                  <Field label="버튼 문구">
+                    <input value={item.buttonLabel} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, buttonLabel: event.target.value } : row))} className={inputClass()} />
+                  </Field>
+                  <Field label="버튼 링크" error={errors[`${index}.buttonLink`]}>
+                    <input value={item.buttonLink} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, buttonLink: event.target.value } : row))} className={inputClass(errors[`${index}.buttonLink`])} />
+                  </Field>
+                </div>
+                <Field label="본문">
+                  <textarea value={item.body} onChange={(event) => setSlides(slides.map((row, rowIndex) => rowIndex === index ? { ...row, body: event.target.value } : row))} className="mt-1 min-h-24 w-full rounded-md border border-[#D1D5DB] px-3 py-2 text-[15px] font-normal" />
+                </Field>
+                <button type="button" className="mt-3 text-[14px] font-bold text-[#9A3412] underline" onClick={() => setSlides(slides.filter((_, rowIndex) => rowIndex !== index))}>이 슬라이드 빼기</button>
+              </article>
+            ))
+          : null}
+
+        {tab === "banner" ? (
+          <article className="rounded-md border border-[#D1D5DB] bg-white p-4">
+            <div className="grid gap-3 md:grid-cols-2">
+              <Field label="문구" error={errors.text}>
+                <input value={banner.text} onChange={(event) => setBanner({ ...banner, text: event.target.value })} className={inputClass(errors.text)} />
+              </Field>
+              <Field label="링크" error={errors.link}>
+                <input value={banner.link} onChange={(event) => setBanner({ ...banner, link: event.target.value })} className={inputClass(errors.link)} />
+              </Field>
+              <Field label="색">
+                <select value={banner.tone} onChange={(event) => setBanner({ ...banner, tone: event.target.value as BannerTone })} className={inputClass()}>
+                  <option>안내</option>
+                  <option>중요</option>
+                </select>
+              </Field>
+              <label className="flex items-center gap-2 text-[14px] font-semibold text-[#111827]">
+                <input type="checkbox" checked={banner.published} onChange={(event) => setBanner({ ...banner, published: event.target.checked })} />
+                공개
+              </label>
+              <Field label="노출 시작" error={errors.start}>
+                <input value={banner.start} onChange={(event) => setBanner({ ...banner, start: event.target.value })} className={inputClass(errors.start)} placeholder="YYYY-MM-DD" />
+              </Field>
+              <Field label="노출 종료" error={errors.end}>
+                <input value={banner.end} onChange={(event) => setBanner({ ...banner, end: event.target.value })} className={inputClass(errors.end)} placeholder="YYYY-MM-DD" />
+              </Field>
+            </div>
+          </article>
+        ) : null}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        {tab === "notices" ? <button type="button" className="btn-secondary-kcf" onClick={() => setNotices([...notices, { id: `notice-${Date.now()}`, title: "", date: "", link: "", body: "", published: true }])}>공지 추가</button> : null}
-        {tab === "publications" ? <button type="button" className="btn-secondary-kcf" onClick={() => setPublications([...publications, { slug: `item-${Date.now()}`, boardType: "보도자료", title: "", date: "", source: "", url: "", file: "", summary: "", keywords: [], internalPath: "", published: true }])}>자료 추가</button> : null}
-        {tab === "education" ? <button type="button" className="btn-secondary-kcf" onClick={() => setEducation([...education, blankEducation()])}>교육 추가</button> : null}
-        {tab === "institutions" ? <button type="button" className="btn-secondary-kcf" onClick={() => setInstitutions([...institutions, { certNo: newCertNo(institutions.map((item) => item.certNo)), name: "", tier: "실천기관", selectedAt: "", status: "유효", reason: "", certFile: "", published: false }])}>기관 추가</button> : null}
-        {tab === "pledges" ? <button type="button" className="btn-secondary-kcf" onClick={() => setPledges([...pledges, { id: `pledge-${Date.now()}`, name: "", date: "", published: true }])}>기관 추가</button> : null}
-        {tab === "stats" ? <button type="button" className="btn-secondary-kcf" onClick={() => setStats([...stats, { label: "", value: "" }])}>수치 추가</button> : null}
-        <button type="button" className="btn-primary-kcf" disabled={busy} onClick={() => void save()}>{busy ? "저장 중…" : "저장"}</button>
-      </div>
-
-      {message ? <p className="mt-4 text-[15px] text-[#111827]">{message}</p> : null}
-      {commitUrl ? <p className="mt-2"><a className="font-bold text-navy underline" href={commitUrl}>커밋 보기</a></p> : null}
-      {conflict ? (
-        <button type="button" className="btn-secondary-kcf mt-3" onClick={() => void loadFile(tab, token)}>
-          최신 내용 불러오기
-        </button>
+      {tab !== "dashboard" ? (
+        <>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {tab === "notices" ? <button type="button" className="btn-secondary-kcf" onClick={() => setNotices([...notices, { id: `notice-${Date.now()}`, title: "", date: "", link: "", body: "", published: true, pinned: false, publishAt: "" }])}>공지 추가</button> : null}
+            {tab === "publications" ? <button type="button" className="btn-secondary-kcf" onClick={() => setPublications([...publications, { slug: `item-${Date.now()}`, boardType: "보도자료", title: "", date: "", source: "", url: "", file: "", thumbnail: "", summary: "", keywords: [], internalPath: "", published: true }])}>자료 추가</button> : null}
+            {tab === "education" ? <button type="button" className="btn-secondary-kcf" onClick={() => setEducation([...education, blankEducation()])}>교육 추가</button> : null}
+            {tab === "institutions" ? <button type="button" className="btn-secondary-kcf" onClick={() => setInstitutions([...institutions, { certNo: newCertNo(institutions.map((item) => item.certNo)), name: "", tier: "실천기관", selectedAt: "", status: "유효", reason: "", certFile: "", published: false }])}>기관 추가</button> : null}
+            {tab === "pledges" ? <button type="button" className="btn-secondary-kcf" onClick={() => setPledges([...pledges, { id: `pledge-${Date.now()}`, name: "", date: "", published: true }])}>기관 추가</button> : null}
+            {tab === "slides" ? <button type="button" className="btn-secondary-kcf" onClick={() => setSlides([...slides, { id: `slide-${Date.now()}`, area: "privacy", order: slides.length + 1, published: false, image: "hero-free-platform", eyebrow: "", title: "", body: "", buttonLabel: "", buttonLink: "" }])}>슬라이드 추가</button> : null}
+            {tab === "stats" ? <button type="button" className="btn-secondary-kcf" onClick={() => setStats([...stats, { label: "", value: "" }])}>수치 추가</button> : null}
+            <button type="button" className="btn-secondary-kcf" onClick={() => setShowPreview((value) => !value)}>{showPreview ? "미리보기 닫기" : "미리보기"}</button>
+            <button type="button" className="btn-primary-kcf" disabled={busy} onClick={() => void save()}>{busy ? "저장 중…" : "저장"}</button>
+          </div>
+          {showPreview ? (
+            <div className="mt-4 rounded-md border border-[#D1D5DB] bg-white p-4">
+              <h2 className="text-[16px] font-bold text-navy">공개 화면 미리보기</h2>
+              <div className="mt-3">{previewBody()}</div>
+            </div>
+          ) : null}
+          {message ? <p className="mt-4 text-[15px] text-[#111827]">{message}</p> : null}
+          {commitUrl ? <p className="mt-2"><a className="font-bold text-navy underline" href={commitUrl}>커밋 보기</a></p> : null}
+          <div className="mt-4">
+            <DeployStatus token={token} />
+          </div>
+          {conflict ? (
+            <button type="button" className="btn-secondary-kcf mt-3" onClick={() => void loadFile(tab, token)}>
+              최신 내용 불러오기
+            </button>
+          ) : null}
+          <div className="mt-6">
+            <FileHistory token={token} filePath={`public/content/${CONTENT_FILES[tab]}`} refreshKey={historyKey} onRevert={(target) => void revert(target)} />
+          </div>
+        </>
       ) : null}
+        </div>
+      </div>
     </div>
   );
 }

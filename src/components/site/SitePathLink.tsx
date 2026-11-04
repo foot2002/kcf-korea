@@ -34,5 +34,13 @@ export function SitePathLink({ to, hash, className, children }: SitePathLinkProp
   if (to === "/privacy-center/publications") {
     return <Link to="/privacy-center/publications" hash={hash} className={className}>{children}</Link>;
   }
+  if (to.startsWith("/")) {
+    const href = hash ? `${to}#${hash}` : to;
+    return (
+      <a href={href} className={className}>
+        {children}
+      </a>
+    );
+  }
   return <Link to="/" className={className}>{children}</Link>;
 }

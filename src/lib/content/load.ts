@@ -8,28 +8,37 @@ import yulchonLogo from "@/assets/privacy/logos/yulchon.png";
 import type { EducationItem } from "@/data/privacy-program";
 import type { Institution } from "@/data/sure-mark";
 import {
+  fallbackBanner,
   fallbackEducation,
   fallbackInstitutions,
+  fallbackMonitor,
   fallbackNotices,
   fallbackPledges,
   fallbackPublications,
+  fallbackSlides,
   fallbackStats,
 } from "@/lib/content/fallback";
 import {
+  parseBanner,
   parseEducation,
   parseInstitutions,
+  parseMonitor,
   parseNotices,
   parsePledges,
   parsePublications,
+  parseSlides,
   parseStats,
   safeParse,
 } from "@/lib/content/parse";
-import type { NoticeItem, PledgeItem, PublicationContentItem, StatItem } from "@/lib/content/types";
+import type { BannerContent, ContentSlide, MonitorContent, NoticeItem, PledgeItem, PublicationContentItem, StatItem } from "@/lib/content/types";
+import bannerJson from "../../../public/content/banner.json";
 import educationJson from "../../../public/content/education.json";
 import institutionsJson from "../../../public/content/institutions.json";
+import monitorJson from "../../../public/content/monitor.json";
 import noticesJson from "../../../public/content/notices.json";
 import pledgesJson from "../../../public/content/pledges.json";
 import publicationsJson from "../../../public/content/publications.json";
+import slidesJson from "../../../public/content/slides.json";
 import statsJson from "../../../public/content/stats.json";
 
 const LOGOS: Record<string, string> = {
@@ -61,6 +70,9 @@ export const bundledEducation = hydrateEducation(sourceEducation);
 export const bundledInstitutions = bundled(parseInstitutions, institutionsJson, fallbackInstitutions());
 export const bundledPledges = bundled(parsePledges, pledgesJson, fallbackPledges());
 export const bundledStats = bundled(parseStats, statsJson, fallbackStats());
+export const bundledMonitor = bundled(parseMonitor, monitorJson, fallbackMonitor());
+export const bundledSlides = bundled(parseSlides, slidesJson, fallbackSlides());
+export const bundledBanner = bundled(parseBanner, bannerJson, fallbackBanner());
 
 function useRemote<T>(
   fileName: string,
@@ -108,4 +120,16 @@ export function usePledges(): PledgeItem[] {
 
 export function useStats(): StatItem[] {
   return useRemote("stats.json", bundledStats, parseStats, fallbackStats);
+}
+
+export function useMonitor(): MonitorContent {
+  return useRemote("monitor.json", bundledMonitor, parseMonitor, fallbackMonitor);
+}
+
+export function useSlides(): ContentSlide[] {
+  return useRemote("slides.json", bundledSlides, parseSlides, fallbackSlides);
+}
+
+export function useBanner(): BannerContent {
+  return useRemote("banner.json", bundledBanner, parseBanner, fallbackBanner);
 }

@@ -1,14 +1,24 @@
 import type { EducationItem } from "@/data/privacy-program";
 import type { Institution } from "@/data/sure-mark";
 import type {
+  BannerContent,
+  BannerTone,
   BoardType,
+  ContentSlide,
+  MonitorContent,
+  MonitorStatus,
   NoticeItem,
   PledgeItem,
   PublicationContentItem,
+  SlideImageId,
   StatItem,
 } from "@/lib/content/types";
+import { SLIDE_IMAGE_OPTIONS } from "@/lib/content/types";
 
 const BOARD_TYPES: BoardType[] = ["보도자료", "보고서·자료", "관련 보도", "보도참고"];
+const MONITOR_STATUSES: MonitorStatus[] = ["모집 예정", "모집 중", "모집 마감"];
+const BANNER_TONES: BannerTone[] = ["안내", "중요"];
+const SLIDE_IMAGES = new Set<string>(SLIDE_IMAGE_OPTIONS.map((item) => item.id));
 const TIERS = ["실천기관", "우수기관"] as const;
 const STATUSES = ["유효", "재검토", "회수"] as const;
 
@@ -39,6 +49,8 @@ export function parseNotices(value: unknown): NoticeItem[] | null {
       link: text(item.link),
       body: text(item.body),
       published: item.published !== false,
+      pinned: item.pinned === true,
+      publishAt: text(item.publishAt),
     };
   });
 }
@@ -57,6 +69,7 @@ export function parsePublications(value: unknown): PublicationContentItem[] | nu
       source: text(item.source),
       url: text(item.url),
       file: text(item.file),
+      thumbnail: text(item.thumbnail),
       summary: text(item.summary),
       keywords: Array.isArray(item.keywords) ? item.keywords.filter((keyword) => typeof keyword === "string") : [],
       internalPath: text(item.internalPath),
@@ -114,6 +127,56 @@ export function parseStats(value: unknown): StatItem[] | null {
     if (!isRecord(item) || typeof item.label !== "string" || typeof item.value !== "string") throw new Error("stat");
     return { label: item.label, value: item.value };
   });
+}
+
+export function parseMonitor(value: unknown): MonitorContent | null {
+  if (!isRecord(value) || value.version !== 1) return null;
+  const status = MONITOR_STATUSES.includes(value.status as MonitorStatus) ? (value.status as MonitorStatus) : "모집 예정";
+  return {
+    version: 1,
+    updatedAt: text(value.updatedAt),
+    status,
+    recruitPeriod: text(value.recruitPeriod),
+    activityPeriod: text(value.activityPeriod),
+    headcount: text(value.headcount),
+    benefits: Array.isArray(value.benefits) ? value.benefits.filter((item) => typeof item === "string") : [],
+    noticeLink: text(value.noticeLink),
+  };
+}
+
+export function parseSlides(value: unknown): ContentSlide[] | null {
+  if (!isRecord(value) || value.version !== 1 || !Array.isArray(value.items)) return null;
+  return value.items.map((item, index) => {
+    if (!isRecord(item)) throw new Error("slide");
+    const image = SLIDE_IMAGES.has(text(item.image)) ? (item.image as SlideImageId) : "hero-free-platform";
+    return {
+      id: text(item.id, `slide-${index + 1}`),
+      area: item.area === "foundation" ? "foundation" : "privacy",
+      order: typeof item.order === "number" ? item.order : index + 1,
+      published: item.published === true,
+      image,
+      eyebrow: text(item.eyebrow),
+      title: text(item.title),
+      body: text(item.body),
+      buttonLabel: text(item.buttonLabel),
+      buttonLink: text(item.buttonLink),
+    };
+  });
+}
+
+export function parseBanner(value: unknown): BannerContent | null {
+  if (!isRecord(value) || value.version !== 1) return null;
+  const tone = BANNER_TONES.includes(value.tone as BannerTone) ? (value.tone as BannerTone) : "안내";
+  return {
+    version: 1,
+    updatedAt: text(value.updatedAt),
+    text: text(value.text),
+    link: text(value.link),
+    tone,
+    start: text(value.start),
+    end: text(value.end),
+    published: value.published === true,
+  };
 }
 
 export function safeParse<T>(parse: (value: unknown) => T | null, value: unknown): T | null {

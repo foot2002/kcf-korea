@@ -22,10 +22,12 @@ type BoardRow = {
   title: string;
   date: string;
   file?: string;
+  thumbnail?: string;
   href?: string;
   to?: InternalTo;
   slug?: string;
   pending?: boolean;
+  pinned?: boolean;
 };
 
 function isTab(value: string): value is TabId {
@@ -76,24 +78,25 @@ function dedupe(rows: BoardRow[]) {
 
 function RowTitle({ row }: { row: BoardRow }) {
   const className = "font-semibold text-[#111827] hover:underline";
-  const title = row.pending ? (
+  const pin = row.pinned ? <span className="mr-2 inline-flex rounded-md border border-[#0B3A6E] px-1.5 py-0.5 text-[12px] font-bold text-[#0B3A6E]">고정</span> : null;
+  const title = (
     <>
-      {row.title} <span className="font-normal text-[#4B5563]">({PUBLICATIONS_PAGE.pendingLink})</span>
+      {pin}
+      {row.title}
+      {row.pending ? <span className="font-normal text-[#4B5563]"> ({PUBLICATIONS_PAGE.pendingLink})</span> : null}
     </>
-  ) : (
-    row.title
   );
   if (row.file) {
     return (
       <a className={className} href={fileHref(row.file)} target="_blank" rel="noopener noreferrer">
-        {row.title}
+        {title}
       </a>
     );
   }
   if (row.href) {
     return (
       <a className={className} href={row.href} target="_blank" rel="noopener noreferrer">
-        {row.title}
+        {title}
       </a>
     );
   }
@@ -130,6 +133,7 @@ function publicationRow(item: PublicationContentItem): BoardRow {
     title: item.title,
     date: item.date,
     file: item.file || undefined,
+    thumbnail: item.thumbnail || undefined,
     href: item.url || undefined,
     to: asInternal(item.internalPath),
     slug: item.summary ? item.slug : undefined,
@@ -155,15 +159,19 @@ export function PublicationsBoard() {
 
   const rows = useMemo(() => {
     const published = publicationItems.filter((item) => item.published);
+    const today = new Date();
+    const stamp = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
     const notices = dedupe(
       noticeItems
-        .filter((item) => item.published)
+        .filter((item) => item.published && (!item.publishAt || item.publishAt <= stamp))
+        .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.date.localeCompare(a.date))
         .map((item) => ({
           key: item.id,
           title: item.title,
           date: item.date,
           href: item.link.startsWith("http") ? item.link : undefined,
           to: asInternal(item.link),
+          pinned: item.pinned,
         })),
     );
     const press = dedupe(published.filter((item) => item.boardType === "보도자료").map(publicationRow));
@@ -266,6 +274,9 @@ export function PublicationsBoard() {
                       <span className="inline md:hidden">
                         {row.file ? <Paperclip className="mr-1 inline h-4 w-4 text-[#0B3A6E]" aria-hidden="true" /> : null}
                       </span>
+                      {row.thumbnail ? (
+                        <img src={fileHref(row.thumbnail)} alt="" className="mr-2 inline h-8 w-8 rounded-md border border-[#D1D5DB] object-cover" />
+                      ) : null}
                       <RowTitle row={row} />
                     </td>
                     <td className="hidden px-3 py-3 text-center md:table-cell">

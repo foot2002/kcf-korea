@@ -3,7 +3,16 @@ import { stats } from "@/data/kcf";
 import { DEFAULT_NOTICES, PUBLICATION_EXTRAS } from "@/data/privacy-home";
 import { EDUCATION_SEED, PUBLICATION_SEED, type PublicationType } from "@/data/privacy-program";
 import { INSTITUTIONS } from "@/data/sure-mark";
-import type { BoardType, NoticeItem, PledgeItem, PublicationContentItem, StatItem } from "@/lib/content/types";
+import type {
+  BannerContent,
+  BoardType,
+  ContentSlide,
+  MonitorContent,
+  NoticeItem,
+  PledgeItem,
+  PublicationContentItem,
+  StatItem,
+} from "@/lib/content/types";
 
 function boardTypeOf(type: PublicationType): BoardType {
   if (type === "보도자료") return "보도자료";
@@ -119,6 +128,36 @@ export function fallbackPledges(): PledgeItem[] {
 
 export function fallbackStats(): StatItem[] {
   return stats.map((item) => ({ label: item.label, value: item.value }));
+}
+
+export function fallbackMonitor(): MonitorContent {
+  return {
+    version: 1,
+    updatedAt: "",
+    status: "모집 예정",
+    recruitPeriod: "",
+    activityPeriod: "",
+    headcount: "",
+    benefits: [],
+    noticeLink: "",
+  };
+}
+
+export function fallbackSlides(): ContentSlide[] {
+  return [];
+}
+
+export function fallbackBanner(): BannerContent {
+  return {
+    version: 1,
+    updatedAt: "",
+    text: "",
+    link: "",
+    tone: "안내",
+    start: "",
+    end: "",
+    published: false,
+  };
 }
 
 export function fallbackEducation() {

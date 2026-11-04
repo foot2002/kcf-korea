@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/site/Header";
+import { SiteBanner } from "../components/site/SiteBanner";
 import { Footer } from "../components/site/Footer";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import { Toaster } from "../components/ui/sonner";
@@ -155,6 +156,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col bg-background" data-site={isPrivacyCenter ? "privacy" : "foundation"}>
         <Header />
+        <SiteBanner />
         <main className={isPrivacyCenter ? "privacy-center flex-1" : "flex-1"}>
           <Outlet />
         </main>

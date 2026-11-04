@@ -72,6 +72,25 @@ for (const file of walk(downloadRoot)) {
   if (replacements > 8) replacementErrors.push(`${rel} (${replacements})`);
 }
 
+const contentAllow = ["cs@kcf-korea.org", "02-501-2906"];
+const contentEmail = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+const contentMobile = /(?<!\d)01[016789]-?\d{3,4}-?\d{4}(?!\d)/g;
+const contentPhone = /(?<!\d)0\d{1,2}-\d{3,4}-\d{4}(?!\d)/g;
+const personalHits = [];
+const contentDir = path.join(clientDir, "content");
+for (const file of walk(contentDir)) {
+  if (!file.endsWith(".json")) continue;
+  let text = fs.readFileSync(file, "utf8");
+  for (const item of contentAllow) text = text.split(item).join("");
+  const hits = new Set();
+  for (const pattern of [contentEmail, contentMobile, contentPhone]) {
+    pattern.lastIndex = 0;
+    const found = text.match(pattern);
+    if (found) found.forEach((item) => hits.add(item));
+  }
+  for (const hit of hits) personalHits.push(`${relPosix(clientDir, file)}: ${hit}`);
+}
+
 const forbidden = ["wiseon@wiseinc.co.kr", "kcf2026", "github_pat_", "ghp_"];
 const forbiddenHits = [];
 for (const file of walk(distDir)) {
@@ -102,11 +121,15 @@ if (forbiddenHits.length) {
   console.log("금지 문자열:");
   for (const item of forbiddenHits) console.log(`- ${item}`);
 }
+if (personalHits.length) {
+  console.log("공개 콘텐츠 개인정보 형식:");
+  for (const item of personalHits) console.log(`- ${item}`);
+}
 
 const links = spawnSync(process.execPath, ["scripts/check-links.js"], { cwd: root, stdio: "inherit" });
 const linkFailed = links.status !== 0;
 
-if (mismatches.length || missing.length || magicErrors.length || replacementErrors.length || forbiddenHits.length || linkFailed) {
+if (mismatches.length || missing.length || magicErrors.length || replacementErrors.length || forbiddenHits.length || personalHits.length || linkFailed) {
   process.exit(1);
 }
 

@@ -7,17 +7,21 @@ import heroResearch from "@/assets/illustrations/hero-research.svg";
 import heroWebinar from "@/assets/illustrations/hero-webinar.svg";
 import illMonitor from "@/assets/illustrations/ill-monitor.svg";
 import { BUSINESSES, HOME_UI } from "@/data/privacy-home";
+import { useMonitor } from "@/lib/content/load";
 
 const businessVisuals = [heroResearch, heroWebinar, heroFreePlatform, illMonitor];
 
 export function HomeBusinesses() {
+  const monitor = useMonitor();
   return (
     <section id="businesses" className="bg-white">
       <div className="container-page py-12 md:py-16">
         <h2 className="text-navy">{HOME_UI.businessTitle}</h2>
         <p className="mt-2 text-[16px] text-[#374151]">{HOME_UI.businessLead}</p>
         <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {BUSINESSES.map((item, index) => (
+          {BUSINESSES.map((item, index) => {
+            const status = item.no === "04" && monitor.status ? monitor.status : item.status;
+            return (
             <li
               key={item.no}
               className={`relative flex flex-col overflow-hidden rounded-lg bg-white ${
@@ -36,7 +40,7 @@ export function HomeBusinesses() {
               <div className="relative flex flex-1 flex-col p-5">
               {"highlight" in item && item.highlight ? (
                 <span className="absolute right-3 top-3 rounded-md bg-[#0F766E] px-2 py-1 text-[12px] font-bold text-white">
-                  {item.status}
+                  {status}
                 </span>
               ) : null}
               <div className={`flex items-center gap-3 ${"highlight" in item && item.highlight ? "pr-16" : ""}`}>
@@ -46,7 +50,7 @@ export function HomeBusinesses() {
               <h3 className="mt-3 pr-2 text-[18px] font-bold text-navy">{item.title}</h3>
               <p className="mt-2">
                 <span className="inline-flex rounded-md border border-[#D1D5DB] px-2 py-0.5 text-[12px] font-bold text-[#0B3A6E]">
-                  {item.status}
+                  {status}
                 </span>
               </p>
               <p className="mt-3 line-clamp-2 text-[14px] leading-relaxed text-[#374151]">{item.purpose}</p>
@@ -59,7 +63,8 @@ export function HomeBusinesses() {
               </Link>
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </div>
     </section>

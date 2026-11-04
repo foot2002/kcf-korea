@@ -97,3 +97,105 @@ export async function writeContentFile(input: {
     (body.commit?.sha ? `https://github.com/${CONTENT_REPO}/commit/${body.commit.sha}` : `https://github.com/${CONTENT_REPO}`);
   return { commitUrl };
 }
+
+export type RepoCommit = {
+  sha: string;
+  message: string;
+  author: string;
+  date: string;
+  url: string;
+};
+
+export type DeployLabel = "진행 중" | "완료" | "실패" | "확인 불가";
+
+export async function listCommits(token: string, filePath: string | null, perPage: number): Promise<RepoCommit[]> {
+  const params = new URLSearchParams({ sha: CONTENT_BRANCH, per_page: String(perPage) });
+  if (filePath) params.set("path", filePath);
+  const response = await fetch(`${API}/repos/${CONTENT_REPO}/commits?${params}`, { headers: headers(token) });
+  if (response.status === 404 || response.status === 409) return [];
+  if (!response.ok) throw new Error(await readError(response));
+  const body = (await response.json()) as Array<{
+    sha?: string;
+    html_url?: string;
+    commit?: { message?: string; author?: { name?: string; date?: string } };
+  }>;
+  return body
+    .filter((item) => item.sha)
+    .map((item) => ({
+      sha: item.sha as string,
+      message: (item.commit?.message ?? "").split("\n")[0],
+      author: item.commit?.author?.name ?? "",
+      date: item.commit?.author?.date ?? "",
+      url: item.html_url ?? `https://github.com/${CONTENT_REPO}/commit/${item.sha}`,
+    }));
+}
+
+export async function readContentAt(token: string, fileName: string, ref: string): Promise<string | null> {
+  const response = await fetch(
+    `${API}/repos/${CONTENT_REPO}/contents/public/content/${fileName}?ref=${ref}`,
+    { headers: headers(token) },
+  );
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(await readError(response));
+  const body = (await response.json()) as { content?: string };
+  if (!body.content) return null;
+  return base64ToUtf8(body.content);
+}
+
+export async function latestDeploy(token: string): Promise<{ label: DeployLabel; name: string; url: string }> {
+  const response = await fetch(
+    `${API}/repos/${CONTENT_REPO}/actions/runs?per_page=1&branch=${CONTENT_BRANCH}`,
+    { headers: headers(token) },
+  );
+  if (response.status === 401 || response.status === 403 || response.status === 404) {
+    return { label: "확인 불가", name: "", url: "" };
+  }
+  if (!response.ok) throw new Error(await readError(response));
+  const body = (await response.json()) as {
+    workflow_runs?: Array<{ status?: string; conclusion?: string | null; name?: string; html_url?: string }>;
+  };
+  const run = body.workflow_runs?.[0];
+  if (!run) return { label: "확인 불가", name: "", url: "" };
+  let label: DeployLabel = "진행 중";
+  if (run.status === "completed") label = run.conclusion === "success" ? "완료" : "실패";
+  return { label, name: run.name ?? "", url: run.html_url ?? "" };
+}
+
+export async function uploadRepoFile(input: {
+  token: string;
+  path: string;
+  base64: string;
+  message: string;
+}): Promise<void> {
+  const existing = await fetch(`${API}/repos/${CONTENT_REPO}/contents/${input.path}?ref=${CONTENT_BRANCH}`, {
+    headers: headers(input.token),
+  });
+  let sha: string | undefined;
+  if (existing.ok) {
+    const body = (await existing.json()) as { sha?: string };
+    sha = body.sha;
+  } else if (existing.status !== 404) {
+    throw new Error(await readError(existing));
+  }
+  const response = await fetch(`${API}/repos/${CONTENT_REPO}/contents/${input.path}`, {
+    method: "PUT",
+    headers: headers(input.token, { "Content-Type": "application/json" }),
+    body: JSON.stringify({
+      message: input.message,
+      content: input.base64,
+      branch: CONTENT_BRANCH,
+      sha,
+    }),
+  });
+  if (!response.ok) throw new Error(await readError(response));
+}
+
+export async function fileToBase64(file: File) {
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  let binary = "";
+  const chunk = 0x8000;
+  for (let index = 0; index < bytes.length; index += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunk));
+  }
+  return btoa(binary);
+}

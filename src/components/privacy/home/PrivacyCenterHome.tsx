@@ -7,11 +7,13 @@ import { HomeFlow } from "@/components/privacy/home/HomeFlow";
 import { HomePartners } from "@/components/privacy/home/HomePartners";
 import { HomeQuickMenu } from "@/components/privacy/home/HomeQuickMenu";
 import { HomeSlider } from "@/components/privacy/home/HomeSlider";
+import { usePrivacySlides } from "@/lib/content/slides";
 
 export function PrivacyCenterHome() {
+  const slides = usePrivacySlides();
   return (
     <>
-      <HomeSlider />
+      <HomeSlider slides={slides} />
       <HomeQuickMenu />
       <HomeBusinesses />
       <HomeFlow />

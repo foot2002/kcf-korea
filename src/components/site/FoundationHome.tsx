@@ -18,11 +18,11 @@ import { CountUp } from "@/components/site/CountUp";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { SitePathLink } from "@/components/site/SitePathLink";
 import { useStats } from "@/lib/content/load";
+import { useFoundationSlides } from "@/lib/content/slides";
 import {
   FOUNDATION_PRIVACY_BANNER,
   FOUNDATION_PRIVACY_RIBBON,
   FOUNDATION_PUBLIC_BAND,
-  FOUNDATION_SLIDES,
   businesses,
   coreValues,
   foundation,
@@ -109,9 +109,10 @@ function FoundationHeroShortcuts() {
 
 export function FoundationHome() {
   const stats = useStats();
+  const slides = useFoundationSlides();
   return (
     <>
-      <HomeSlider slides={FOUNDATION_SLIDES} variant="foundation" />
+      <HomeSlider slides={slides} variant="foundation" />
       <FoundationHeroShortcuts />
 
       <section className="border-b border-[#D1D5DB] bg-white">
