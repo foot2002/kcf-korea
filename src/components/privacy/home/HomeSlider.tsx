@@ -1,24 +1,12 @@
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { HomeIcon } from "@/components/privacy/home/icons";
 import { SitePathLink } from "@/components/site/SitePathLink";
-import { HOME_UI, SLIDES } from "@/data/privacy-home";
+import { HOME_UI, SLIDES, type HomeSlide } from "@/data/privacy-home";
 
 const INTERVAL_MS = 6000;
 
-export type HomeSlide = {
-  id: string;
-  eyebrow: string;
-  title: string;
-  body: string;
-  stats?: readonly { value: string; label: string }[];
-  badges?: readonly string[];
-  image?: string;
-  icon?: string;
-  primary: { label: string; to: string; hash?: string };
-  secondary?: { label: string; to: string; hash?: string };
-};
+export type { HomeSlide };
 
 type SliderLabels = {
   carouselLabel: string;
@@ -26,7 +14,6 @@ type SliderLabels = {
   nextSlide: string;
   pause: string;
   play: string;
-  slideMove: string;
   markAlt: string;
 };
 
@@ -34,12 +21,110 @@ function pad(value: number) {
   return String(value).padStart(2, "0");
 }
 
+function imageProps(priority: boolean) {
+  return priority ? ({ fetchPriority: "high" } as const) : ({ loading: "lazy" } as const);
+}
+
+function SlideTitle({ title }: { title: string }) {
+  const lines = title.split("\n");
+  return (
+    <h1 className="hero-slider-title">
+      {lines.map((line, lineIndex) => (
+        <span key={`${lineIndex}-${line}`}>
+          {lineIndex > 0 ? <br /> : null}
+          {line}
+        </span>
+      ))}
+    </h1>
+  );
+}
+
+function SlideCopy({ slide }: { slide: HomeSlide }) {
+  return (
+    <div className="hero-copy">
+      <p className={`hero-eyebrow hero-eyebrow-${slide.eyebrowTone ?? "teal"}`}>{slide.eyebrow}</p>
+      <SlideTitle title={slide.title} />
+      <p className="hero-slider-body">{slide.body}</p>
+      {slide.stats ? (
+        <ul className="hero-stats">
+          {slide.stats.map((stat) => (
+            <li key={stat.label}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <div className="hero-actions">
+        <SitePathLink to={slide.primary.to} hash={slide.primary.hash} className="hero-btn hero-btn-primary">
+          {slide.primary.label}
+        </SitePathLink>
+        {slide.secondary ? (
+          <SitePathLink to={slide.secondary.to} hash={slide.secondary.hash} className="hero-btn hero-btn-secondary">
+            {slide.secondary.label}
+          </SitePathLink>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function VisualMedia({ slide, priority, markAlt }: { slide: HomeSlide; priority: boolean; markAlt: string }) {
+  if (!slide.visual) return null;
+  return (
+    <div className="hero-visual-media">
+      <div className="hero-visual-frame">
+        <img src={slide.visual} alt="" className="hero-visual-img" {...imageProps(priority)} />
+        {slide.chips ? (
+          <ul className="hero-chips">
+            {slide.chips.map((chip, chipIndex) => (
+              <li key={chip} className={chipIndex === 0 ? "hero-chip hero-chip-light" : "hero-chip hero-chip-teal"}>
+                {chip}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {slide.mark ? (
+          <img
+            src={`${import.meta.env.BASE_URL}downloads/sure-mark.png`}
+            alt={markAlt}
+            className="hero-mark"
+            {...imageProps(priority)}
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function SplitMedia({ slide, priority }: { slide: HomeSlide; priority: boolean }) {
+  const art = Boolean(slide.visual) && !slide.photo;
+  return (
+    <div className={art ? "hero-split-media is-art" : "hero-split-media"}>
+      {slide.photo ? <img src={slide.photo} alt="" className="hero-photo" {...imageProps(priority)} /> : null}
+      {art && slide.visual ? <img src={slide.visual} alt="" className="hero-art" {...imageProps(priority)} /> : null}
+      {slide.figures ? (
+        <ul className="hero-figures">
+          {slide.figures.map((figure) => (
+            <li key={figure.label} className={figure.inverse ? "hero-figure is-inverse" : "hero-figure"}>
+              <strong>{figure.value}</strong>
+              <span>{figure.label}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
 export function HomeSlider({
-  slides = SLIDES as readonly HomeSlide[],
+  slides = SLIDES,
   labels = HOME_UI,
+  variant = "privacy",
 }: {
   slides?: readonly HomeSlide[];
   labels?: SliderLabels;
+  variant?: "privacy" | "foundation";
 } = {}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -82,7 +167,9 @@ export function HomeSlider({
 
   return (
     <section
-      className="privacy-hero-dark bg-[#0B3A6E] text-white"
+      className="hero-slider privacy-hero-dark"
+      data-slider-frame
+      data-variant={variant}
       aria-roledescription="carousel"
       aria-label={labels.carouselLabel}
       onMouseEnter={() => setHovered(true)}
@@ -94,99 +181,52 @@ export function HomeSlider({
       }}
       onKeyDown={onKeyDown}
     >
-      <div className="container-page flex flex-col py-8 lg:py-10">
-        <div className="grid flex-1" data-slider-frame>
-          {slides.map((slide, itemIndex) => {
-            const active = itemIndex === index;
-            return (
-              <div
-                key={slide.id}
-                className={`col-start-1 row-start-1 grid items-center gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.65fr)] ${active ? "visible" : "invisible"}`}
-                aria-hidden={active ? undefined : true}
-                inert={active ? undefined : true}
-                aria-roledescription={active ? "slide" : undefined}
-                aria-label={active ? `${itemIndex + 1} / ${total}` : undefined}
-              >
-                <div>
-                  <p className="inline-flex rounded-md bg-[#0F766E] px-2.5 py-1 text-[13px] font-bold text-white">
-                    {slide.eyebrow}
-                  </p>
-                  <h1 className="mt-4 max-w-3xl text-balance text-white">{slide.title}</h1>
-                  <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white">{slide.body}</p>
-                  {slide.stats ? (
-                    <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-                      {slide.stats.map((stat) => (
-                        <li key={stat.label} className="rounded-lg border border-white px-3 py-3">
-                          <p className="text-[22px] font-bold leading-none">{stat.value}</p>
-                          <p className="mt-2 text-[13px] leading-snug text-white">{stat.label}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {slide.badges ? (
-                    <ul className="mt-4 flex flex-wrap gap-2">
-                      {slide.badges.map((badge) => (
-                        <li key={badge} className="rounded-md border border-white px-2.5 py-1 text-[13px] font-semibold">
-                          {badge}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <SitePathLink to={slide.primary.to} hash={slide.primary.hash} className="btn-hero-light">
-                      {slide.primary.label}
-                    </SitePathLink>
-                    {slide.secondary ? (
-                      <SitePathLink to={slide.secondary.to} hash={slide.secondary.hash} className="btn-hero-outline">
-                        {slide.secondary.label}
-                      </SitePathLink>
-                    ) : null}
-                  </div>
-                </div>
-                {slide.image ? (
-                  <div className="hidden justify-center lg:flex">
-                    <div className="flex h-56 w-56 items-center justify-center rounded-lg bg-white p-6">
-                      <img
-                        src={`${import.meta.env.BASE_URL}${slide.image}`}
-                        alt={labels.markAlt}
-                        className="max-h-full w-full object-contain"
-                      />
+      <div className="hero-slider-stage">
+        {slides.map((slide, itemIndex) => {
+          const active = itemIndex === index;
+          const priority = itemIndex === 0;
+          const panel = slide.panel === "teal" ? "#0F766E" : "#0B3A6E";
+          return (
+            <div
+              key={slide.id}
+              className={`hero-slide${active ? " is-active" : ""}${slide.layout === "split" ? " hero-split" : ""}${slide.panel === "teal" ? " is-teal" : ""}`}
+              style={slide.layout === "split" ? ({ "--hero-panel": panel } as React.CSSProperties) : undefined}
+              aria-hidden={active ? undefined : true}
+              inert={active ? undefined : true}
+              aria-roledescription={active ? "slide" : undefined}
+              aria-label={active ? `${itemIndex + 1} / ${total}` : undefined}
+            >
+              {slide.layout === "split" ? (
+                <>
+                  <div className="hero-split-copy">
+                    <div className="hero-split-inner">
+                      <SlideCopy slide={slide} />
                     </div>
                   </div>
-                ) : null}
-                {slide.icon ? (
-                  <div className="hidden justify-center lg:flex" aria-hidden="true">
-                    <HomeIcon name={slide.icon} className="h-40 w-40 stroke-[1.25] text-white/35" />
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
+                  <SplitMedia slide={slide} priority={priority} />
+                </>
+              ) : (
+                <div className="container-page hero-visual">
+                  <SlideCopy slide={slide} />
+                  <VisualMedia slide={slide} priority={priority} markAlt={labels.markAlt} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-        <div className="mt-8 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white text-white hover:bg-white/10"
-            aria-label={labels.prevSlide}
-            onClick={() => move(index - 1)}
-          >
-            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white text-white hover:bg-white/10"
-            aria-label={labels.nextSlide}
-            onClick={() => move(index + 1)}
-          >
-            <ChevronRight className="h-5 w-5" aria-hidden="true" />
-          </button>
-          <p className="px-2 text-[14px] font-bold tabular-nums" aria-hidden="true">
+      <div className="hero-slider-controls">
+        <div className="container-page hero-slider-controls-inner">
+          <p className="hero-counter" aria-hidden="true">
             {pad(index + 1)} / {pad(total)}
           </p>
+          <button type="button" className="hero-ctrl" aria-label={labels.prevSlide} onClick={() => move(index - 1)}>
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          </button>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white text-white hover:bg-white/10"
+            className="hero-ctrl"
             aria-label={stopped ? labels.play : labels.pause}
             aria-pressed={stopped}
             onClick={() => {
@@ -195,16 +235,25 @@ export function HomeSlider({
           >
             {stopped ? <Play className="h-4 w-4" aria-hidden="true" /> : <Pause className="h-4 w-4" aria-hidden="true" />}
           </button>
-          <div className="ml-auto flex items-center gap-2">
+          <button type="button" className="hero-ctrl" aria-label={labels.nextSlide} onClick={() => move(index + 1)}>
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <div className="hero-progress" aria-hidden="true">
+            <span style={{ width: `${((index + 1) / total) * 100}%` }} />
+          </div>
+          <div className="hero-tabs">
             {slides.map((item, itemIndex) => (
               <button
                 key={item.id}
                 type="button"
-                className={`h-3 w-3 rounded-full border border-white ${itemIndex === index ? "bg-white" : "bg-transparent"}`}
-                aria-label={`${itemIndex + 1}${labels.slideMove}`}
+                className={itemIndex === index ? "hero-tab is-active" : "hero-tab"}
+                aria-label={`${itemIndex + 1}번 슬라이드: ${item.tab}`}
                 aria-current={itemIndex === index ? "true" : undefined}
                 onClick={() => move(itemIndex)}
-              />
+              >
+                <span className="hero-tab-bar" aria-hidden="true" />
+                {item.tab}
+              </button>
             ))}
           </div>
         </div>

@@ -1,7 +1,11 @@
 // 한국컨설팅산업재단 콘텐츠 데이터 (KCF)
 // 자료 원문 100% 반영을 위한 단일 소스
 
+import cardConsulting from "@/assets/card-consulting.jpg";
+import cardNbo from "@/assets/card-nbo.jpg";
+import heroFreePlatform from "@/assets/illustrations/hero-free-platform.svg";
 import { HERO } from "@/data/free-platform";
+import type { HomeSlide } from "@/data/privacy-home";
 
 export const foundation = {
   nameKo: "재단법인 한국컨설팅산업재단",
@@ -434,32 +438,54 @@ export const FOUNDATION_PUBLIC_BAND = `재정경제부 지정 공익법인 제${
 
 export const FOUNDATION_PRIVACY_RIBBON = "무상제공 상시 접수";
 
-export const FOUNDATION_SLIDES = [
+const foundationFoundedYear = foundation.founded.slice(0, 4);
+const foundationEducationBadge = heroBadges.find((item) => item.includes("교육수료")) ?? "";
+const foundationEducationValue = foundationEducationBadge.includes("26만") ? "26만+" : foundationEducationBadge;
+
+export const FOUNDATION_SLIDES: readonly HomeSlide[] = [
   {
     id: "foundation",
     eyebrow: "공익법인 (재)한국컨설팅산업재단",
+    eyebrowTone: "navy",
     title: "대한민국 지식서비스산업을 선도하는 공익법인",
     body: "한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여합니다.",
+    tab: "재단 소개",
+    layout: "split",
+    panel: "navy",
+    photo: cardConsulting,
+    figures: [
+      { value: foundationFoundedYear, label: "설립" },
+      { value: foundationEducationValue, label: "교육 수료" },
+      { value: `제${publicInterestCorporation.designationNo}호`, label: "지정 공익법인", inverse: true },
+    ],
     primary: { label: "재단 소개", to: "/about" },
-    icon: "Landmark",
+    secondary: { label: "주요 사업", to: "/business" },
   },
   {
     id: "nbo",
     eyebrow: "NBO 사무국",
+    eyebrowTone: "navy",
     title: "전국상업경진대회 (NBO) 사무국",
     body: "재단은 교육부가 주최하는 전국상업경진대회(NBO: National Business Olympiad)의 공식 재정 사무국을 담당합니다. NBO 대회정관 제11조에 따라, 재단 소속 재정분과 사무부국장이 대회 예산 운영 전반에 관한 대행 업무를 수행합니다.",
+    tab: "NBO 사무국",
+    layout: "split",
+    panel: "navy",
+    photo: cardNbo,
     primary: { label: "자세히 보기", to: "/business", hash: "nbo" },
-    icon: "Trophy",
   },
   {
     id: "privacy",
     eyebrow: "부설 개인정보보호진흥원",
-    title: "정부인증 온라인조사플랫폼 무상제공 · 상시 접수",
+    eyebrowTone: "mint",
+    title: "정부인증 온라인조사플랫폼\n무상제공 · 상시 접수",
     body: HERO.sub,
-    primary: { label: "자세히 보기", to: "/privacy-center/security-services" },
-    icon: "ShieldCheck",
+    tab: "개인정보보호진흥원",
+    layout: "split",
+    panel: "teal",
+    visual: heroFreePlatform,
+    primary: { label: "진흥원으로 이동", to: "/privacy-center" },
   },
-] as const;
+];
 
 export const FOUNDATION_QUICK_MENU = [
   { label: "재단 소개", to: "/about", icon: "Landmark" },

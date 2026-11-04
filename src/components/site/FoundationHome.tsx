@@ -13,18 +13,15 @@ import {
 import { HomeBoard } from "@/components/privacy/home/HomeBoard";
 import { HomeIcon } from "@/components/privacy/home/icons";
 import { HomePartners } from "@/components/privacy/home/HomePartners";
-import { HomeQuickMenu } from "@/components/privacy/home/HomeQuickMenu";
-import { HomeSlider, type HomeSlide } from "@/components/privacy/home/HomeSlider";
+import { HomeSlider } from "@/components/privacy/home/HomeSlider";
 import { CountUp } from "@/components/site/CountUp";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { SitePathLink } from "@/components/site/SitePathLink";
-import { HOME_UI } from "@/data/privacy-home";
 import { useStats } from "@/lib/content/load";
 import {
   FOUNDATION_PRIVACY_BANNER,
   FOUNDATION_PRIVACY_RIBBON,
   FOUNDATION_PUBLIC_BAND,
-  FOUNDATION_QUICK_MENU,
   FOUNDATION_SLIDES,
   businesses,
   coreValues,
@@ -32,6 +29,9 @@ import {
   heroBadges,
   historySummary,
 } from "@/data/kcf";
+import cardConsulting from "@/assets/card-consulting.jpg";
+import cardNbo from "@/assets/card-nbo.jpg";
+import cardYouth from "@/assets/card-youth.jpg";
 import cardValue1 from "@/assets/card-value-1.jpg";
 import cardValue2 from "@/assets/card-value-2.jpg";
 import cardValue3 from "@/assets/card-value-3.jpg";
@@ -60,12 +60,59 @@ const introFacts = [
   { k: "문의 전화", v: foundation.tel, icon: Phone },
 ];
 
+const heroShortcuts = [
+  { slug: "consulting", photo: cardConsulting },
+  { slug: "youth", photo: cardYouth },
+  { slug: "nbo", photo: cardNbo },
+  { slug: "privacy", photo: "" },
+] as const;
+
+function FoundationHeroShortcuts() {
+  return (
+    <nav className="border-b border-[#E2E8F0] bg-white" aria-label="주요 사업 바로가기">
+      <ul className="container-page grid grid-cols-1 gap-3 py-4 md:grid-cols-4">
+        {heroShortcuts.map((item) => {
+          const business = businesses.find((entry) => entry.slug === item.slug);
+          if (!business) return null;
+          const privacy = item.slug === "privacy";
+          return (
+            <li key={item.slug}>
+              <SitePathLink
+                to={privacy ? "/privacy-center" : "/business"}
+                hash={privacy ? undefined : item.slug}
+                className={`flex h-full items-start gap-3 rounded-[8px] bg-white p-3 ${privacy ? "border-2 border-[#0F766E]" : "border border-[#E2E8F0]"}`}
+              >
+                {item.photo ? (
+                  <img src={item.photo} alt="" className="h-16 w-16 shrink-0 rounded-[6px] object-cover" />
+                ) : (
+                  <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[6px] bg-[#E6F4F2]">
+                    <ShieldCheck className="h-7 w-7 text-[#0F766E]" aria-hidden="true" />
+                  </span>
+                )}
+                <span className="min-w-0">
+                  <span className="block text-[16px] font-bold leading-snug text-[#0B3A6E]">{business.name}</span>
+                  <span className="mt-1 block text-[13px] leading-snug text-[#475569]">{business.summary}</span>
+                  {privacy ? (
+                    <span className="mt-1 block text-[13px] font-bold leading-snug text-[#0F766E]">
+                      {FOUNDATION_PRIVACY_BANNER.lines[1]}
+                    </span>
+                  ) : null}
+                </span>
+              </SitePathLink>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
 export function FoundationHome() {
   const stats = useStats();
   return (
     <>
-      <HomeSlider slides={FOUNDATION_SLIDES as readonly HomeSlide[]} labels={HOME_UI} />
-      <HomeQuickMenu items={FOUNDATION_QUICK_MENU} label="재단 바로가기" />
+      <HomeSlider slides={FOUNDATION_SLIDES} variant="foundation" />
+      <FoundationHeroShortcuts />
 
       <section className="border-b border-[#D1D5DB] bg-white">
         <div className="container-page py-12 md:py-16">

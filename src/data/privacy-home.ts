@@ -9,37 +9,72 @@ import partnerLogoMice from "@site-image/logo_mice.png";
 import partnerLogoPco from "@site-image/logo_pco.png";
 import partnerServiceIndustry from "@site-image/logo_서비스산업총연합회.gif";
 import partnerSwict from "@site-image/logo_swict총연합회.gif";
-import { HERO } from "@/data/free-platform";
+import heroFreePlatform from "@/assets/illustrations/hero-free-platform.svg";
+import heroResearch from "@/assets/illustrations/hero-research.svg";
+import heroWebinar from "@/assets/illustrations/hero-webinar.svg";
+import { FREE_PLATFORM, HERO } from "@/data/free-platform";
 
-export const SLIDES = [
+export type HomeSlide = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  body: string;
+  tab: string;
+  layout: "visual" | "split";
+  visual?: string;
+  photo?: string;
+  panel?: "navy" | "teal";
+  eyebrowTone?: "teal" | "navy" | "mint";
+  stats?: readonly { value: string; label: string }[];
+  chips?: readonly string[];
+  mark?: boolean;
+  figures?: readonly { value: string; label: string; inverse?: boolean }[];
+  primary: { label: string; to: string; hash?: string };
+  secondary?: { label: string; to: string; hash?: string };
+};
+
+const csapNumber = FREE_PLATFORM.cert.csap.split(" ")[0];
+const nisChip = FREE_PLATFORM.cert.nisList.includes("도입 가능")
+  ? "국정원 도입 가능 목록 등재"
+  : FREE_PLATFORM.cert.nisList;
+
+export const SLIDES: readonly HomeSlide[] = [
   {
     id: "free-platform",
     eyebrow: HERO.eyebrow,
-    title: HERO.headline,
+    title: HERO.headline.replace(", ", ",\n"),
     body: HERO.sub,
+    tab: "무상제공 상시 접수",
+    layout: "visual",
+    visual: heroFreePlatform,
     stats: HERO.stats,
-    badges: ["CSAP 인증", "국정원 도입 가능 목록"],
+    chips: [`CSAP 인증 · ${csapNumber}`, nisChip],
+    mark: true,
     primary: { label: "무상제공 신청하기", to: "/privacy-center/security-services", hash: "apply" },
     secondary: { label: "실천선언 확인하기", to: "/privacy-center/security-services", hash: "pledge" },
-    image: "downloads/sure-mark.png",
   },
   {
     id: "research",
-    eyebrow: "실태조사 결과",
-    title: "공공기관 1,347곳 전수조사, 개인정보 수집 설문 149건 모두 보안인증 없는 서비스",
-    body: "국회 정무위원회 국정감사(2026. 10. 13.)에서 인용된 조사 결과를 공개합니다.",
+    eyebrow: "실태조사 결과 · 국정감사 인용",
+    title: "공공기관 1,347곳 전수조사\n수집 설문 149건, 모두 보안인증 없어",
+    body: "SURE-CHECK로 공개된 신청·설문 화면을 같은 기준에서 진단했습니다. 문제의 초점은 도구가 아니라 이용 방식입니다.",
+    tab: "실태조사 결과",
+    layout: "visual",
+    visual: heroResearch,
     primary: { label: "조사 결과 보기", to: "/privacy-center/research" },
-    icon: "Search",
+    secondary: { label: "SURE-CHECK 자가진단", to: "/privacy-center/sure-check" },
   },
   {
     id: "webinar",
     eyebrow: "웨비나 다시보기",
-    title: "강화되는 개인정보보호법과 기업·기관의 실전 대응 및 적용",
-    body: "신청 860개 이상 기관·기업. 세션별로 바로 볼 수 있습니다.",
+    title: "강화되는 개인정보보호법과\n기업·기관의 실전 대응",
+    body: "신청 860개 이상 기관·기업. 법률·업무흐름·정보수집·내부협업·시스템DB 다섯 세션을 바로 볼 수 있습니다.",
+    tab: "웨비나 다시보기",
+    layout: "visual",
+    visual: heroWebinar,
     primary: { label: "다시보기", to: "/privacy-center/education" },
-    icon: "PlayCircle",
   },
-] as const;
+];
 
 export const QUICK_MENU = [
   { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply", icon: "FileSignature" },

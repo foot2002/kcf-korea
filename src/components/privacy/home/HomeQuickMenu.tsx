@@ -24,12 +24,12 @@ export function HomeQuickMenu({
             <SitePathLink
               to={item.to}
               hash={"hash" in item ? item.hash : undefined}
-              className="group flex h-full flex-col items-center justify-center gap-2 rounded-lg border border-transparent px-2 py-3 text-center hover:border-[#0F766E]"
+              className="flex h-full flex-col items-center justify-center gap-2 rounded-[8px] border border-[#E2E8F0] px-2 py-[18px] text-center hover:border-[#0F766E] hover:bg-[#F0FAF8]"
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E8EEF6]">
-                <HomeIcon name={item.icon} className="h-5 w-5 text-[#0B3A6E] group-hover:text-[#0F766E]" />
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E6F4F2]">
+                <HomeIcon name={item.icon} className="h-6 w-6 text-[#0F766E]" />
               </span>
-              <span className="text-[14px] font-semibold leading-snug text-[#111827]">{item.label}</span>
+              <span className="text-[15px] font-bold leading-snug text-[#111827]">{item.label}</span>
             </SitePathLink>
           </li>
         ))}
