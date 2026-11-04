@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import { EducationSeries } from "@/components/privacy/EducationSeriesView";
 import { EDUCATION_PAGE } from "@/data/privacy-program";
 
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/privacy-center/education/")({
   component: function EducationPage() {
     return (
       <>
-        <PrivacySubPageHeader title={EDUCATION_PAGE.title} description={EDUCATION_PAGE.description} />
+        <PrivacySubPageHeader title={EDUCATION_PAGE.title} description={EDUCATION_PAGE.description} visual={SUBPAGE_VISUALS.education} />
         <EducationSeries />
       </>
     );

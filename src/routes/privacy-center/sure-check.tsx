@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import { SureSelfCheckLanding } from "@/components/privacy/SureSelfCheckLanding";
 import { OrgNotice } from "@/components/privacy/survey-visuals";
 
@@ -20,8 +21,7 @@ export const Route = createFileRoute("/privacy-center/sure-check")({
           eyebrow="SURE-CHECK"
           title="SURE-CHECK 자가진단"
           description="자동진단은 화면의 안내와 문항을 살피는 도구입니다. 결과만으로 개인정보 유출이나 법 위반을 확인했다고 보지 않습니다."
-          dark
-          visual="services"
+          visual={SUBPAGE_VISUALS.sureCheck}
         />
         <SureSelfCheckLanding />
         <div className="container-page pb-16">

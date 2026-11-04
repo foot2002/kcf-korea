@@ -3,6 +3,7 @@ import { MapPin } from "lucide-react";
 
 import { ContactInquiryForm } from "@/components/contact/ContactInquiryForm";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import {
   CONTACT_MAIL,
   CONTACT_ROWS,
@@ -40,6 +41,7 @@ function ContactPage() {
         eyebrow="Contact"
         title="문의하기"
         description="재단·개인정보보호진흥원 관련 문의를 남겨 주시면 담당자가 확인 후 연락드립니다."
+        visual={SUBPAGE_VISUALS.contact}
       />
 
       <section className="section-y">

@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, FileDown } from "lucide-react";
+import { Building2, ChevronRight, FileDown, FileWarning, Globe } from "lucide-react";
 
 import {
   Accordion,
@@ -9,6 +9,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { PcMiniNav, PcSection } from "@/components/privacy/privacy-ui";
+import { FeatureSplit } from "@/components/site/FeatureSplit";
+import illPolicy from "@/assets/illustrations/ill-policy.svg";
+import illScattered from "@/assets/illustrations/ill-scattered-data.svg";
 import { CountBars, StackedBar } from "@/components/privacy/survey-visuals";
 import { PRESS } from "@/data/free-platform";
 import {
@@ -244,17 +247,23 @@ export function ResearchView() {
               value: `${SURVEY.analyzedOrgs}개 기관 · ${forms}건`,
               label: "결과 통보·분석 대상",
             },
-          ].map((step, index) => (
+          ].map((step, index) => {
+            const Icon = [Building2, Globe, FileWarning][index] ?? Building2;
+            return (
             <div key={step.label} className="contents">
               {index > 0 ? (
                 <ChevronRight className="mx-auto h-5 w-5 rotate-90 text-navy md:rotate-0" aria-hidden="true" />
               ) : null}
               <article className="flex h-full flex-col justify-center rounded-lg border border-[#D1D5DB] bg-white p-4">
+                <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#E6F4F2]">
+                  <Icon className="h-6 w-6 text-[#0F766E]" aria-hidden="true" />
+                </span>
                 <p className="text-[1.5rem] font-bold tabular-nums leading-tight text-navy">{step.value}</p>
                 <p className="mt-2 text-[14px] font-semibold leading-snug text-[#111827]">{step.label}</p>
               </article>
             </div>
-          ))}
+            );
+          })}
         </div>
       </PcSection>
 
@@ -299,7 +308,9 @@ export function ResearchView() {
             <Note>{TOOL_CERT_NOTE}</Note>
           </div>
           <div className="mt-4">
-            <Callout tone="teal">{TOOL_FRAMING}</Callout>
+            <FeatureSplit image={illScattered}>
+              <Callout tone="teal">{TOOL_FRAMING}</Callout>
+            </FeatureSplit>
           </div>
         </div>
 
@@ -418,6 +429,8 @@ export function ResearchView() {
       </PcSection>
 
       <PcSection id="audit" variant="soft">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
         <SectionTitle>국정감사 질의·답변</SectionTitle>
         <p className="mt-3 text-[15px] font-semibold text-[#111827]">
           {AUDIT_META.committee} ({AUDIT_META.date})
@@ -434,6 +447,9 @@ export function ResearchView() {
           />
         </div>
         <p className="mt-4 text-[13px] leading-relaxed text-[#374151]">{AUDIT_META.note}</p>
+          </div>
+          <img src={illPolicy} alt="" aria-hidden="true" loading="lazy" className="mx-auto hidden max-h-[280px] w-auto shrink-0 lg:block" />
+        </div>
       </PcSection>
 
       <PcSection id="policy" variant="white">

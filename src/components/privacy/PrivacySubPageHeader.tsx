@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import type { PrivacyVisual } from "@/components/privacy/privacy-visuals";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import type { SubpageVisual } from "@/components/site/subpage-visuals";
 
 type PrivacySubPageHeaderProps = {
   eyebrow?: string;
@@ -11,7 +11,7 @@ type PrivacySubPageHeaderProps = {
   crumbLabel?: string;
   middleCrumbs?: readonly { label: string; to: string }[];
   dark?: boolean;
-  visual?: PrivacyVisual;
+  visual?: SubpageVisual;
   showLnb?: boolean;
 };
 
@@ -22,6 +22,7 @@ export function PrivacySubPageHeader({
   badge,
   crumbLabel,
   middleCrumbs,
+  visual,
   showLnb = true,
 }: PrivacySubPageHeaderProps) {
   return (
@@ -33,6 +34,7 @@ export function PrivacySubPageHeader({
       badge={badge}
       crumbLabel={crumbLabel}
       middleCrumbs={middleCrumbs}
+      visual={visual}
       showLnb={showLnb}
     />
   );

@@ -2,7 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 import { HomeIcon } from "@/components/privacy/home/icons";
+import heroFreePlatform from "@/assets/illustrations/hero-free-platform.svg";
+import heroResearch from "@/assets/illustrations/hero-research.svg";
+import heroWebinar from "@/assets/illustrations/hero-webinar.svg";
+import illMonitor from "@/assets/illustrations/ill-monitor.svg";
 import { BUSINESSES, HOME_UI } from "@/data/privacy-home";
+
+const businessVisuals = [heroResearch, heroWebinar, heroFreePlatform, illMonitor];
 
 export function HomeBusinesses() {
   return (
@@ -11,19 +17,29 @@ export function HomeBusinesses() {
         <h2 className="text-navy">{HOME_UI.businessTitle}</h2>
         <p className="mt-2 text-[16px] text-[#374151]">{HOME_UI.businessLead}</p>
         <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {BUSINESSES.map((item) => (
+          {BUSINESSES.map((item, index) => (
             <li
               key={item.no}
-              className={`relative flex flex-col rounded-lg bg-white p-5 ${
+              className={`relative flex flex-col overflow-hidden rounded-lg bg-white ${
                 "highlight" in item && item.highlight ? "border-2 border-[#0F766E]" : "border border-[#D1D5DB]"
               }`}
             >
+              <div className="relative aspect-video overflow-hidden bg-[#0B3A6E]">
+                <img
+                  src={businessVisuals[index]}
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-contain"
+                />
+              </div>
+              <div className="relative flex flex-1 flex-col p-5">
               {"highlight" in item && item.highlight ? (
                 <span className="absolute right-3 top-3 rounded-md bg-[#0F766E] px-2 py-1 text-[12px] font-bold text-white">
                   {item.status}
                 </span>
               ) : null}
-              <div className={`flex items-center gap-3 ${"highlight" in item && item.highlight ? "pr-28" : ""}`}>
+              <div className={`flex items-center gap-3 ${"highlight" in item && item.highlight ? "pr-16" : ""}`}>
                 <span className="text-[13px] font-bold text-[#0F766E]">{item.no}</span>
                 <HomeIcon name={item.icon} className="h-5 w-5 text-[#0B3A6E]" />
               </div>
@@ -41,6 +57,7 @@ export function HomeBusinesses() {
                 {HOME_UI.detail}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
+              </div>
             </li>
           ))}
         </ul>

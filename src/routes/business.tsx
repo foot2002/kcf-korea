@@ -2,8 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { absoluteUrl } from "@/lib/site-url";
 import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
+import { FeatureSplit } from "@/components/site/FeatureSplit";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
+import cardConsulting from "@/assets/card-consulting.jpg";
 import cardNbo from "@/assets/card-nbo.jpg";
+import cardYouth from "@/assets/card-youth.jpg";
 
 import consulting1 from "@/assets/card-consulting-1.jpg";
 import consulting2 from "@/assets/card-consulting-2.jpg";
@@ -71,6 +75,7 @@ function BusinessPage() {
         eyebrow="주요 사업"
         title="기업·공공기관·청소년을 잇는 지식서비스 사업"
         description="전국상업경진대회(NBO) 사무국 운영, 기업 컨설팅 교육, 청소년 경영교육의 3대 핵심 사업을 운영합니다."
+        visual={SUBPAGE_VISUALS.business}
       />
 
       <div className="border-b border-[#D1D5DB] bg-white">
@@ -104,27 +109,18 @@ function BusinessPage() {
       {/* NBO */}
       <section id="nbo" className="section-y scroll-mt-40">
         <div className="container-page">
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-            <div>
-              <div className="relative mb-6 overflow-hidden rounded-md border border-[#D1D5DB]">
-                <img
-                  src={cardNbo}
-                  alt="NBO 대회"
-                  loading="lazy"
-                  className="aspect-[16/10] w-full object-cover"
-                />
-              </div>
-              <div className="label-eyebrow">NBO 사무국</div>
-              <h2 className="text-navy">전국상업경진대회 (NBO) 사무국</h2>
-              <p className="mt-5 text-text-secondary leading-relaxed">
-                재단은 교육부가 주최하는 전국상업경진대회(NBO: National Business
-                Olympiad)의 공식 재정 사무국을 담당합니다. NBO 대회정관 제11조에
-                따라, 재단 소속 재정분과 사무부국장이 대회 예산 운영 전반에
-                관한 대행 업무를 수행합니다.
-              </p>
-            </div>
+          <FeatureSplit image={cardNbo} cover>
+            <div className="label-eyebrow">NBO 사무국</div>
+            <h2 className="text-navy">전국상업경진대회 (NBO) 사무국</h2>
+            <p className="mt-5 text-text-secondary leading-relaxed">
+              재단은 교육부가 주최하는 전국상업경진대회(NBO: National Business
+              Olympiad)의 공식 재정 사무국을 담당합니다. NBO 대회정관 제11조에
+              따라, 재단 소속 재정분과 사무부국장이 대회 예산 운영 전반에
+              관한 대행 업무를 수행합니다.
+            </p>
+          </FeatureSplit>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {Object.entries({
                 "주최": nboOverview.host,
                 "주관": nboOverview.organizer,
@@ -139,7 +135,6 @@ function BusinessPage() {
                 </div>
               ))}
             </div>
-          </div>
 
           {/* 종목 */}
           <div className="mt-14">
@@ -214,7 +209,7 @@ function BusinessPage() {
       {/* 기업컨설팅교육 */}
       <section id="consulting" className="section-y bg-[#F5F8FC] border-y border-[#E5E7EB] scroll-mt-40">
         <div className="container-page">
-          <div className="max-w-3xl">
+          <FeatureSplit image={cardConsulting} cover reverse>
             <div className="label-eyebrow">기업 컨설팅 교육</div>
             <h2 className="text-navy">기업컨설팅교육</h2>
             <p className="mt-5 text-text-secondary leading-relaxed">
@@ -222,7 +217,7 @@ function BusinessPage() {
               프로그램을 제공합니다. 현장 실무 중심의 커리큘럼으로 조직의
               경쟁력 강화와 전문 인재 양성을 동시에 지원합니다.
             </p>
-          </div>
+          </FeatureSplit>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {consultingPrograms.map((p, i) => (
@@ -267,7 +262,7 @@ function BusinessPage() {
       {/* 청소년경영교육 */}
       <section id="youth" className="section-y scroll-mt-40">
         <div className="container-page">
-          <div className="max-w-3xl">
+          <FeatureSplit image={cardYouth} cover>
             <div className="label-eyebrow">청소년 경영 교육</div>
             <h2 className="text-navy">청소년경영교육</h2>
             <p className="mt-5 text-text-secondary leading-relaxed">
@@ -276,7 +271,7 @@ function BusinessPage() {
               지원합니다. 특성화고 및 일반고 학생 대상의 진로·취업·창업 연계
               교육을 통해 학교 현장과 산업 현장을 잇는 교육 생태계를 구축합니다.
             </p>
-          </div>
+          </FeatureSplit>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {youthPrograms.map((p, i) => (

@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, ChevronRight, FileDown, Info } from "lucide-react";
+import { BarChart3, ChevronDown, ChevronRight, FileDown, FileText, Handshake, Info, KeyRound, PenLine, ShieldCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { PartnerLogoGrid } from "@/components/privacy/home/HomePartners";
+import { FeatureSplit } from "@/components/site/FeatureSplit";
+import illOrgAccount from "@/assets/illustrations/ill-org-account.svg";
+import illPledge from "@/assets/illustrations/ill-pledge.svg";
+import illScattered from "@/assets/illustrations/ill-scattered-data.svg";
 import { usePledges } from "@/lib/content/load";
 import { PcMiniNav } from "@/components/privacy/privacy-ui";
 import {
@@ -324,14 +328,18 @@ export function SecurityServicesView() {
 
           <div className="mt-10">
             <h3 className="text-[1.2rem] font-bold text-navy">{GAP.title}</h3>
-            <ul className="mt-4 grid gap-3 md:grid-cols-3">
-              {GAP.items.map((item) => (
-                <li key={item.title} className="rounded-md border border-[#D1D5DB] bg-white p-4">
-                  <h4 className="font-bold text-navy">{item.title}</h4>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#374151]">{item.body}</p>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-4">
+              <FeatureSplit image={illScattered}>
+                <ul className="grid gap-3">
+                  {GAP.items.map((item) => (
+                    <li key={item.title} className="rounded-md border border-[#D1D5DB] bg-white p-4">
+                      <h4 className="font-bold text-navy">{item.title}</h4>
+                      <p className="mt-2 text-[14px] leading-relaxed text-[#374151]">{item.body}</p>
+                    </li>
+                  ))}
+                </ul>
+              </FeatureSplit>
+            </div>
             <p className="mt-4 text-[16px] font-bold leading-relaxed text-[#0F766E]">{GAP.purpose}</p>
           </div>
         </div>
@@ -353,15 +361,27 @@ export function SecurityServicesView() {
             <DisclaimerNote />
           </div>
 
+          <div className="mt-10">
+            <FeatureSplit image={illOrgAccount} reverse>
+              <p className="text-[18px] font-bold leading-relaxed text-navy">{FEATURES[2].body}</p>
+            </FeatureSplit>
+          </div>
+
           <ol className="mt-10 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            {FEATURES.map((feature) => (
+            {FEATURES.map((feature, index) => {
+              const Icon = [PenLine, ShieldCheck, Users, BarChart3][index] ?? PenLine;
+              return (
               <li key={feature.no} className="rounded-md border border-[#D1D5DB] bg-white p-5">
-                <p className="text-[13px] font-bold text-[#0F766E]">{feature.no}</p>
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#E6F4F2]">
+                  <Icon className="h-7 w-7 text-[#0F766E]" aria-hidden="true" />
+                </span>
+                <p className="mt-3 text-[13px] font-bold text-[#0F766E]">{feature.no}</p>
                 <h3 className="mt-2 text-[18px] font-bold text-navy">{feature.title}</h3>
                 <p className="mt-1 text-[14px] font-semibold text-[#111827]">{feature.sub}</p>
                 <p className="mt-2 text-[14px] leading-relaxed text-[#374151]">{feature.body}</p>
               </li>
-            ))}
+              );
+            })}
           </ol>
 
           {REFERENCES.published ? (
@@ -405,7 +425,10 @@ export function SecurityServicesView() {
 
       <section id="pledge" className="scroll-mt-40 border-t border-[#D1D5DB] bg-[#F3F4F6]">
         <div className="container-page py-12 md:py-16">
-          <h2 className="text-navy">{PLEDGE.title}</h2>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <h2 className="text-navy">{PLEDGE.title}</h2>
+            <img src={illPledge} alt="" aria-hidden="true" loading="lazy" className="mx-auto hidden max-h-[320px] w-auto lg:block" />
+          </div>
           <div className="mt-6">
             <PledgeBlock />
           </div>
@@ -416,10 +439,17 @@ export function SecurityServicesView() {
         <div className="container-page py-12 md:py-16">
           <h2 className="text-navy">{FREE_PLATFORM_PAGE.applyTitle}</h2>
           <ol className="mt-6 grid gap-3 md:grid-cols-4">
-            {APPLY.steps.map((step, index) => (
+            {APPLY.steps.map((step, index) => {
+              const Icon = [FileText, PenLine, Handshake, KeyRound][index] ?? FileText;
+              return (
               <li key={step.no} className="relative flex flex-col">
                 <article className="h-full rounded-md border border-[#D1D5DB] bg-white p-4">
-                  <p className="text-[13px] font-bold text-[#0F766E]">{step.no}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3A6E] text-[13px] font-bold text-white">
+                      {step.no}
+                    </span>
+                    <Icon className="h-5 w-5 text-[#0B3A6E]" aria-hidden="true" />
+                  </div>
                   <h3 className="mt-2 text-[16px] font-bold text-navy">{step.title}</h3>
                   <p className="mt-2 text-[14px] leading-relaxed text-[#374151]">{step.body}</p>
                 </article>
@@ -432,7 +462,8 @@ export function SecurityServicesView() {
                   </>
                 ) : null}
               </li>
-            ))}
+              );
+            })}
           </ol>
 
           <p className="mt-6 text-[15px] font-semibold text-[#111827]">
@@ -441,14 +472,23 @@ export function SecurityServicesView() {
             {FREE_PLATFORM_PAGE.submitPrefix} {APPLY.submit}
           </p>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {DOWNLOADS.map((item) => (
-              <a key={item.file} className="btn-secondary-kcf" href={fileHref(item.file)} download>
-                <FileDown className="h-4 w-4" aria-hidden="true" />
-                {item.label}
-              </a>
-            ))}
-          </div>
+          <ul className="mt-6 grid gap-3 lg:grid-cols-3">
+            {DOWNLOADS.map((item) => {
+              const badge = item.file.toLowerCase().endsWith(".pdf") ? "PDF" : "DOCX";
+              return (
+                <li key={item.file} className="flex items-center gap-3 rounded-md border border-[#D1D5DB] bg-white p-3">
+                  <span className="flex h-20 w-16 shrink-0 flex-col items-center justify-center rounded-md border border-[#D1D5DB] bg-white">
+                    <FileText className="h-8 w-8 text-[#0B3A6E]" aria-hidden="true" />
+                    <span className="mt-1 rounded-sm bg-[#E8EEF6] px-1.5 py-0.5 text-[11px] font-bold text-[#0B3A6E]">{badge}</span>
+                  </span>
+                  <a className="btn-secondary-kcf" href={fileHref(item.file)} download>
+                    <FileDown className="h-4 w-4" aria-hidden="true" />
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
 
           <a href={APPLY.mailto} className="btn-primary-kcf mt-6">
             {FREE_PLATFORM_PAGE.emailSubmit}

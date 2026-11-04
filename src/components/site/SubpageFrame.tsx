@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, Link2, Printer } from "lucide-react";
 
 import { isNavHrefCurrent, lnbForPath } from "@/data/site-nav";
+import type { SubpageVisual } from "@/components/site/subpage-visuals";
 
 type SubpageFrameProps = {
   eyebrow?: string;
@@ -14,6 +15,7 @@ type SubpageFrameProps = {
   middleCrumbs?: readonly { label: string; to: string }[];
   showLnb?: boolean;
   area: "foundation" | "privacy";
+  visual?: SubpageVisual;
 };
 
 export function SubpageFrame({
@@ -25,6 +27,7 @@ export function SubpageFrame({
   middleCrumbs,
   showLnb = true,
   area,
+  visual,
 }: SubpageFrameProps) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const hash = useRouterState({ select: (s) => s.location.hash });
@@ -52,21 +55,42 @@ export function SubpageFrame({
 
   return (
     <div className="contents">
-      <section className="subvisual bg-[var(--site-accent)] text-white">
-        <div className="container-page flex min-h-40 flex-col justify-center py-8">
-          {eyebrow ? (
-            <p className="text-[13px] font-semibold tracking-wide text-[#E8EEF6]">{eyebrow}</p>
-          ) : null}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <h1 className="text-white">{title}</h1>
-            {badge ? (
-              <p className="inline-flex items-center rounded-md bg-[#E6F4F2] px-2.5 py-1 text-[13px] font-bold leading-none text-[#0F766E]">
-                {badge}
-              </p>
+      <section className={`subvisual bg-[#0B3A6E] text-white${visual ? " has-visual" : ""}`}>
+        {visual?.kind === "photo" ? (
+          <img src={visual.src} alt="" aria-hidden="true" className="subvisual-photo" />
+        ) : null}
+        <div className="container-page subvisual-inner">
+          <div className={`subvisual-copy${visual?.kind === "photo" ? " is-photo" : ""}`}>
+            {eyebrow ? (
+              <p className="text-[13px] font-semibold tracking-wide text-[#E8EEF6]">{eyebrow}</p>
+            ) : null}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <h1 className="text-white">{title}</h1>
+              {badge ? (
+                <p className="inline-flex items-center rounded-md bg-[#E6F4F2] px-2.5 py-1 text-[13px] font-bold leading-none text-[#0F766E]">
+                  {badge}
+                </p>
+              ) : null}
+            </div>
+            {description ? (
+              <p className="mt-2 max-w-3xl text-[16px] leading-[1.7] text-[#E8EEF6]">{description}</p>
             ) : null}
           </div>
-          {description ? (
-            <p className="mt-2 max-w-3xl text-[16px] leading-[1.7] text-[#E8EEF6]">{description}</p>
+          {visual && visual.kind !== "photo" ? (
+            <div className="subvisual-art">
+              {visual.kind === "hero" ? (
+                <img src={visual.src} alt="" aria-hidden="true" className="subvisual-hero" />
+              ) : (
+                <span className="subvisual-circle">
+                  <img
+                    src={visual.src}
+                    alt={visual.kind === "mark" ? visual.alt : ""}
+                    aria-hidden={visual.kind === "mark" ? undefined : true}
+                    className="subvisual-circle-img"
+                  />
+                </span>
+              )}
+            </div>
           ) : null}
         </div>
       </section>

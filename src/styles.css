@@ -1180,6 +1180,54 @@ html.js-reveal .reveal-stagger.is-visible > * {
 }
 
 .subvisual h1 { color: #ffffff; }
+.subvisual { position: relative; overflow: hidden; }
+.subvisual-inner { display: flex; min-height: 10rem; flex-direction: column; justify-content: center; padding-block: 2rem; }
+.subvisual-art,
+.subvisual-photo { display: none; }
+.subvisual-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+.subvisual-circle-img { width: 148px; height: 148px; object-fit: contain; }
+.subvisual-hero { display: block; max-height: 200px; width: auto; }
+.cert-thumb { transition: transform 0.35s ease; }
+article:hover .cert-thumb { transform: scale(1.02); }
+@media (min-width: 1024px) {
+  .subvisual.has-visual { height: 220px; }
+  .subvisual.has-visual .subvisual-inner {
+    min-height: 0;
+    height: 100%;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0;
+  }
+  .subvisual.has-visual .subvisual-copy { padding-block: 1.25rem; }
+  .subvisual-copy.is-photo { max-width: 56%; }
+  .subvisual-art { display: flex; align-items: flex-end; height: 100%; margin-left: auto; }
+  .subvisual-photo {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cert-thumb,
+  article:hover .cert-thumb {
+    transform: none;
+    transition: none;
+  }
+}
 .subpage-tool {
   display: inline-flex;
   align-items: center;

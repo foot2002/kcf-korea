@@ -3,15 +3,18 @@ import {
   Check,
   ChevronDown,
   ChevronRight,
+  ClipboardList,
+  FileBarChart,
   FileText,
+  Globe,
   Info,
-  Megaphone,
-  Monitor,
-  ScrollText,
+  Newspaper,
 } from "lucide-react";
 import { FormEvent, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 import { PcMiniNav } from "@/components/privacy/privacy-ui";
+import { FeatureSplit } from "@/components/site/FeatureSplit";
+import illCertificate from "@/assets/illustrations/ill-certificate.svg";
 import {
   certDownloadName,
   displayRule,
@@ -28,7 +31,7 @@ import {
 } from "@/data/sure-mark";
 import { useInstitutions } from "@/lib/content/load";
 
-const USAGE_ICONS = [Monitor, FileText, Megaphone, ScrollText] as const;
+const USAGE_ICONS = [ClipboardList, Globe, Newspaper, FileBarChart] as const;
 
 function fileHref(file: string) {
   return `${import.meta.env.BASE_URL}${file}`;
@@ -88,14 +91,18 @@ function InstitutionCard({ item }: { item: Institution }) {
   const [src, setSrc] = useState(fileHref(thumb));
 
   return (
-    <article className="flex h-full flex-col rounded-md border border-[#D1D5DB] bg-white p-4">
-      <img
-        src={src}
-        alt={`${item.name} ${SURE_MARK_PAGE.certAltSuffix}`}
-        className="aspect-[210/297] w-full rounded-md border border-[#D1D5DB] bg-white object-contain"
-        onError={() => setSrc(fileHref(SURE_MARK.logo))}
-      />
-      <div className="mt-4 flex flex-wrap items-start justify-between gap-2">
+    <article className="flex h-full flex-col overflow-hidden rounded-md border border-[#D1D5DB] bg-white">
+      <div className="overflow-hidden border-b border-[#D1D5DB] bg-white">
+        <img
+          src={src}
+          alt={`${item.name} ${SURE_MARK_PAGE.certAltSuffix}`}
+          loading="lazy"
+          className="cert-thumb aspect-[210/297] w-full bg-white object-contain"
+          onError={() => setSrc(fileHref(SURE_MARK.logo))}
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-wrap items-start justify-between gap-2">
         <h3 className="text-[17px] font-bold text-navy">{item.name}</h3>
         <span className={`inline-flex rounded-md px-2 py-1 text-[12px] font-bold ${statusClass(item.status)}`}>
           {item.status}
@@ -114,6 +121,7 @@ function InstitutionCard({ item }: { item: Institution }) {
         <a className="btn-primary-kcf" href={href} download={certDownloadName(item.name)}>
           {SURE_MARK_PAGE.download}
         </a>
+      </div>
       </div>
     </article>
   );
@@ -233,7 +241,11 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
 
       <Section id="excellence" tone="soft">
         <h2 className="text-navy">{SURE_MARK_PAGE.excellenceTitle}</h2>
-        <p className="mt-4 max-w-3xl text-[16px] leading-relaxed text-[#374151]">{EXCELLENCE.purpose}</p>
+        <div className="mt-4">
+          <FeatureSplit image={illCertificate}>
+            <p className="text-[16px] leading-relaxed text-[#374151]">{EXCELLENCE.purpose}</p>
+          </FeatureSplit>
+        </div>
         <ol className="mt-8 flex flex-col gap-2 md:flex-row md:items-stretch">
           {EXCELLENCE.flow.map((step, index) => {
             const body = (
@@ -349,7 +361,9 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
             const Icon = USAGE_ICONS[index] ?? FileText;
             return (
               <li key={item.title} className="rounded-md border border-[#D1D5DB] bg-white p-4">
-                <Icon className="h-5 w-5 text-navy" aria-hidden="true" />
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E6F4F2]">
+                  <Icon className="h-6 w-6 text-[#0F766E]" aria-hidden="true" />
+                </span>
                 <h4 className="mt-2 font-bold text-navy">{item.title}</h4>
                 <p className="mt-2 text-[14px] leading-relaxed text-[#374151]">{item.body}</p>
               </li>

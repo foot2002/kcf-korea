@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { absoluteUrl } from "@/lib/site-url";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import {
   Accordion,
   AccordionContent,
@@ -16,7 +17,7 @@ import {
   partnerLogos,
   certifications,
 } from "@/data/kcf";
-import { Award, BookOpen } from "lucide-react";
+import { Award, BookOpen, Building2, GraduationCap, Library, Users } from "lucide-react";
 import cardTeacher from "@/assets/card-teacher.jpg";
 import cardCorporate from "@/assets/card-corporate.jpg";
 import cardYouth from "@/assets/card-youth.jpg";
@@ -47,19 +48,23 @@ function AchievementsPage() {
         eyebrow="실적·자료"
         title="26만명 이상이 경험한 KCF의 교육·컨설팅 실적"
         description="2006년부터 현재까지 청소년, 단체, 기업, 지자체, 대학교, 교사·교육공무원을 대상으로 축적해 온 실적입니다."
+        visual={SUBPAGE_VISUALS.achievements}
       />
 
       {/* Top stats */}
       <section className="border-b border-border bg-blue-gray">
         <div className="container-page py-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { v: "260,000+", l: "누적 교육수료" },
-            { v: "20,000+", l: "연간 진로·취업·창업 연수" },
-            { v: "17", l: "협력 시·도 교육청" },
-            { v: "200+", l: "교보재 보유" },
+            { v: "260,000+", l: "누적 교육수료", icon: GraduationCap },
+            { v: "20,000+", l: "연간 진로·취업·창업 연수", icon: Users },
+            { v: "17", l: "협력 시·도 교육청", icon: Building2 },
+            { v: "200+", l: "교보재 보유", icon: Library },
           ].map((s) => (
             <div key={s.l} className="rounded-md border border-[#D1D5DB] bg-white p-6">
-              <div className="text-[30px] font-bold text-navy leading-none">{s.v}</div>
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E8EEF6]">
+                <s.icon className="h-6 w-6 text-[#0B3A6E]" aria-hidden="true" />
+              </span>
+              <div className="mt-4 text-[30px] font-bold text-navy leading-none">{s.v}</div>
               <div className="mt-2 text-[14px] text-text-secondary">{s.l}</div>
             </div>
           ))}

@@ -8,7 +8,21 @@ export function HomeExcellenceBanner() {
   const published = useInstitutions().filter((item) => item.published).slice(0, 7);
   return (
     <aside className="rounded-lg border border-[#D1D5DB] bg-white p-5">
-      <div className="flex items-center gap-3">
+      <div className="flex items-start gap-4">
+        <div className="relative h-[108px] w-[96px] shrink-0" aria-hidden="true">
+          {published.slice(0, 3).map((item, index) => (
+            <img
+              key={item.certNo}
+              src={`${import.meta.env.BASE_URL}downloads/certificates/thumbs/${item.certNo}.png`}
+              alt=""
+              loading="lazy"
+              className="absolute top-1 h-[96px] w-[68px] rounded-[4px] border border-[#D1D5DB] bg-white object-cover"
+              style={{ left: index * 14, transform: `rotate(${[-6, 0, 6][index]}deg)`, zIndex: index + 1 }}
+            />
+          ))}
+        </div>
+        <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-3">
         <img
           src={`${import.meta.env.BASE_URL}${SURE_MARK.logo}`}
           alt={HOME_UI.markAlt}
@@ -35,6 +49,8 @@ export function HomeExcellenceBanner() {
         <Link to={HOME_UI.excellenceTo} hash="verify" className="btn-secondary-kcf">
           {HOME_UI.verifyCert}
         </Link>
+      </div>
+        </div>
       </div>
     </aside>
   );

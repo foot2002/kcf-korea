@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
+import cardValue1 from "@/assets/card-value-1.jpg";
+import cardValue2 from "@/assets/card-value-2.jpg";
+import cardValue3 from "@/assets/card-value-3.jpg";
+import cardValue4 from "@/assets/card-value-4.jpg";
 import { absoluteUrl } from "@/lib/site-url";
 import { coreValues, generalInfo, foundation } from "@/data/kcf";
 import { Building2, Target, Eye } from "lucide-react";
@@ -29,6 +34,7 @@ function AboutPage() {
         eyebrow="재단 소개"
         title="컨설팅을 통해 지식산업의 성장을 이끕니다"
         description="2010년 설립 이후 한국컨설팅산업재단은 컨설팅 산업 육성, 기업 경쟁력 강화, 미래 인재 양성을 통해 국가 지식경제 발전에 기여하고 있습니다."
+        visual={SUBPAGE_VISUALS.about}
       />
 
       {/* 재단 개요 */}
@@ -92,6 +98,13 @@ function AboutPage() {
             <div className="label-eyebrow">비전 · 미션</div>
             <h2 className="text-navy">비전 · 미션 · 핵심가치</h2>
           </div>
+          <ul className="mt-8 grid grid-cols-2 gap-3">
+            {[cardValue1, cardValue2, cardValue3, cardValue4].map((src) => (
+              <li key={src} className="overflow-hidden rounded-[8px]">
+                <img src={src} alt="" aria-hidden="true" loading="lazy" className="aspect-[4/3] max-h-[220px] w-full object-cover" />
+              </li>
+            ))}
+          </ul>
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
             <div className="kcf-card !bg-navy !border-navy text-white">
               <Eye className="h-7 w-7 text-accent-teal" strokeWidth={1.75} />

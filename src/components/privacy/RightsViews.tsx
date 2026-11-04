@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { ApplyFrame, Field, applyInput } from "@/components/privacy/apply-ui";
 import { PrivacyConsentBlock } from "@/components/privacy/PrivacyConsentBlock";
 import { PcMiniNav, PcSection } from "@/components/privacy/privacy-ui";
+import { FeatureSplit } from "@/components/site/FeatureSplit";
+import illMonitor from "@/assets/illustrations/ill-monitor.svg";
 import {
   DATA_SUBJECT_RIGHTS,
   KOREA_REGIONS,
@@ -36,6 +38,11 @@ export function RightsView() {
       <PcMiniNav items={MONITOR_PAGE.nav} />
       <Section id={about.id}>
         <h2 className="text-navy">{about.label}</h2>
+        <div className="mt-6">
+          <FeatureSplit image={illMonitor}>
+            <p className="text-[16px] leading-relaxed text-[#374151]">{MONITOR_PAGE.lead}</p>
+          </FeatureSplit>
+        </div>
         <ul className="mt-6 grid gap-4 md:grid-cols-3">
           {MONITOR_PAGE.about.map((item) => (
             <li key={item.title} className="rounded-md border border-[#D1D5DB] bg-white p-5">

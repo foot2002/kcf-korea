@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import { SecurityServicesView } from "@/components/privacy/SecurityServicesView";
 import { FREE_PLATFORM_PAGE, HERO } from "@/data/free-platform";
 import { PRIVACY_CENTER_PAGES } from "@/data/privacy-center";
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/privacy-center/security-services")({
           title={FREE_PLATFORM_PAGE.title}
           description={FREE_PLATFORM_PAGE.description}
           badge={FREE_PLATFORM_PAGE.badge}
+          visual={SUBPAGE_VISUALS.security}
           crumbLabel={toolChild?.label}
           middleCrumbs={
             toolGroup

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import { absoluteUrl } from "@/lib/site-url";
 import { historyFull } from "@/data/kcf";
 
@@ -49,6 +50,7 @@ function HistoryPage() {
         eyebrow="연혁"
         title="2010년부터 이어온 KCF의 발자취"
         description="설립 이후 컨설팅·교육·개인정보보호·NBO 사무국 운영 등 다양한 영역에서 축적해 온 재단의 주요 연혁입니다."
+        visual={SUBPAGE_VISUALS.history}
       />
 
       <section className="border-b border-[#D1D5DB] bg-white">
