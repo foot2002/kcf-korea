@@ -207,7 +207,7 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
   const selectedOn = published[0] ? formatSelectedAt(published[0].selectedAt) : "";
 
   return (
-    <>
+    <div className="min-w-0">
       <div className="border-b border-[#D1D5DB] bg-white">
         <div className="container-page py-3">
           <Link to="/privacy-center/security-services" className="text-[15px] font-bold text-navy underline">
@@ -215,9 +215,7 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
           </Link>
         </div>
       </div>
-      <div className="contents">
-        <PcMiniNav items={SURE_MARK_PAGE.nav} />
-      </div>
+      <PcMiniNav items={SURE_MARK_PAGE.nav} />
 
       <Section id="mark">
         <div className="grid items-center gap-8 rounded-md border border-[#D1D5DB] bg-white p-5 md:grid-cols-[240px_minmax(0,1fr)] md:p-8">
@@ -415,6 +413,6 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
           </Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }

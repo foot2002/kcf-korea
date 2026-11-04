@@ -229,10 +229,8 @@ export function SecurityServicesView() {
     if (hash === "#criteria" || hash === "#partners") setCriteriaOpen(true);
   }, []);
   return (
-    <>
-      <div className="contents">
-        <PcMiniNav items={FREE_PLATFORM_PAGE.nav} />
-      </div>
+    <div className="min-w-0">
+      <PcMiniNav items={FREE_PLATFORM_PAGE.nav} />
 
       <section id="about" className="scroll-mt-40 bg-white">
         <div className="container-page py-12 md:py-16">
@@ -597,6 +595,6 @@ export function SecurityServicesView() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

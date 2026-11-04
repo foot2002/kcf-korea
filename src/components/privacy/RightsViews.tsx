@@ -34,7 +34,7 @@ export function RightsView() {
   const preApply = MONITOR_PAGE.nav[2];
   const rules = MONITOR_PAGE.nav[3];
   return (
-    <>
+    <div className="min-w-0">
       <PcMiniNav items={MONITOR_PAGE.nav} />
       <Section id={about.id}>
         <h2 className="text-navy">{about.label}</h2>
@@ -118,7 +118,7 @@ export function RightsView() {
           </div>
         </details>
       </Section>
-    </>
+    </div>
   );
 }
 

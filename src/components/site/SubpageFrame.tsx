@@ -1,10 +1,94 @@
-import type { ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useState } from "react";
-import { Check, Link2, Printer } from "lucide-react";
+import {
+  Award,
+  BarChart3,
+  BookOpen,
+  Briefcase,
+  Building2,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Download,
+  Eye,
+  FileCheck,
+  FileText,
+  Flag,
+  GraduationCap,
+  Handshake,
+  History,
+  House,
+  Info,
+  Landmark,
+  LayoutGrid,
+  Link2,
+  List,
+  ListChecks,
+  Megaphone,
+  Newspaper,
+  Play,
+  Printer,
+  Rss,
+  Scale,
+  ScanSearch,
+  Search,
+  ShieldCheck,
+  Target,
+  Trophy,
+  UserPlus,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 
-import { isNavHrefCurrent, lnbForPath } from "@/data/site-nav";
+import { privacyOffice } from "@/data/kcf";
+import {
+  FOUNDATION_NAV,
+  PRIVACY_NAV,
+  childHref,
+  isNavHrefCurrent,
+  isNavItemActive,
+  type SiteNavItem,
+} from "@/data/site-nav";
 import type { SubpageVisual } from "@/components/site/subpage-visuals";
+
+const LNB_ICONS: Record<string, LucideIcon> = {
+  Award,
+  BarChart3,
+  BookOpen,
+  Briefcase,
+  Building2,
+  Download,
+  Eye,
+  FileCheck,
+  FileText,
+  Flag,
+  GraduationCap,
+  Handshake,
+  History,
+  Info,
+  Landmark,
+  LayoutGrid,
+  List,
+  ListChecks,
+  Megaphone,
+  Newspaper,
+  Play,
+  Rss,
+  Scale,
+  ScanSearch,
+  Search,
+  ShieldCheck,
+  Target,
+  Trophy,
+  UserPlus,
+  Users,
+};
+
+function NavGlyph({ name, className }: { name?: string; className?: string }) {
+  const Icon = name ? LNB_ICONS[name] : undefined;
+  if (!Icon) return null;
+  return <Icon className={className} aria-hidden="true" strokeWidth={1.75} />;
+}
 
 type SubpageFrameProps = {
   eyebrow?: string;
@@ -18,6 +102,85 @@ type SubpageFrameProps = {
   visual?: SubpageVisual;
 };
 
+function normalizeHash(hash: string) {
+  return hash.replace(/^#/, "");
+}
+
+function LnbLinks({
+  nav,
+  pathname,
+  hash,
+  onNavigate,
+}: {
+  nav: SiteNavItem[];
+  pathname: string;
+  hash: string;
+  onNavigate?: () => void;
+}) {
+  return (
+    <ul className="lnb-list">
+      {nav.map((item) => {
+        const childCurrent = item.children?.some((child) =>
+          isNavHrefCurrent(pathname, hash, childHref(item.to, child)),
+        );
+        const sectionCurrent = isNavItemActive(pathname, item);
+        const selfCurrent = isNavHrefCurrent(pathname, hash, item.to) && !childCurrent;
+        const compact = item.label.length >= 10 || Boolean(item.badge && item.label.length >= 8);
+        const tight = item.label.length >= 14;
+        return (
+          <li key={item.to}>
+            <a
+              href={item.to}
+              aria-current={selfCurrent ? "page" : undefined}
+              title={item.label}
+              onClick={onNavigate}
+              className={[
+                "lnb-link",
+                sectionCurrent ? "is-current" : "",
+                compact ? "is-compact" : "",
+                tight ? "is-tight" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <NavGlyph name={item.icon} className="lnb-ico" />
+              <span className="lnb-label">{item.label}</span>
+              {item.badge ? <span className="lnb-badge">{item.badge}</span> : null}
+              <ChevronRight className="lnb-chev" aria-hidden="true" />
+            </a>
+            {item.children?.length ? (
+              <ul className="lnb-sublist">
+                {item.children.map((child) => {
+                  const href = childHref(item.to, child);
+                  const current = isNavHrefCurrent(pathname, hash, href);
+                  const subCompact = child.label.length >= 12;
+                  return (
+                    <li key={href}>
+                      <a
+                        href={href}
+                        aria-current={current ? "page" : undefined}
+                        title={child.label}
+                        onClick={onNavigate}
+                        className={["lnb-sub", current ? "is-current" : "", subCompact ? "is-compact" : ""]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        {current ? <span className="lnb-dot" aria-hidden="true" /> : null}
+                        <span className="lnb-label">{child.label}</span>
+                        {child.badge ? <span className="lnb-badge">{child.badge}</span> : null}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 export function SubpageFrame({
   eyebrow,
   title,
@@ -30,12 +193,52 @@ export function SubpageFrame({
   visual,
 }: SubpageFrameProps) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const hash = useRouterState({ select: (s) => s.location.hash });
+  const hash = normalizeHash(useRouterState({ select: (s) => s.location.hash }));
   const [copied, setCopied] = useState(false);
-  const items = lnbForPath(pathname, area);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
+  const menuRootRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+  const nav = area === "privacy" ? PRIVACY_NAV : FOUNDATION_NAV;
+  const currentTop = nav.find((item) => isNavItemActive(pathname, item)) ?? nav[0];
   const crumbTitle = crumbLabel ?? (typeof title === "string" ? title : "현재 페이지");
-  const currentHref =
-    items.find((item) => isNavHrefCurrent(pathname, hash, item.href))?.href ?? items[0]?.href ?? "";
+  const orgLabel = area === "privacy" ? "개인정보보호진흥원" : "한국컨설팅산업재단";
+
+  let currentLeaf = { label: currentTop?.label ?? "", icon: currentTop?.icon };
+  for (const item of nav) {
+    const child = item.children?.find((entry) => isNavHrefCurrent(pathname, hash, childHref(item.to, entry)));
+    if (child) {
+      currentLeaf = { label: child.label, icon: child.icon ?? item.icon };
+      break;
+    }
+    if (!item.children?.length && isNavItemActive(pathname, item)) {
+      currentLeaf = { label: item.label, icon: item.icon };
+      break;
+    }
+  }
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname, hash]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onKey(event: globalThis.KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    }
+    function onPointer(event: PointerEvent) {
+      if (!menuRootRef.current?.contains(event.target as Node)) setMenuOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [menuOpen]);
 
   async function copyLink() {
     const url = window.location.href;
@@ -51,6 +254,29 @@ export function SubpageFrame({
     }
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
+  }
+
+  function onMenuButtonKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setMenuOpen(true);
+      window.requestAnimationFrame(() => {
+        menuPanelRef.current?.querySelector("a")?.focus();
+      });
+    }
+  }
+
+  function onMenuPanelKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const links = [...(menuPanelRef.current?.querySelectorAll("a") ?? [])];
+    const index = links.findIndex((link) => link === document.activeElement);
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      links[Math.min(links.length - 1, index + 1)]?.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (index <= 0) menuButtonRef.current?.focus();
+      else links[index - 1]?.focus();
+    }
   }
 
   return (
@@ -95,101 +321,101 @@ export function SubpageFrame({
         </div>
       </section>
 
-      <div className="breadcrumb-bar border-b border-[#D1D5DB] bg-white">
-        <div className="container-page flex flex-wrap items-center justify-between gap-3 py-3">
-          <nav aria-label="현재 위치" className="text-[14px] text-[#374151]">
-            <ol className="flex flex-wrap items-center gap-1.5">
+      <div className="breadcrumb-bar">
+        <div className="container-page breadcrumb-row">
+          <nav aria-label="현재 위치">
+            <ol className="breadcrumb-list">
               <li>
-                <Link to="/" className="hover:text-navy hover:underline">
-                  홈
+                <Link to="/" className="breadcrumb-home" aria-label="홈">
+                  <House aria-hidden="true" />
                 </Link>
               </li>
               {area === "privacy" ? (
-                <li className="flex items-center gap-1.5">
-                  <span aria-hidden="true">&gt;</span>
-                  <Link to="/privacy-center" className="hover:text-navy hover:underline">
-                    개인정보보호진흥원
-                  </Link>
+                <li className="breadcrumb-part">
+                  <ChevronRight aria-hidden="true" />
+                  <Link to="/privacy-center">개인정보보호진흥원</Link>
                 </li>
               ) : null}
               {middleCrumbs?.map((crumb) => (
-                <li key={crumb.to} className="flex items-center gap-1.5">
-                  <span aria-hidden="true">&gt;</span>
-                  <Link to={crumb.to} className="hover:text-navy hover:underline">
-                    {crumb.label}
-                  </Link>
+                <li key={crumb.to} className="breadcrumb-part">
+                  <ChevronRight aria-hidden="true" />
+                  <Link to={crumb.to}>{crumb.label}</Link>
                 </li>
               ))}
-              <li className="flex items-center gap-1.5">
-                <span aria-hidden="true">&gt;</span>
-                <span className="font-semibold text-navy">{crumbTitle}</span>
+              <li className="breadcrumb-part">
+                <ChevronRight aria-hidden="true" />
+                <span className="breadcrumb-current">{crumbTitle}</span>
               </li>
             </ol>
           </nav>
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => window.print()} className="subpage-tool">
-              <Printer className="h-4 w-4" aria-hidden="true" />
-              인쇄
+          <div className="breadcrumb-tools">
+            <button type="button" onClick={() => window.print()} className="subpage-tool" aria-label="인쇄" data-tooltip="인쇄">
+              <Printer aria-hidden="true" />
             </button>
-            <button type="button" onClick={() => void copyLink()} className="subpage-tool">
-              {copied ? (
-                <Check className="h-4 w-4" aria-hidden="true" />
-              ) : (
-                <Link2 className="h-4 w-4" aria-hidden="true" />
-              )}
-              {copied ? "복사됨" : "링크 복사"}
+            <button
+              type="button"
+              onClick={() => void copyLink()}
+              className="subpage-tool"
+              aria-label={copied ? "링크를 복사했습니다" : "링크 복사"}
+              data-tooltip={copied ? "복사됨" : "링크 복사"}
+            >
+              {copied ? <Check aria-hidden="true" /> : <Link2 aria-hidden="true" />}
             </button>
           </div>
         </div>
         {showLnb ? (
-          <div className="container-page pb-3 lg:hidden">
-            <label className="block text-[13px] font-semibold text-[#374151]">
-              같은 메뉴
-              <select
-                className="mt-1 h-10 w-full rounded-md border border-[#D1D5DB] bg-white px-3 text-[15px] text-[#111827]"
-                value={currentHref}
-                onChange={(event) => {
-                  window.location.assign(event.target.value);
-                }}
-              >
-                {items.map((item) => (
-                  <option key={item.href} value={item.href}>
-                    {item.badge ? `${item.label} (${item.badge})` : item.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+          <div className="container-page lnb-mobile" ref={menuRootRef}>
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="lnb-mobile-btn"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              onClick={() => setMenuOpen((open) => !open)}
+              onKeyDown={onMenuButtonKeyDown}
+            >
+              <NavGlyph name={currentLeaf.icon} className="lnb-ico" />
+              <span className="sr-only">현재 메뉴</span>
+              <span className="lnb-mobile-label">{currentLeaf.label}</span>
+              <ChevronDown className="lnb-chevron" aria-hidden="true" />
+            </button>
+            <div
+              id={menuId}
+              ref={menuPanelRef}
+              hidden={!menuOpen}
+              className="lnb-mobile-panel"
+              onKeyDown={onMenuPanelKeyDown}
+            >
+              <LnbLinks nav={nav} pathname={pathname} hash={hash} onNavigate={() => setMenuOpen(false)} />
+            </div>
           </div>
         ) : null}
       </div>
 
-      {showLnb ? (
-        <aside className="subpage-lnb hidden lg:block" aria-label="같은 메뉴">
-          <ul className="border border-[#D1D5DB] bg-white">
-            {items.map((item) => {
-              const current = isNavHrefCurrent(pathname, hash, item.href);
-              return (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    aria-current={current ? "page" : undefined}
-                    className={
-                      current
-                        ? "flex flex-wrap items-center border-l-[3px] border-navy bg-[#E8EEF6] px-4 py-2.5 text-[15px] font-bold text-navy"
-                        : "flex flex-wrap items-center border-l-[3px] border-transparent px-4 py-2.5 text-[15px] text-[#374151] hover:bg-[#F3F4F6] hover:text-navy"
-                    }
-                  >
-                    {item.label}
-                    {item.badge ? (
-                      <span className="ml-1.5 inline-flex rounded-sm bg-[#E6F4F2] px-1.5 py-0.5 text-[11px] font-bold leading-none text-[#0F766E]">
-                        {item.badge}
-                      </span>
-                    ) : null}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+      {showLnb && currentTop ? (
+        <aside className="subpage-lnb" aria-label="같은 메뉴">
+          <div className="lnb-card">
+            <div className="lnb-head">
+              <div className="min-w-0">
+                <p className="lnb-head-kicker">{orgLabel}</p>
+                <p className="lnb-head-title">{currentTop.label}</p>
+              </div>
+              <NavGlyph name={currentTop.icon} className="lnb-head-icon" />
+            </div>
+            <LnbLinks nav={nav} pathname={pathname} hash={hash} />
+          </div>
+          <div className="lnb-help">
+            <p className="lnb-help-title">도움이 필요하신가요?</p>
+            <a className="lnb-help-tel" href={`tel:${privacyOffice.tel.replace(/-/g, "")}`}>
+              {privacyOffice.tel}
+            </a>
+            <a className="lnb-help-mail" href={`mailto:${privacyOffice.email}`}>
+              {privacyOffice.email}
+            </a>
+            <Link to="/contact" className="lnb-help-btn">
+              문의하기
+            </Link>
+          </div>
         </aside>
       ) : null}
     </div>

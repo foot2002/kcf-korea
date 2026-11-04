@@ -185,11 +185,14 @@ export function ResearchView() {
       </div>
 
       <PcSection id="headline" variant="white">
-        <p className="text-[13px] font-bold text-[#0F766E]">핵심 결과</p>
-        <p className="mt-2 text-[14px] font-semibold leading-relaxed text-[#374151]">
-          {SURVEY.title} · {SURVEY.partner} · {SURVEY.period}
-        </p>
-        <h2 className="mt-3 max-w-4xl text-[1.45rem] font-bold leading-snug text-navy md:text-[1.85rem]">{headline}</h2>
+        <p className="pc-eyebrow">핵심 결과</p>
+        <div className="pc-meta-chips">
+          <span className="pc-meta-chip">{SURVEY.title}</span>
+          <span className="pc-meta-chip">
+            {SURVEY.partner} · {SURVEY.period}
+          </span>
+        </div>
+        <h2 className="pc-lead-title">{headline}</h2>
         <div className="mt-8 grid gap-3 md:grid-cols-3">
           <article className="rounded-lg border border-[#D1D5DB] bg-white p-5">
             <p className="text-[2rem] font-bold tabular-nums leading-none text-navy">{forms.toLocaleString("ko-KR")}건</p>
