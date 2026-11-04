@@ -3,7 +3,7 @@ import { Info } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { MonitorPreapplyForm } from "@/components/forms/PublicForms";
-import { PcMiniNav, PcSection } from "@/components/privacy/privacy-ui";
+import { PcMiniNav } from "@/components/privacy/privacy-ui";
 import { FeatureSplit } from "@/components/site/FeatureSplit";
 import illMonitor from "@/assets/illustrations/ill-monitor.svg";
 import {
