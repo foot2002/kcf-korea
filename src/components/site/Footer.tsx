@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { foundation, privacyOffice, publicInterestCorporation } from "@/data/kcf";
+import { foundation, privacyOffice, publicInterestCorporation, SHARED_OFFICE_ADDRESS } from "@/data/kcf";
 
 const RELATED_SITES = [
   { label: "개인정보보호위원회", href: "https://www.pipc.go.kr" },
@@ -33,7 +33,7 @@ export function Footer() {
           {publicInterestCorporation.designationNo}호 · 사업자등록번호 {foundation.bizNo}
         </p>
         <p>
-          재단 {foundation.addressOfficial} · 진흥원 {privacyOffice.address} ·{" "}
+          {SHARED_OFFICE_ADDRESS} ·{" "}
           <a href={`tel:${privacyOffice.tel}`} className="hover:underline">
             {privacyOffice.tel}
           </a>{" "}

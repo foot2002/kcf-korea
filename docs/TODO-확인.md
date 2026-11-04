@@ -9,14 +9,10 @@
 | src/data/privacy-policy.ts | 110 | 웨비나 신청을 받는 플랫폼 | 제2조 표 수집 방법: "온라인 신청 페이지" 옆에 "확인 중" |
 | src/data/privacy-policy.ts | 171 | ㈜와이즈인컴퍼니 계정 정보 제공이 제3자 제공인지 위탁인지 | 제4조 문장 뒤에 "확인 중" |
 | src/data/privacy-policy.ts | 214 | cs@kcf-korea.org 메일 호스팅 업체 | 제5조 위탁 표 수탁자 칸: "확인 중" |
-| src/data/privacy-policy.ts | 337 | 개인정보 보호책임자 성명 | 제11조 표 성명 칸: "확인 중" |
-| src/data/privacy-policy.ts | 339 | 개인정보 보호책임자 직위 | 제11조 표 직위 칸: "확인 중" |
-| src/data/privacy-policy.ts | 408 | 개인정보처리방침 시행 월 | 제14조: "2026년 확인 중월 확인 중일" |
-| src/data/privacy-policy.ts | 411 | 개인정보처리방침 시행 일 | 위와 같음 |
-| src/data/kcf.ts | 15 | 재단 공식 주소 | 푸터·문의: 서울특별시 송파구 양재대로71길 20-30, 2층 |
-| src/data/kcf.ts | 33 | 진흥원 공식 주소 | 서울특별시 강남구 봉은사로57길 13, 3층 |
-| src/data/kcf.ts | 53 | 문의 페이지에 쓸 주소 | 위 재단 주소와 같음 |
-| src/data/kcf.ts | 366 | 같은 주소 확인이 다른 문구에도 있음 | 화면에 별도 문장으로 더 나오지 않음 |
+| src/data/privacy-policy.ts | 제11조 | 개인정보 보호책임자 성명 | 완료. 유준희 |
+| src/data/privacy-policy.ts | 제11조 | 개인정보 보호책임자 직위 | 완료. 실장. 연락처 02-501-2906 · cs@kcf-korea.org |
+| src/data/privacy-policy.ts | 제14조 | 개인정보처리방침 시행일 | 완료. 2026년 8월 18일 |
+| src/data/kcf.ts | 주소 | 재단·진흥원 공식 주소 | 완료. 재단·진흥원 서울특별시 송파구 양재대로71길 20-30, 2층 |
 | src/data/kcf.ts | 491 | 재단 대표 전자우편 | 문의 표 재단 전자우편: — |
 | src/data/sure-mark.ts | 28 | SURE 마크 최소 표시 크기 | 우수기관 페이지 사용 규칙: "최소 표시 크기: " 뒤가 비어 있음 |
 | src/data/sure-mark.ts | 97 | 우정사업본부 선정 이유의 회신서 세부 내용 | 공통 문장: 개선 권고를 수용하고 CSAP를 활용했다는 설명 |

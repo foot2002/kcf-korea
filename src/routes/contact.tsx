@@ -29,8 +29,8 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const address = contactPage.address;
-  const mapQuery = encodeURIComponent(address);
+  const address = contactPage.addressLine;
+  const mapQuery = encodeURIComponent(contactPage.address);
 
   return (
     <>

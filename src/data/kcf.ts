@@ -11,10 +11,12 @@ export const foundation = {
   bizNo: "206-82-10927",
   tel: "02-555-9091",
   fax: "02-455-0090",
-  /** 재단 공식 주소 (footer 등 최소 노출) */
-  // TODO(확인): 공식 주소 확정
-  addressOfficial: "서울특별시 송파구 양재대로71길 20-30, 2층", // 이전: 서울 송파구 올림픽로 362 (방이동) 4층 401호
+  /** 재단·진흥원 공식 주소 */
+  addressOfficial: "서울특별시 송파구 양재대로71길 20-30, 2층",
 };
+
+/** 재단과 진흥원이 같은 주소를 쓸 때 화면에 보이는 한 줄 */
+export const SHARED_OFFICE_ADDRESS = `재단·진흥원 ${foundation.addressOfficial}`;
 
 /** 재정경제부 지정 비영리 공익법인 (기부금 세제 혜택) */
 export const publicInterestCorporation = {
@@ -30,9 +32,8 @@ export const publicInterestCorporation = {
 
 export const privacyOffice = {
   name: "개인정보보호진흥원",
-  // TODO(확인): 공식 주소 확정
-  addressRegistered: "서울특별시 강남구 봉은사로57길 13, 3층", // 이전: 서울시 강남구 봉은사로 57길 13
-  address: "서울특별시 강남구 봉은사로57길 13, 3층", // 이전: 서울시 강남구 언주로 309 기성빌딩 3층
+  addressRegistered: foundation.addressOfficial,
+  address: foundation.addressOfficial,
   tel: "02-501-2906", // 이전: 02-558-5144
   fax: "02-558-5146",
   email: "cs@kcf-korea.org",
@@ -50,9 +51,8 @@ export const contactPage = {
     tel: "02-501-2906",
     telLabel: "TEL",
   },
-  // TODO(확인): 공식 주소 확정
-  // 이전: 서울 송파구 올림픽로 362 (방이동) 4층 401호
   address: foundation.addressOfficial,
+  addressLine: SHARED_OFFICE_ADDRESS,
 } as const;
 
 export const heroBadges = [
@@ -363,13 +363,10 @@ export const generalInfo: { label: string; value: string }[] = [
     label: "면허/허가/등록증",
     value: "재단법인설립허가증 · 산업통상자원부 장관 · 2010년",
   },
-  // TODO(확인): 공식 주소 확정
-  { label: "재단 공식 주소", value: "서울특별시 송파구 양재대로71길 20-30, 2층" }, // 이전: 서울 송파구 올림픽로 362 (방이동) 4층 401호
-  { label: "개인정보보호진흥원 (등록)", value: "서울특별시 강남구 봉은사로57길 13, 3층" }, // 이전: 서울시 강남구 봉은사로 57길 13
+  { label: "주소", value: SHARED_OFFICE_ADDRESS },
   {
     label: "개인정보보호진흥원 (연락)",
-    // 이전: 서울시 강남구 언주로 309 기성빌딩 3층 · 02-558-5144
-    value: "서울특별시 강남구 봉은사로57길 13, 3층 · 02-501-2906 · cs@kcf-korea.org",
+    value: `${foundation.addressOfficial} · 02-501-2906 · cs@kcf-korea.org`,
   },
 ];
 
@@ -485,7 +482,7 @@ export const CONTACT_TABLE_HEADERS = ["구분", "주소", "전화", "전자우�
 export const CONTACT_ROWS = [
   {
     name: contactPage.foundation.name,
-    address: foundation.addressOfficial,
+    address: SHARED_OFFICE_ADDRESS,
     tel: foundation.tel,
     fax: foundation.fax,
     // TODO(확인): 재단 대표 전자우편
@@ -493,7 +490,7 @@ export const CONTACT_ROWS = [
   },
   {
     name: privacyOffice.name,
-    address: privacyOffice.address,
+    address: SHARED_OFFICE_ADDRESS,
     tel: privacyOffice.tel,
     fax: privacyOffice.fax,
     email: privacyOffice.email,

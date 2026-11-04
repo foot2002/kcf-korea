@@ -334,10 +334,8 @@ export const PRIVACY_POLICY_ARTICLES: PolicyArticle[] = [
         rows: [
           [
             t("개인정보 보호책임자"),
-            // TODO(확인): 개인정보 보호책임자 성명
-            t(""),
-            // TODO(확인): 개인정보 보호책임자 직위
-            t(""),
+            t("유준희"),
+            t("실장"),
             t("02-501-2906 · cs@kcf-korea.org"),
           ],
           [
@@ -362,7 +360,7 @@ export const PRIVACY_POLICY_ARTICLES: PolicyArticle[] = [
         kind: "unordered",
         items: [
           t("접수·처리 부서: 개인정보보호진흥원"),
-          t("주소: 서울특별시 강남구 봉은사로57길 13, 3층"),
+          t("주소: 서울특별시 송파구 양재대로71길 20-30, 2층"),
           t("연락처: 02-501-2906 · cs@kcf-korea.org"),
         ],
       },
@@ -403,15 +401,7 @@ export const PRIVACY_POLICY_ARTICLES: PolicyArticle[] = [
       {
         kind: "ordered",
         items: [
-          t(
-            "이 개인정보처리방침은 2026년 ",
-            // TODO(확인): 시행 월
-            "",
-            "월 ",
-            // TODO(확인): 시행 일
-            "",
-            "일부터 적용됩니다.",
-          ),
+          t("이 개인정보처리방침은 2026년 8월 18일부터 적용됩니다."),
           t("이전 개인정보처리방침: 없음 (최초 제정)"),
         ],
       },
@@ -420,7 +410,5 @@ export const PRIVACY_POLICY_ARTICLES: PolicyArticle[] = [
 ];
 
 export const PRIVACY_POLICY_CLOSING = [
-  "재단법인 한국컨설팅산업재단 · (부설) 개인정보보호진흥원",
-  "재단: 서울특별시 송파구 양재대로71길 20-30, 2층 · 진흥원: 서울특별시 강남구 봉은사로57길 13, 3층",
-  "02-501-2906 · cs@kcf-korea.org",
+  "재단법인 한국컨설팅산업재단 · (부설) 개인정보보호진흥원 / 서울특별시 송파구 양재대로71길 20-30, 2층 / 02-501-2906 · cs@kcf-korea.org",
 ] as const;
