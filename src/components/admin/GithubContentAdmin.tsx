@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect, type FormEvent, type ReactNode } from "re
 import { Lock } from "lucide-react";
 
 import { ContentDashboard, DeployStatus, FileHistory } from "@/components/admin/content-widgets";
+import { InboxAdmin } from "@/components/admin/InboxAdmin";
+import { INBOX_NAV, type InboxView } from "@/data/inbox-admin";
 import { MarkdownText } from "@/components/site/MarkdownText";
 import type { EducationItem } from "@/data/privacy-program";
 import type { Institution } from "@/data/sure-mark";
@@ -20,6 +22,7 @@ import {
 } from "@/lib/content/load";
 import { parseBanner, parseEducation, parseInstitutions, parseMonitor, parseNotices, parsePledges, parsePublications, parseSlides, parseStats, safeParse } from "@/lib/content/parse";
 import { romanizeFileName, todayStamp } from "@/lib/content/slug";
+import { FORM_NAMES, type FormName } from "@/lib/forms/schema";
 import {
   CONTENT_FILES,
   SLIDE_IMAGE_OPTIONS,
@@ -185,6 +188,8 @@ export function GithubContentAdmin() {
   const [conflict, setConflict] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [historyKey, setHistoryKey] = useState(0);
+  const [inboxView, setInboxView] = useState<InboxView | null>(null);
+  const [inboxCounts, setInboxCounts] = useState<Partial<Record<FormName, number>>>({});
 
   useEffect(() => {
     const saved = readSession(TOKEN_KEY);
@@ -602,15 +607,27 @@ export function GithubContentAdmin() {
   const menu = (
     <nav aria-label="관리자 메뉴">
       <p className="px-4 pb-2 pt-4 text-[12px] font-bold text-white">메뉴</p>
-      <button type="button" aria-current={tab === "dashboard" ? "page" : undefined} className={`block w-full px-4 py-2.5 text-left text-[14px] font-semibold ${tab === "dashboard" ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => setTab("dashboard")}>
+      <button type="button" aria-current={inboxView === null && tab === "dashboard" ? "page" : undefined} className={`block w-full px-4 py-2.5 text-left text-[14px] font-semibold ${inboxView === null && tab === "dashboard" ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => { setInboxView(null); setTab("dashboard"); }}>
         대시보드
       </button>
       <p className="px-4 pb-1 pt-4 text-[12px] font-bold text-white">콘텐츠</p>
       {MENU.filter((item) => item.id !== "dashboard").map((item) => (
-        <button key={item.id} type="button" aria-current={tab === item.id ? "page" : undefined} className={`block w-full px-4 py-2.5 text-left text-[14px] font-semibold ${tab === item.id ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => setTab(item.id)}>
+        <button key={item.id} type="button" aria-current={inboxView === null && tab === item.id ? "page" : undefined} className={`block w-full px-4 py-2.5 text-left text-[14px] font-semibold ${inboxView === null && tab === item.id ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => { setInboxView(null); setTab(item.id); }}>
           {item.label}
         </button>
       ))}
+      <p className="px-4 pb-1 pt-4 text-[12px] font-bold text-white">신청함</p>
+      {INBOX_NAV.map((item) => {
+        const active = inboxView === item.id;
+        const count = item.form ? inboxCounts[item.form] : undefined;
+        const first = item.form === FORM_NAMES.monitor ? "사전 신청" : "접수";
+        return (
+          <button key={item.id} type="button" aria-current={active ? "page" : undefined} className={`flex w-full items-center justify-between gap-2 px-4 py-2.5 text-left text-[14px] font-semibold ${active ? "bg-white text-[#0B3A6E]" : "text-white"}`} onClick={() => setInboxView(item.id)}>
+            <span>{item.label}</span>
+            {item.form ? <span className={`inline-flex min-w-5 justify-center rounded-md px-1 text-[12px] font-bold ${active ? "bg-[#0B3A6E] text-white" : "bg-white text-[#0B3A6E]"}`}>{count ?? 0}<span className="sr-only"> {first}</span></span> : null}
+          </button>
+        );
+      })}
     </nav>
   );
 
@@ -633,7 +650,9 @@ export function GithubContentAdmin() {
           </button>
         </div>
         <div className="px-6 py-6">
-      {tab === "dashboard" ? <ContentDashboard token={token} rows={dashboardRows} /> : null}
+      <InboxAdmin token={token} login={login} view={inboxView} onView={setInboxView} onCounts={setInboxCounts} />
+      {inboxView === null && tab === "dashboard" ? <ContentDashboard token={token} rows={dashboardRows} /> : null}
+      {inboxView === null ? (
       <div className="space-y-4">
         {tab === "notices"
           ? notices.map((item, index) => (
@@ -960,8 +979,9 @@ export function GithubContentAdmin() {
           </article>
         ) : null}
       </div>
+      ) : null}
 
-      {tab !== "dashboard" ? (
+      {inboxView === null && tab !== "dashboard" ? (
         <>
           <div className="mt-4 flex flex-wrap gap-2">
             {tab === "notices" ? <button type="button" className="btn-secondary-kcf" onClick={() => setNotices([...notices, { id: `notice-${Date.now()}`, title: "", date: "", link: "", body: "", published: true, pinned: false, publishAt: "" }])}>공지 추가</button> : null}

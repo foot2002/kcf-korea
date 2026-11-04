@@ -108,10 +108,23 @@ async function encryptBytes(key: CryptoKey, bytes: Uint8Array) {
   return { iv: bytesToBase64(iv), ciphertext: bytesToBase64(new Uint8Array(cipher)) };
 }
 
+export async function publicKeyIdFromPrivateJwk(jwk: JsonWebKey) {
+  if (!jwk.n || !jwk.e || jwk.kty !== "RSA") throw new Error("개인 키 파일이 아닙니다.");
+  const pub = await crypto.subtle.importKey(
+    "jwk",
+    { kty: "RSA", n: jwk.n, e: jwk.e, alg: "RSA-OAEP-256", ext: true, key_ops: ["wrapKey"] },
+    { name: "RSA-OAEP", hash: "SHA-256" },
+    true,
+    ["wrapKey"],
+  );
+  return fingerprint(pub);
+}
+
 export async function encryptRecord(input: {
   publicFile: InboxPublicKeyFile;
   form: string;
   plaintext: unknown;
+  id?: string;
   attachment?: { bytes: Uint8Array; size: number } | null;
 }): Promise<{ record: InboxRecord; attachmentBytes: Uint8Array | null }> {
   if (input.publicFile.jwk.d) throw new Error("공개 키 파일에 개인 키가 들어 있습니다.");
@@ -119,7 +132,7 @@ export async function encryptRecord(input: {
   const publicKey = await importPublicKey(input.publicFile.jwk);
   const wrapped = await crypto.subtle.wrapKey("raw", aes, publicKey, { name: "RSA-OAEP" });
   const body = await encryptBytes(aes, new TextEncoder().encode(JSON.stringify(input.plaintext)));
-  const id = crypto.randomUUID();
+  const id = input.id ?? crypto.randomUUID();
   const createdAt = new Date().toISOString();
   let attachment: InboxAttachment | null = null;
   let attachmentBytes: Uint8Array | null = null;
