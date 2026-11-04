@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { absoluteUrl } from "@/lib/site-url";
 import { historyFull } from "@/data/kcf";
 
 export const Route = createFileRoute("/history")({
@@ -12,9 +13,9 @@ export const Route = createFileRoute("/history")({
           "2010년 설립부터 현재까지 한국컨설팅산업재단(KCF)의 주요 연혁과 발자취를 확인하세요.",
       },
       { property: "og:title", content: "재단 연혁 | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/history" },
+      { property: "og:url", content: absoluteUrl("/history") },
     ],
-    links: [{ rel: "canonical", href: "/history" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/history") }],
   }),
   component: HistoryPage,
 });

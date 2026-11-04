@@ -78,20 +78,5 @@ export function updateAssociationApplicationMemoClient(
 }
 
 export async function hydrateAssociationApplicationsClient(): Promise<AssociationApplication[]> {
-  try {
-    const res = await fetch("/association-applications-data.json", { cache: "no-store" });
-    if (!res.ok) return listAssociationApplicationsClient();
-    const remote = (await res.json()) as AssociationApplication[];
-    if (!Array.isArray(remote) || remote.length === 0) {
-      return listAssociationApplicationsClient();
-    }
-    const map = new Map<string, AssociationApplication>();
-    for (const item of remote) map.set(item.id, item);
-    for (const item of readAll()) map.set(item.id, item);
-    const merged = [...map.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    writeAll(merged);
-    return merged;
-  } catch {
-    return listAssociationApplicationsClient();
-  }
+  return listAssociationApplicationsClient();
 }

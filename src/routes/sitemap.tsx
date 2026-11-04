@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { PageHero } from "@/components/site/PageHero";
 import { FOUNDATION_NAV, PRIVACY_NAV, childHref } from "@/data/site-nav";
+import { absoluteUrl } from "@/lib/site-url";
 
 export const Route = createFileRoute("/sitemap")({
   head: () => ({
@@ -12,9 +13,9 @@ export const Route = createFileRoute("/sitemap")({
         content: "한국컨설팅산업재단과 개인정보보호진흥원의 전체 메뉴입니다.",
       },
       { property: "og:title", content: "사이트맵 | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/sitemap" },
+      { property: "og:url", content: absoluteUrl("/sitemap") },
     ],
-    links: [{ rel: "canonical", href: "/sitemap" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/sitemap") }],
   }),
   component: SitemapPage,
 });

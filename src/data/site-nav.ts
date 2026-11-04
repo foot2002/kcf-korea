@@ -39,7 +39,7 @@ export const FOUNDATION_NAV: SiteNavItem[] = [
       { label: "교사/교장/교육청 공무원 연수", hash: "teacher" },
     ],
   },
-  { label: "Contact Us", to: "/contact" },
+  { label: "문의하기", to: "/contact" },
 ];
 
 export const PRIVACY_NAV: SiteNavItem[] = PRIVACY_CENTER_PAGES.map((page) => ({

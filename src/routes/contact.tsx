@@ -10,20 +10,21 @@ import {
   contactPage,
 } from "@/data/kcf";
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
+import { absoluteUrl } from "@/lib/site-url";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Us | 한국컨설팅산업재단" },
+      { title: "문의하기 | 한국컨설팅산업재단" },
       {
         name: "description",
         content:
           "한국컨설팅산업재단 및 개인정보보호진흥원 연락처, 주소, 온라인 문의 접수입니다.",
       },
-      { property: "og:title", content: "Contact Us | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/contact" },
+      { property: "og:title", content: "문의하기 | 한국컨설팅산업재단" },
+      { property: "og:url", content: absoluteUrl("/contact") },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/contact") }],
   }),
   component: ContactPage,
 });
@@ -37,7 +38,7 @@ function ContactPage() {
       <SubpageFrame
         area="foundation"
         eyebrow="Contact"
-        title="Contact Us"
+        title="문의하기"
         description="재단·개인정보보호진흥원 관련 문의를 남겨 주시면 담당자가 확인 후 연락드립니다."
       />
 

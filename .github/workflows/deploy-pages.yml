@@ -41,6 +41,9 @@ jobs:
       - name: Add .nojekyll
         run: touch dist/client/.nojekyll
 
+      - name: Verify dist
+        run: npm run verify:dist
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

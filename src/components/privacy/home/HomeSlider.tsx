@@ -46,7 +46,6 @@ export function HomeSlider({
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const slide = slides[index] ?? slides[0];
   const total = slides.length;
   const stopped = paused || reduced;
 
@@ -95,64 +94,74 @@ export function HomeSlider({
       }}
       onKeyDown={onKeyDown}
     >
-      <div className="container-page flex flex-col py-8 lg:min-h-[440px] lg:py-10">
-        <div
-          className="grid flex-1 items-center gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.65fr)]"
-          aria-roledescription="slide"
-          aria-label={`${index + 1} / ${total}`}
-        >
-          <div>
-            <p className="inline-flex rounded-md bg-[#0F766E] px-2.5 py-1 text-[13px] font-bold text-white">
-              {slide.eyebrow}
-            </p>
-            <h1 className="mt-4 max-w-3xl text-balance text-white">{slide.title}</h1>
-            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white">{slide.body}</p>
-            {slide.stats ? (
-              <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-                {slide.stats.map((stat) => (
-                  <li key={stat.label} className="rounded-lg border border-white px-3 py-3">
-                    <p className="text-[22px] font-bold leading-none">{stat.value}</p>
-                    <p className="mt-2 text-[13px] leading-snug text-white">{stat.label}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            {slide.badges ? (
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {slide.badges.map((badge) => (
-                  <li key={badge} className="rounded-md border border-white px-2.5 py-1 text-[13px] font-semibold">
-                    {badge}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            <div className="mt-6 flex flex-wrap gap-3">
-              <SitePathLink to={slide.primary.to} hash={slide.primary.hash} className="btn-hero-light">
-                {slide.primary.label}
-              </SitePathLink>
-              {slide.secondary ? (
-                <SitePathLink to={slide.secondary.to} hash={slide.secondary.hash} className="btn-hero-outline">
-                  {slide.secondary.label}
-                </SitePathLink>
-              ) : null}
-            </div>
-          </div>
-          {slide.image ? (
-            <div className="hidden justify-center lg:flex">
-              <div className="flex h-56 w-56 items-center justify-center rounded-lg bg-white p-6">
-                <img
-                  src={`${import.meta.env.BASE_URL}${slide.image}`}
-                  alt={labels.markAlt}
-                  className="max-h-full w-full object-contain"
-                />
+      <div className="container-page flex flex-col py-8 lg:py-10">
+        <div className="grid flex-1" data-slider-frame>
+          {slides.map((slide, itemIndex) => {
+            const active = itemIndex === index;
+            return (
+              <div
+                key={slide.id}
+                className={`col-start-1 row-start-1 grid items-center gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.65fr)] ${active ? "visible" : "invisible"}`}
+                aria-hidden={active ? undefined : true}
+                inert={active ? undefined : true}
+                aria-roledescription={active ? "slide" : undefined}
+                aria-label={active ? `${itemIndex + 1} / ${total}` : undefined}
+              >
+                <div>
+                  <p className="inline-flex rounded-md bg-[#0F766E] px-2.5 py-1 text-[13px] font-bold text-white">
+                    {slide.eyebrow}
+                  </p>
+                  <h1 className="mt-4 max-w-3xl text-balance text-white">{slide.title}</h1>
+                  <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white">{slide.body}</p>
+                  {slide.stats ? (
+                    <ul className="mt-6 grid gap-3 sm:grid-cols-3">
+                      {slide.stats.map((stat) => (
+                        <li key={stat.label} className="rounded-lg border border-white px-3 py-3">
+                          <p className="text-[22px] font-bold leading-none">{stat.value}</p>
+                          <p className="mt-2 text-[13px] leading-snug text-white">{stat.label}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {slide.badges ? (
+                    <ul className="mt-4 flex flex-wrap gap-2">
+                      {slide.badges.map((badge) => (
+                        <li key={badge} className="rounded-md border border-white px-2.5 py-1 text-[13px] font-semibold">
+                          {badge}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <SitePathLink to={slide.primary.to} hash={slide.primary.hash} className="btn-hero-light">
+                      {slide.primary.label}
+                    </SitePathLink>
+                    {slide.secondary ? (
+                      <SitePathLink to={slide.secondary.to} hash={slide.secondary.hash} className="btn-hero-outline">
+                        {slide.secondary.label}
+                      </SitePathLink>
+                    ) : null}
+                  </div>
+                </div>
+                {slide.image ? (
+                  <div className="hidden justify-center lg:flex">
+                    <div className="flex h-56 w-56 items-center justify-center rounded-lg bg-white p-6">
+                      <img
+                        src={`${import.meta.env.BASE_URL}${slide.image}`}
+                        alt={labels.markAlt}
+                        className="max-h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+                ) : null}
+                {slide.icon ? (
+                  <div className="hidden justify-center lg:flex" aria-hidden="true">
+                    <HomeIcon name={slide.icon} className="h-40 w-40 stroke-[1.25] text-white/35" />
+                  </div>
+                ) : null}
               </div>
-            </div>
-          ) : null}
-          {slide.icon ? (
-            <div className="hidden justify-center lg:flex" aria-hidden="true">
-              <HomeIcon name={slide.icon} className="h-40 w-40 stroke-[1.25] text-white/35" />
-            </div>
-          ) : null}
+            );
+          })}
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-2">

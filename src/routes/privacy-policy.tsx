@@ -7,6 +7,7 @@ import {
   type PolicyBlock,
   type PolicySpan,
 } from "@/data/privacy-policy";
+import { absoluteUrl } from "@/lib/site-url";
 
 export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
@@ -18,9 +19,9 @@ export const Route = createFileRoute("/privacy-policy")({
           "재단법인 한국컨설팅산업재단과 개인정보보호진흥원의 개인정보처리방침입니다.",
       },
       { property: "og:title", content: "개인정보처리방침 | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/privacy-policy" },
+      { property: "og:url", content: absoluteUrl("/privacy-policy") },
     ],
-    links: [{ rel: "canonical", href: "/privacy-policy" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/privacy-policy") }],
   }),
   component: PrivacyPolicyPage,
 });

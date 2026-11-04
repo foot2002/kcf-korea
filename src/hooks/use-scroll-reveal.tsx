@@ -2,11 +2,9 @@ import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
 
 /**
- * Auto-apply scroll-reveal animations to common page elements.
- * - Adds `.reveal` to sections, headings, cards, tables, lists, etc.
- * - Adds `.reveal-stagger` to grids of cards.
- * - Uses IntersectionObserver to toggle `.is-visible` when in viewport.
- * - Re-runs on route changes so newly mounted pages get animated too.
+ * Adds a section-level entrance effect to the first block under each section.
+ * The hidden state applies only after `html.js-reveal` is set, so prerender
+ * HTML stays visible before JavaScript runs.
  */
 export function useScrollReveal() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -14,6 +12,8 @@ export function useScrollReveal() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+    document.documentElement.classList.add("js-reveal");
 
     let raf = 0;
     const observed = new WeakSet<Element>();
@@ -51,34 +51,10 @@ export function useScrollReveal() {
     const apply = () => {
       const main = document.querySelector("main");
       if (!main) return;
-      const selectors = [
-        "section",
-        "section > .container-page > *",
-        ".kcf-card",
-        "h1, h2, h3",
-        "table",
-        "[data-reveal]",
-      ];
-      const nodes = main.querySelectorAll<HTMLElement>(selectors.join(", "));
-      nodes.forEach(tagReveal);
-
-      // Auto-stagger grids of cards
-      main
-        .querySelectorAll<HTMLElement>(
-          ".grid:not(.reveal-stagger):not([data-no-reveal])",
-        )
-        .forEach((grid) => {
-          if (grid.children.length >= 2 && grid.children.length <= 12) {
-            grid.classList.add("reveal-stagger");
-            observed.add(grid);
-            const rect = grid.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.95 && rect.bottom > 0) {
-              grid.classList.add("is-visible");
-            } else {
-              observer.observe(grid);
-            }
-          }
-        });
+      main.querySelectorAll("section").forEach((section) => {
+        const first = section.firstElementChild;
+        if (first) tagReveal(first);
+      });
     };
 
     // Defer until DOM is painted for the new route.

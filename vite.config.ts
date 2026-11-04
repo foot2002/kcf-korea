@@ -61,7 +61,17 @@ export default defineConfig({
     prerender: {
       enabled: isGitHubPages,
       crawlLinks: true,
+      filter: (page: { path: string }) => {
+        const pathname = page.path.split(/[?#]/)[0] ?? "";
+        if (pathname.startsWith("/downloads/") || pathname.startsWith("/content/") || pathname.startsWith("/fonts/")) {
+          return false;
+        }
+        if (/\.(pdf|docx|png|jpg|jpeg|svg|json|woff2|zip|gif|webp|ico|woff|ttf)$/i.test(pathname)) return false;
+        return true;
+      },
     },
-    pages: [...redirectPages, ...educationDetailPages, ...publicationDetailPages, ...monitorApplyPage].map((path) => ({ path })),
+    pages: [...redirectPages, ...educationDetailPages, ...publicationDetailPages, ...monitorApplyPage, "/404"].map((path) => ({
+      path,
+    })),
   },
 });

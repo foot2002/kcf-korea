@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { absoluteUrl } from "@/lib/site-url";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
 import {
   Accordion,
@@ -31,9 +32,9 @@ export const Route = createFileRoute("/achievements")({
           "청소년교육, 단체교육, 기업교육, 지자체·대학교 연계교육, 교사·교장·교육청 공무원 연수사업 등 한국컨설팅산업재단의 주요 실적.",
       },
       { property: "og:title", content: "실적·자료 | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/achievements" },
+      { property: "og:url", content: absoluteUrl("/achievements") },
     ],
-    links: [{ rel: "canonical", href: "/achievements" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/achievements") }],
   }),
   component: AchievementsPage,
 });

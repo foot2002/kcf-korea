@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
+import { absoluteUrl } from "@/lib/site-url";
 import { coreValues, generalInfo, foundation } from "@/data/kcf";
 import { Building2, Target, Eye } from "lucide-react";
 
@@ -13,9 +14,9 @@ export const Route = createFileRoute("/about")({
           "재단법인 한국컨설팅산업재단의 개요, 법적 설립근거, 설립목적, 비전·미션·핵심가치, 일반현황 정보입니다.",
       },
       { property: "og:title", content: "재단 소개 | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/about" },
+      { property: "og:url", content: absoluteUrl("/about") },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/about") }],
   }),
   component: AboutPage,
 });

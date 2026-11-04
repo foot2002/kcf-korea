@@ -16,6 +16,7 @@ import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import { Toaster } from "../components/ui/sonner";
+import { absoluteUrl, shareImageForPath } from "../lib/site-url";
 
 function NotFoundComponent() {
   return (
@@ -70,37 +71,51 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익법인" },
-      {
-        name: "description",
-        content:
-          "재단법인 한국컨설팅산업재단(KCF)은 컨설팅, 청소년 경영교육, 개인정보보호 진흥, 전국상업경진대회(NBO) 사무국 운영을 담당합니다.",
-      },
-      { name: "author", content: "재단법인 한국컨설팅산업재단" },
-      { property: "og:title", content: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익법인" },
-      {
-        property: "og:description",
-        content:
-          "컨설팅·청소년 경영교육·개인정보보호 진흥·NBO 사무국을 운영하는 비영리 공익법인.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "한국컨설팅산업재단" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익법인" },
-      {
-        name: "twitter:description",
-        content:
-          "컨설팅·청소년 경영교육·개인정보보호 진흥·NBO 사무국을 운영하는 비영리 공익법인.",
-      },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe52ccff-313f-41e2-a500-88e3f4c6883a/id-preview-083e3be0--683db3eb-3a98-4531-9791-1319737559a2.lovable.app-1782136458096.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe52ccff-313f-41e2-a500-88e3f4c6883a/id-preview-083e3be0--683db3eb-3a98-4531-9791-1319737559a2.lovable.app-1782136458096.png" },
-    ],
-    links: [{ rel: "stylesheet", href: appCss }],
-  }),
+  head: ({ matches }) => {
+    const pathname = matches[matches.length - 1]?.pathname ?? "/";
+    const image = absoluteUrl(shareImageForPath(pathname));
+    const url = absoluteUrl(pathname);
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익법인" },
+        {
+          name: "description",
+          content:
+            "재단법인 한국컨설팅산업재단(KCF)은 컨설팅, 청소년 경영교육, 개인정보보호 진흥, 전국상업경진대회(NBO) 사무국 운영을 담당합니다.",
+        },
+        { name: "author", content: "재단법인 한국컨설팅산업재단" },
+        { property: "og:title", content: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익법인" },
+        {
+          property: "og:description",
+          content:
+            "컨설팅·청소년 경영교육·개인정보보호 진흥·NBO 사무국을 운영하는 비영리 공익법인.",
+        },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { property: "og:image", content: image },
+        { property: "og:site_name", content: "한국컨설팅산업재단" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: "한국컨설팅산업재단 | 대한민국 지식서비스산업을 선도하는 공익법인" },
+        {
+          name: "twitter:description",
+          content:
+            "컨설팅·청소년 경영교육·개인정보보호 진흥·NBO 사무국을 운영하는 비영리 공익법인.",
+        },
+        { name: "twitter:image", content: image },
+      ],
+      links: [
+        { rel: "stylesheet", href: appCss },
+        { rel: "canonical", href: url },
+        { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+        { rel: "icon", href: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+        { rel: "icon", href: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+        { rel: "icon", href: "/favicon-512.png", sizes: "512x512", type: "image/png" },
+        { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      ],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

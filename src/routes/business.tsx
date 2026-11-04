@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { absoluteUrl } from "@/lib/site-url";
 import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
@@ -42,9 +43,9 @@ export const Route = createFileRoute("/business")({
           "한국컨설팅산업재단의 주요 사업: 전국상업경진대회(NBO) 사무국, 기업컨설팅교육, 청소년경영교육 상세 안내.",
       },
       { property: "og:title", content: "주요 사업 | 한국컨설팅산업재단" },
-      { property: "og:url", content: "/business" },
+      { property: "og:url", content: absoluteUrl("/business") },
     ],
-    links: [{ rel: "canonical", href: "/business" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/business") }],
   }),
   component: BusinessPage,
 });
