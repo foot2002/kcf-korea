@@ -91,12 +91,19 @@ for (const file of walk(contentDir)) {
   for (const hit of hits) personalHits.push(`${relPosix(clientDir, file)}: ${hit}`);
 }
 
-const forbidden = ["wiseon@wiseinc.co.kr", "kcf2026", "github_pat_", "ghp_"];
+const forbidden = ["wiseon@wiseinc.co.kr", "kcf2026"];
+const tokenMarks = ["github_pat_", "ghp_"];
 const forbiddenHits = [];
 for (const file of walk(distDir)) {
   const text = fs.readFileSync(file).toString("latin1");
   for (const word of forbidden) {
     if (text.includes(word)) forbiddenHits.push(`${relPosix(distDir, file)}: ${word}`);
+  }
+  // 방문자 토큰은 보관함 저장소 이름과 같은 파일에만 빌드된다.
+  if (!text.includes("kcf-korea-inbox")) {
+    for (const word of tokenMarks) {
+      if (text.includes(word)) forbiddenHits.push(`${relPosix(distDir, file)}: ${word}`);
+    }
   }
 }
 

@@ -1,5 +1,4 @@
 import { foundation } from "@/data/kcf";
-import type { ApplicationKind } from "@/lib/association-application/types";
 
 /** 개인정보 처리자 — 개인정보보호진흥원을 운영하는 재단 */
 export const PRIVACY_CONTROLLER = {
@@ -26,44 +25,16 @@ export const PRIVACY_REFUSAL_NOTICE =
 
 export type PrivacyConsentVariant =
   | "contact-inquiry"
-  | "privacy-inquiry"
-  | "sure-partner-apply"
   | "monitor-apply"
-  | "civic-support"
-  | "education-enroll"
   | "free-apply"
   | "cpo-apply"
-  | "pledge-submit"
-  | `support-application-${ApplicationKind}`;
+  | "pledge-submit";
 
 export type PrivacyConsentNotice = {
   title: string;
   purpose: string;
   requiredItems: string;
   optionalItems?: string;
-};
-
-const SUPPORT_NOTICES: Record<ApplicationKind, PrivacyConsentNotice> = {
-  association: {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose:
-      "SURE START 협단체 지원사업 협약·바우처 신청 접수, 신청 내용 확인, 담당자 연락 및 지원사업 안내",
-    requiredItems: "협회·단체명, 웹사이트 주소, 총 회원사 수, 담당자명, 전화번호, 이메일",
-    optionalItems:
-      "대표자 성명, 사업자등록번호, 설립연도, 주소, 업종, 소기업 회원사 수, 직함·부서, 선호 연락 방법, 문의사항, 뉴스레터 수신",
-  },
-  enterprise: {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose: "기업 지원 신청 접수, 신청 내용 확인, 담당자 연락 및 지원사업 안내",
-    requiredItems: "기업명, 담당자명, 연락처, 이메일",
-    optionalItems: "남기는 글",
-  },
-  public: {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose: "공공기관 지원 신청 접수, 신청 내용 확인, 담당자 연락 및 지원사업 안내",
-    requiredItems: "기관명, 담당자명, 연락처, 이메일",
-    optionalItems: "남기는 글",
-  },
 };
 
 const NOTICES: Record<PrivacyConsentVariant, PrivacyConsentNotice> = {
@@ -73,23 +44,6 @@ const NOTICES: Record<PrivacyConsentVariant, PrivacyConsentNotice> = {
     requiredItems: "문의 유형, 이름, 이메일, 제목, 내용",
     optionalItems: "소속, 연락처, 첨부파일",
   },
-  "privacy-inquiry": {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose:
-      "개인정보보호진흥원 문의·제보 접수, 문의 내용 확인, 답변 및 관련 업무 처리",
-    requiredItems: "이름 또는 기관명, 이메일, 문의 유형, 문의 내용",
-    optionalItems: "연락처, 첨부파일(파일명·내용에 포함된 개인정보)",
-  },
-  "sure-partner-apply": {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose:
-      "안심 파트너 심사 신청 접수, 신청 내용 검토, 담당자 연락 및 파트너십 안내",
-    requiredItems: "기업명, 담당자명, 연락처, 보유 개인정보 서비스명, 특징 및 장점",
-    optionalItems: "이메일",
-  },
-  "support-application-association": SUPPORT_NOTICES.association,
-  "support-application-enterprise": SUPPORT_NOTICES.enterprise,
-  "support-application-public": SUPPORT_NOTICES.public,
   "monitor-apply": {
     title: "개인정보 수집·이용 동의 (필수)",
     purpose: "국민 개인정보보호 모니터링단 사전 신청 접수, 선발 연락 및 활동 안내",
@@ -114,19 +68,6 @@ const NOTICES: Record<PrivacyConsentVariant, PrivacyConsentNotice> = {
     requiredItems: "기관명, 대표자, 개인정보 보호책임자, 담당자 이름·이메일, 서명본",
     optionalItems: "담당자 연락처",
   },
-  "civic-support": {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose: "주민자치 무료 지원 신청 접수, 서류 확인, 승인 여부 안내 및 사용권 발급",
-    requiredItems:
-      "모임명, 담당자, 이메일, 연락처, 신청 목적, 관할 지자체, 지원부서, 행사명, 행사 목적, 행사 기간, 예상 참여자, 개인정보 수집 항목",
-    optionalItems: "공공지원 확인자료 첨부파일",
-  },
-  "education-enroll": {
-    title: "개인정보 수집·이용 동의 (필수)",
-    purpose: "교육·웨비나 참가 신청 접수, 접수 확인 및 교육 안내",
-    requiredItems: "이름, 소속, 이메일",
-    optionalItems: "연락처",
-  },
 };
 
 const RETENTION_BY_VARIANT: Partial<Record<PrivacyConsentVariant, string>> = {
@@ -143,8 +84,4 @@ export function consentRetention(variant: PrivacyConsentVariant) {
 
 export function getPrivacyConsentNotice(variant: PrivacyConsentVariant): PrivacyConsentNotice {
   return NOTICES[variant];
-}
-
-export function supportApplicationConsentVariant(kind: ApplicationKind): PrivacyConsentVariant {
-  return `support-application-${kind}`;
 }
