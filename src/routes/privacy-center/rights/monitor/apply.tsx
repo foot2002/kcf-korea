@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { MonitorPreapplyForm } from "@/components/forms/PublicForms";
 import { PrivacySubPageHeader } from "@/components/privacy/PrivacySubPageHeader";
-import { MonitorApplyForm, MonitorApplyStatic } from "@/components/privacy/RightsViews";
 import { MONITOR_PAGE } from "@/data/privacy-program";
-import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 
 export const Route = createFileRoute("/privacy-center/rights/monitor/apply")({
   head: () => ({
@@ -20,7 +19,11 @@ export const Route = createFileRoute("/privacy-center/rights/monitor/apply")({
           description={MONITOR_PAGE.preApply.body}
           badge={MONITOR_PAGE.status}
         />
-        {isStaticGitHubPages ? <MonitorApplyStatic /> : <MonitorApplyForm />}
+        <section className="border-t border-[#D1D5DB] bg-white">
+          <div className="container-page max-w-3xl py-12 md:py-16">
+            <MonitorPreapplyForm />
+          </div>
+        </section>
       </>
     );
   },

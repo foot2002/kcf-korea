@@ -16,6 +16,7 @@ dist-ssr
 .nitro
 *.local
 .env
+.inbox-private-key.json
 
 # Privacy inquiry data (file-based, no DB)
 data/privacy-inquiries/

@@ -50,7 +50,7 @@ export const SLIDES: readonly HomeSlide[] = [
     stats: HERO.stats,
     chips: [`CSAP 인증 · ${csapNumber}`, nisChip],
     mark: true,
-    primary: { label: "무상제공 신청하기", to: "/privacy-center/security-services", hash: "apply" },
+    primary: { label: "무상제공 신청하기", to: "/privacy-center/security-services", hash: "apply-form" },
     secondary: { label: "실천선언 확인하기", to: "/privacy-center/security-services", hash: "pledge" },
   },
   {
@@ -77,7 +77,7 @@ export const SLIDES: readonly HomeSlide[] = [
 ];
 
 export const QUICK_MENU = [
-  { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply", icon: "FileSignature" },
+  { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply-form", icon: "FileSignature" },
   { label: "실천선언", to: "/privacy-center/security-services", hash: "pledge", icon: "ClipboardCheck" },
   { label: "SURE-CHECK 자가진단", to: "/privacy-center/sure-check", icon: "ScanSearch" },
   { label: "인증서 진위확인", to: "/privacy-center/sure-mark", hash: "verify", icon: "BadgeCheck" },

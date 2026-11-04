@@ -195,7 +195,12 @@ function VerifyPanel({ initialCertNo, institutions }: { initialCertNo: string; i
             </a>
           </div>
         ) : null}
-        {checked && !found ? <p className="text-[15px] leading-relaxed text-[#111827]">{SURE_MARK_PAGE.notFound}</p> : null}
+        {checked && !found ? (
+          <p className="text-[15px] leading-relaxed text-[#111827]">
+            일치하는 인증번호가 없습니다. 인증번호를 다시 확인하거나{" "}
+            <Link to="/contact" search={{ type: "우수기관·SURE MARK" }} className="font-bold text-navy underline">문의해 주세요</Link>.
+          </p>
+        ) : null}
       </div>
     </div>
   );

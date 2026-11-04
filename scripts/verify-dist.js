@@ -126,10 +126,33 @@ if (personalHits.length) {
   for (const item of personalHits) console.log(`- ${item}`);
 }
 
+const privateKeyHits = [];
+const repoWriteHits = [];
+for (const file of walk(distDir)) {
+  if (!/\.(js|html|css|json)$/i.test(file)) continue;
+  const rel = relPosix(distDir, file);
+  const text = fs.readFileSync(file, "utf8");
+  if (text.includes("PRIVATE KEY") || (/"kty"\s*:\s*"RSA"/.test(text) && /"d"\s*:/.test(text))) {
+    privateKeyHits.push(rel);
+  }
+  const adminChunk = /(^|\/)admin[-.]/i.test(rel);
+  if (!adminChunk && /foot2002\/kcf-korea(?!-)/.test(text) && /"PUT"/.test(text)) {
+    repoWriteHits.push(rel);
+  }
+}
+if (privateKeyHits.length) {
+  console.log("개인 키 흔적:");
+  for (const item of privateKeyHits) console.log(`- ${item}`);
+}
+if (repoWriteHits.length) {
+  console.log("공개 번들의 사이트 저장소 쓰기:");
+  for (const item of repoWriteHits) console.log(`- ${item}`);
+}
+
 const links = spawnSync(process.execPath, ["scripts/check-links.js"], { cwd: root, stdio: "inherit" });
 const linkFailed = links.status !== 0;
 
-if (mismatches.length || missing.length || magicErrors.length || replacementErrors.length || forbiddenHits.length || personalHits.length || linkFailed) {
+if (mismatches.length || missing.length || magicErrors.length || replacementErrors.length || forbiddenHits.length || personalHits.length || privateKeyHits.length || repoWriteHits.length || linkFailed) {
   process.exit(1);
 }
 

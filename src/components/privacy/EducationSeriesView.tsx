@@ -64,7 +64,7 @@ function fileHref(file: string) {
 }
 
 function inquiryHref() {
-  return `mailto:${EDUCATION_PAGE.inquiryEmail}?subject=${encodeURIComponent(EDUCATION_PAGE.inquirySubject)}`;
+  return "/contact?type=" + encodeURIComponent("교육·웨비나");
 }
 
 export function EducationSeries({ focusSlug }: { focusSlug?: string }) {

@@ -1,12 +1,7 @@
 import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 
 export function isAssociationGasConfigured(): boolean {
-  return Boolean(import.meta.env.VITE_ASSOCIATION_APPLICATION_API_URL?.trim());
-}
-
-/** (선택) GAS 연동 시 관리자 API 토큰 */
-export function getAssociationAdminToken(): string {
-  return import.meta.env.VITE_ASSOCIATION_ADMIN_TOKEN?.trim() ?? "";
+  return false;
 }
 
 /** 로컬 개발 서버 JSON 저장 */

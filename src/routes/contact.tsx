@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 
-import { ContactInquiryForm } from "@/components/contact/ContactInquiryForm";
+import { ContactInquiryOnlineForm } from "@/components/forms/PublicForms";
 import { SubpageFrame } from "@/components/site/SubpageFrame";
 import { SUBPAGE_VISUALS } from "@/components/site/subpage-visuals";
 import {
@@ -10,10 +10,13 @@ import {
   CONTACT_TABLE_HEADERS,
   contactPage,
 } from "@/data/kcf";
-import { isStaticGitHubPages } from "@/lib/privacy-inquiry/env";
 import { absoluteUrl } from "@/lib/site-url";
+import { INQUIRY_TYPES } from "@/lib/forms/schema";
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>): { type?: string } => ({
+    type: typeof search.type === "string" && (INQUIRY_TYPES as readonly string[]).includes(search.type) ? search.type : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "문의하기 | 한국컨설팅산업재단" },
@@ -31,6 +34,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const { type } = Route.useSearch();
   const address = contactPage.addressLine;
   const mapQuery = encodeURIComponent(contactPage.address);
 
@@ -151,16 +155,7 @@ function ContactPage() {
 
       <section className="section-y">
         <div className="container-page max-w-3xl">
-          {isStaticGitHubPages ? (
-            <div className="rounded-md border border-[#D1D5DB] bg-white p-6">
-              <a href={CONTACT_MAIL.href} className="btn-primary-kcf">
-                {CONTACT_MAIL.button}
-              </a>
-              <p className="mt-4 text-[15px] leading-relaxed text-[#374151]">{CONTACT_MAIL.hint}</p>
-            </div>
-          ) : (
-            <ContactInquiryForm />
-          )}
+          <ContactInquiryOnlineForm initialType={type} />
           <p className="mt-8">
             <Link to="/privacy-policy" className="font-semibold text-navy underline">
               {CONTACT_MAIL.policy}

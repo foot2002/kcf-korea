@@ -500,7 +500,7 @@ export const FOUNDATION_PRIVACY_BANNER = {
   title: "개인정보보호진흥원",
   lines: ["우수기관 7곳 선정", "무상제공 상시 접수"],
   primary: { label: "우수기관 보기", to: "/privacy-center/sure-mark" },
-  secondary: { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply" },
+  secondary: { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply-form" },
 } as const;
 
 export const CONTACT_TABLE_HEADERS = ["구분", "주소", "전화", "전자우편"] as const;

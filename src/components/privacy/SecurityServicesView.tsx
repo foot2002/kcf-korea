@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { BarChart3, ChevronDown, ChevronRight, FileDown, FileText, Handshake, Info, KeyRound, PenLine, ShieldCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { ApplyMethodTabs, CpoApplyForm, PledgeSubmitForm } from "@/components/forms/PublicForms";
 import { PartnerLogoGrid } from "@/components/privacy/home/HomePartners";
 import { FeatureSplit } from "@/components/site/FeatureSplit";
 import illOrgAccount from "@/assets/illustrations/ill-org-account.svg";
@@ -17,7 +18,6 @@ import {
   CASES,
   CASES_NOTE,
   CASE_STAT,
-  CPO_MAILTO,
   CPO_SUPPORT,
   DISCLAIMER,
   DOWNLOADS,
@@ -196,7 +196,7 @@ function PledgeBlock() {
         </button>
         <p className="text-[14px] leading-relaxed text-[#374151]">{PLEDGE.signNote}</p>
       </div>
-      {ready ? null : (
+      {ready ? <PledgeSubmitForm /> : (
         <p id="pledge-lock-note" className="mt-3 text-[14px] leading-relaxed text-[#374151]">
           {FREE_PLATFORM_PAGE.pledgeLocked}
         </p>
@@ -246,7 +246,7 @@ export function SecurityServicesView() {
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href="#apply" className="btn-primary-kcf">
+              <a href="#apply-form" className="btn-primary-kcf">
                 {FREE_PLATFORM_PAGE.aboutApply}
                 <ChevronRight className="h-4 w-4" aria-hidden="true" />
               </a>
@@ -488,9 +488,7 @@ export function SecurityServicesView() {
             })}
           </ul>
 
-          <a href={APPLY.mailto} className="btn-primary-kcf mt-6">
-            {FREE_PLATFORM_PAGE.emailSubmit}
-          </a>
+          <ApplyMethodTabs />
           <p className="mt-4 text-[14px] leading-relaxed text-[#374151]">{APPLY.note}</p>
           <p className="mt-3 text-[15px] text-[#111827]">
             {FREE_PLATFORM_PAGE.contactOrg} {FREE_PLATFORM.contact.manager}
@@ -511,9 +509,10 @@ export function SecurityServicesView() {
           <h2 className="text-navy">{CPO_SUPPORT.title}</h2>
           <p className="mt-3 max-w-3xl text-[16px] leading-relaxed text-[#374151]">{CPO_SUPPORT.intro}</p>
           <LabelValueTable caption={FREE_PLATFORM_PAGE.cpoCaption} rows={CPO_SUPPORT.rows} />
-          <a href={CPO_MAILTO} className="btn-primary-kcf mt-6">
-            {FREE_PLATFORM_PAGE.cpoApply}
-          </a>
+          <div className="mt-8">
+            <h3 className="text-[18px] font-bold text-navy">{FREE_PLATFORM_PAGE.cpoApply}</h3>
+            <div className="mt-4"><CpoApplyForm /></div>
+          </div>
         </div>
       </section>
 
@@ -564,7 +563,7 @@ export function SecurityServicesView() {
           <div className="mt-8">
             <PartnerLogoGrid mobileLimit={8} />
           </div>
-          <a href="#apply" className="btn-primary-kcf mt-8">
+          <a href="#apply-form" className="btn-primary-kcf mt-8">
             {FREE_PLATFORM_PAGE.aboutApply}
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </a>
