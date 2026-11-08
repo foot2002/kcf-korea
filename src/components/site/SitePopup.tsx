@@ -1,4 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { Building2, FileText, UserRound } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 
@@ -10,9 +11,10 @@ import type { PopupItem, PopupSite } from "@/lib/content/types";
 import { seoulToday } from "@/lib/seoul-date";
 
 const COPY = AI_FORMS_REPORT.popup;
+const AUDIENCE_ICONS = [Building2, FileText, UserRound] as const;
 const COVERS = [
-  { src: coverWhitepaper, alt: "국민용 백서 표지. AI 시대, 설문·신청서가 해킹의 문이 됩니다", width: 800, height: 1132 },
-  { src: coverPolicy, alt: "기술정책보고서 표지. AI 시대, 설문·신청·수집 단계의 보안 위협과 대응", width: 800, height: 1132 },
+  { src: coverPolicy, className: "is-back", width: 800, height: 1132 },
+  { src: coverWhitepaper, className: "is-front", width: 800, height: 1132 },
 ];
 
 function siteOf(pathname: string): PopupSite | null {
@@ -126,15 +128,42 @@ export function SitePopup() {
         <button type="button" className="site-popup-x" aria-label={COPY.closeLabel} onClick={close}>
           <span aria-hidden="true">×</span>
         </button>
-        <h2 id={COPY.titleId} ref={titleRef} tabIndex={-1}>{COPY.title}</h2>
-        <p>{COPY.body}</p>
-        <div className="site-popup-covers">
-          {COVERS.map((cover) => (
-            <Link key={cover.src} to={item.link} hash="download" aria-label={cover.alt} onClick={close}>
-              <img src={cover.src} alt="" width={cover.width} height={cover.height} />
-            </Link>
-          ))}
-        </div>
+        <p className="site-popup-label">{COPY.label}</p>
+        <h2 id={COPY.titleId} ref={titleRef} tabIndex={-1}>
+          {COPY.titleLead}
+          <em>{COPY.titleEm}</em>
+          {COPY.titleTail}
+        </h2>
+        <p className="site-popup-body">
+          {COPY.body.map((part) =>
+            "strong" in part && part.strong ? <strong key={part.text}>{part.text}</strong> : <span key={part.text}>{part.text}</span>,
+          )}
+        </p>
+        <Link className="site-popup-panel" to={item.link} hash="download" onClick={close}>
+          <span className="sr-only">{COPY.coverLabel}</span>
+          <span className="site-popup-covers" aria-hidden="true">
+            {COVERS.map((cover) => (
+              <img key={cover.className} className={cover.className} src={cover.src} alt="" width={cover.width} height={cover.height} />
+            ))}
+          </span>
+          <span className="site-popup-audience">
+            <span className="site-popup-audience-title">{COPY.audienceTitle}</span>
+            <ul>
+              {COPY.audiences.map((row, index) => {
+                const Icon = AUDIENCE_ICONS[index] ?? Building2;
+                return (
+                  <li key={row.who}>
+                    <Icon aria-hidden="true" />
+                    <span>
+                      <strong>{row.who}</strong>
+                      {row.text}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </span>
+        </Link>
         <Link className="site-popup-more" to={item.link} onClick={close}>{COPY.more}</Link>
         <div className="site-popup-foot">
           <label>
