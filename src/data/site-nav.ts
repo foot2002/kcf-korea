@@ -8,7 +8,9 @@ import heroWebinar from "@/assets/illustrations/hero-webinar.svg";
 import illMonitor from "@/assets/illustrations/ill-monitor.svg";
 import illOrgAccount from "@/assets/illustrations/ill-org-account.svg";
 import illPolicy from "@/assets/illustrations/ill-policy.svg";
+import { AI_FORMS_REPORT } from "@/data/ai-forms-report";
 import { PRIVACY_CENTER_PAGES } from "@/data/privacy-center";
+import { seoulToday } from "@/lib/seoul-date";
 
 export type SiteNavChild = {
   label: string;
@@ -111,6 +113,7 @@ const PRIVACY_MEGA: Record<string, Omit<SiteNavItem, "label" | "to" | "badge">> 
       { label: "국정감사", hash: "audit", icon: "Landmark", description: "국회 정무위원회 국정감사에서 인용된 조사" },
       { label: "개선 과제", hash: "policy", icon: "ListChecks", description: "조사에서 도출한 개선 과제" },
       { label: "SURE-CHECK 자가진단", to: "/privacy-center/sure-check", icon: "ScanSearch", description: "공개된 신청·설문 화면을 같은 기준으로 살피는 도구" },
+      { label: AI_FORMS_REPORT.menuLabel, to: AI_FORMS_REPORT.pagePath, icon: "FileText", description: "설문·신청·수집 단계의 14개 해킹 침투경로와 대응 방안" },
     ],
   },
   "/privacy-center/education": {
@@ -238,5 +241,9 @@ export function isNavHrefCurrent(pathname: string, hash: string, href: string) {
 }
 
 export function navCards(item: SiteNavItem) {
-  return item.children?.length ? item.children : (item.cards ?? []);
+  const cards = item.children?.length ? item.children : (item.cards ?? []);
+  const showNew = seoulToday() <= AI_FORMS_REPORT.badgeUntil;
+  return cards.map((card) =>
+    card.to === AI_FORMS_REPORT.pagePath ? { ...card, badge: showNew ? "NEW" : undefined } : card,
+  );
 }

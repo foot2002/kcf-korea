@@ -12,7 +12,8 @@ type BoardTo =
   | "/privacy-center/publications"
   | "/privacy-center/rights"
   | "/privacy-center/law"
-  | "/privacy-center/education";
+  | "/privacy-center/education"
+  | "/privacy-center/ai-forms-report";
 
 type BoardRow = {
   key: string;
@@ -61,7 +62,8 @@ function internalTo(path: string): BoardTo | undefined {
     path === "/privacy-center/publications" ||
     path === "/privacy-center/rights" ||
     path === "/privacy-center/law" ||
-    path === "/privacy-center/education"
+    path === "/privacy-center/education" ||
+    path === "/privacy-center/ai-forms-report"
   ) {
     return path;
   }

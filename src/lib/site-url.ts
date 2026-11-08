@@ -8,6 +8,7 @@ export function absoluteUrl(path = "/") {
 }
 
 export function shareImageForPath(pathname: string) {
+  if (pathname === "/privacy-center/ai-forms-report") return "/og/og-ai-forms-report.png";
   return pathname === "/privacy-center" || pathname.startsWith("/privacy-center/")
     ? "/og-privacy.png"
     : "/og-kcf.png";

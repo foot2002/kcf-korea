@@ -25,6 +25,7 @@ const publicationDetailPages = [
   "/privacy-center/publications/privacy-law-explainer",
 ];
 const monitorApplyPage = ["/privacy-center/rights/monitor/apply"];
+const reportPage = ["/privacy-center/ai-forms-report"];
 
 const redirectPages = [
   "/privacy-center/policy",
@@ -70,7 +71,7 @@ export default defineConfig({
         return true;
       },
     },
-    pages: [...redirectPages, ...educationDetailPages, ...publicationDetailPages, ...monitorApplyPage, "/404"].map((path) => ({
+    pages: [...redirectPages, ...educationDetailPages, ...publicationDetailPages, ...monitorApplyPage, ...reportPage, "/404"].map((path) => ({
       path,
     })),
   },

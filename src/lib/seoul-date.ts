@@ -1,0 +1,9 @@
+/** Asia/Seoul calendar date as YYYY-MM-DD. */
+export function seoulToday(now = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+}

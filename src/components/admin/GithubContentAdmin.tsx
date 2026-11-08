@@ -15,12 +15,13 @@ import {
   bundledMonitor,
   bundledNotices,
   bundledPledges,
+  bundledPopups,
   bundledPublications,
   bundledSlides,
   bundledStats,
   sourceEducation,
 } from "@/lib/content/load";
-import { parseBanner, parseEducation, parseInstitutions, parseMonitor, parseNotices, parsePledges, parsePublications, parseSlides, parseStats, safeParse } from "@/lib/content/parse";
+import { parseBanner, parseEducation, parseInstitutions, parseMonitor, parseNotices, parsePledges, parsePopups, parsePublications, parseSlides, parseStats, safeParse } from "@/lib/content/parse";
 import { romanizeFileName, todayStamp } from "@/lib/content/slug";
 import { FORM_NAMES, type FormName } from "@/lib/forms/schema";
 import {
@@ -34,6 +35,8 @@ import {
   type MonitorContent,
   type MonitorStatus,
   type NoticeItem,
+  type PopupItem,
+  type PopupSite,
   type PublicationContentItem,
   type SlideImageId,
   type StatItem,
@@ -54,6 +57,7 @@ const MENU: { id: AdminView; label: string }[] = [
   { id: "monitor", label: "모니터링단 안내" },
   { id: "slides", label: "메인 슬라이드" },
   { id: "banner", label: "띠 공지" },
+  { id: "popups", label: "팝업" },
   { id: "stats", label: "성과 수치" },
 ];
 
@@ -182,6 +186,7 @@ export function GithubContentAdmin() {
   const [monitor, setMonitor] = useState<MonitorContent>(bundledMonitor);
   const [slides, setSlides] = useState<ContentSlide[]>(bundledSlides);
   const [banner, setBanner] = useState<BannerContent>(bundledBanner);
+  const [popups, setPopups] = useState<PopupItem[]>(bundledPopups);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [message, setMessage] = useState("");
   const [commitUrl, setCommitUrl] = useState("");
@@ -239,6 +244,7 @@ export function GithubContentAdmin() {
     if (name === "monitor") setMonitor(safeParse(parseMonitor, data) ?? bundledMonitor);
     if (name === "slides") setSlides(safeParse(parseSlides, data) ?? bundledSlides);
     if (name === "banner") setBanner(safeParse(parseBanner, data) ?? bundledBanner);
+    if (name === "popups") setPopups(safeParse(parsePopups, data) ?? bundledPopups);
   }
 
   async function onLogin(event: FormEvent) {
@@ -332,6 +338,16 @@ export function GithubContentAdmin() {
       if (banner.end && !validDate(banner.end)) next.end = "종료일은 YYYY-MM-DD 형식이어야 합니다.";
       if (banner.link && !banner.link.startsWith("/") && !validUrl(banner.link)) next.link = "링크는 /로 시작하거나 http(s) 주소여야 합니다.";
     }
+    if (tab === "popups") {
+      popups.forEach((item, index) => {
+        if (!item.id.trim()) next[`${index}.id`] = "아이디를 입력하세요.";
+        if (!validDate(item.start)) next[`${index}.start`] = "시작일은 YYYY-MM-DD 형식이어야 합니다.";
+        if (!validDate(item.end)) next[`${index}.end`] = "종료일은 YYYY-MM-DD 형식이어야 합니다.";
+        if (validDate(item.start) && validDate(item.end) && item.start > item.end) next[`${index}.end`] = "종료일은 시작일 이후여야 합니다.";
+        if (!item.link.startsWith("/")) next[`${index}.link`] = "링크는 /로 시작해야 합니다.";
+        if (item.sites.length === 0) next[`${index}.sites`] = "노출할 사이트를 하나 이상 고르세요.";
+      });
+    }
     if (tab === "slides") {
       slides.forEach((item, index) => {
         if (item.published && !item.title.trim()) next[`${index}.title`] = "공개 슬라이드는 제목이 필요합니다.";
@@ -363,6 +379,7 @@ export function GithubContentAdmin() {
       );
     }
     if (tab === "banner") return JSON.stringify({ ...banner, version: 1, updatedAt }, null, 2);
+    if (tab === "popups") return JSON.stringify(popups, null, 2);
     return JSON.stringify({ version: 1, updatedAt, items: currentItems() }, null, 2);
   }
 
@@ -486,9 +503,10 @@ export function GithubContentAdmin() {
       { label: "모니터링단 안내", count: monitor.status, path: "public/content/monitor.json" },
       { label: "메인 슬라이드", count: `공개 ${slides.filter((item) => item.published).length}건`, path: "public/content/slides.json" },
       { label: "띠 공지", count: banner.published ? "공개" : "비공개", path: "public/content/banner.json" },
+      { label: "팝업", count: `${popups.filter((item) => item.enabled).length}건 사용`, path: "public/content/popups.json" },
       { label: "성과 수치", count: `${stats.length}건`, path: "public/content/stats.json" },
     ],
-    [banner.published, education.length, institutions.length, monitor.status, notices.length, pledges.length, publications.length, slides, stats.length],
+    [banner.published, education.length, institutions.length, monitor.status, notices.length, pledges.length, popups, publications.length, slides, stats.length],
   );
 
   if (!ready) return <p className="px-4 py-16 text-center text-[15px] text-[#374151]">확인 중…</p>;
@@ -978,6 +996,51 @@ export function GithubContentAdmin() {
             </div>
           </article>
         ) : null}
+
+        {tab === "popups"
+          ? popups.map((item, index) => (
+            <article key={`${item.id}-${index}`} className="rounded-md border border-[#D1D5DB] bg-white p-4">
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field label="아이디" error={errors[`${index}.id`]}>
+                  <input value={item.id} onChange={(event) => setPopups(popups.map((row, rowIndex) => rowIndex === index ? { ...row, id: event.target.value } : row))} className={inputClass(errors[`${index}.id`])} />
+                </Field>
+                <Field label="링크" error={errors[`${index}.link`]}>
+                  <input value={item.link} onChange={(event) => setPopups(popups.map((row, rowIndex) => rowIndex === index ? { ...row, link: event.target.value } : row))} className={inputClass(errors[`${index}.link`])} />
+                </Field>
+                <Field label="노출 시작" error={errors[`${index}.start`]}>
+                  <input value={item.start} onChange={(event) => setPopups(popups.map((row, rowIndex) => rowIndex === index ? { ...row, start: event.target.value } : row))} className={inputClass(errors[`${index}.start`])} placeholder="YYYY-MM-DD" />
+                </Field>
+                <Field label="노출 종료" error={errors[`${index}.end`]}>
+                  <input value={item.end} onChange={(event) => setPopups(popups.map((row, rowIndex) => rowIndex === index ? { ...row, end: event.target.value } : row))} className={inputClass(errors[`${index}.end`])} placeholder="YYYY-MM-DD" />
+                </Field>
+                <label className="flex items-center gap-2 text-[14px] font-semibold text-[#111827]">
+                  <input type="checkbox" checked={item.enabled} onChange={(event) => setPopups(popups.map((row, rowIndex) => rowIndex === index ? { ...row, enabled: event.target.checked } : row))} />
+                  사용
+                </label>
+                <fieldset>
+                  <legend className="text-[14px] font-semibold text-[#111827]">노출 사이트</legend>
+                  {(["foundation", "center"] as PopupSite[]).map((site) => (
+                    <label key={site} className="mr-4 mt-2 inline-flex items-center gap-2 text-[14px]">
+                      <input
+                        type="checkbox"
+                        checked={item.sites.includes(site)}
+                        onChange={(event) => {
+                          const sites = event.target.checked
+                            ? [...item.sites, site]
+                            : item.sites.filter((value) => value !== site);
+                          setPopups(popups.map((row, rowIndex) => rowIndex === index ? { ...row, sites } : row));
+                        }}
+                      />
+                      {site === "foundation" ? "재단 홈" : "진흥원 홈"}
+                    </label>
+                  ))}
+                  {errors[`${index}.sites`] ? <p className="mt-1 text-[13px] text-[#9A3412]">{errors[`${index}.sites`]}</p> : null}
+                </fieldset>
+              </div>
+              <button type="button" className="mt-3 text-[14px] font-bold text-[#9A3412] underline" onClick={() => setPopups(popups.filter((_, rowIndex) => rowIndex !== index))}>이 팝업 빼기</button>
+            </article>
+          ))
+          : null}
       </div>
       ) : null}
 
@@ -991,6 +1054,7 @@ export function GithubContentAdmin() {
             {tab === "pledges" ? <button type="button" className="btn-secondary-kcf" onClick={() => setPledges([...pledges, { id: `pledge-${Date.now()}`, name: "", date: "", published: true }])}>기관 추가</button> : null}
             {tab === "slides" ? <button type="button" className="btn-secondary-kcf" onClick={() => setSlides([...slides, { id: `slide-${Date.now()}`, area: "privacy", order: slides.length + 1, published: false, image: "hero-free-platform", eyebrow: "", title: "", body: "", buttonLabel: "", buttonLink: "" }])}>슬라이드 추가</button> : null}
             {tab === "stats" ? <button type="button" className="btn-secondary-kcf" onClick={() => setStats([...stats, { label: "", value: "" }])}>수치 추가</button> : null}
+            {tab === "popups" ? <button type="button" className="btn-secondary-kcf" onClick={() => setPopups([...popups, { id: `popup-${Date.now()}`, enabled: false, start: "", end: "", sites: ["foundation", "center"], link: "/" }])}>팝업 추가</button> : null}
             <button type="button" className="btn-secondary-kcf" onClick={() => setShowPreview((value) => !value)}>{showPreview ? "미리보기 닫기" : "미리보기"}</button>
             <button type="button" className="btn-primary-kcf" disabled={busy} onClick={() => void save()}>{busy ? "저장 중…" : "저장"}</button>
           </div>
