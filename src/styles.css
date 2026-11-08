@@ -1864,11 +1864,20 @@ html {
 .site-popup-foot button { min-height: 40px; padding: 8px 14px; border: 1px solid #CBD5E1; border-radius: 6px; background: #fff; font-weight: 700; }
 @keyframes site-popup-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 640px) {
-  .site-popup-dialog { width: calc(100% - 32px); }
-  .site-popup-panel { flex-direction: column; align-items: stretch; }
-  .site-popup-covers { width: 140px; height: 132px; flex-basis: auto; margin: 0 auto; }
-  .site-popup-covers img { width: 96px; }
-  .site-popup-foot { align-items: flex-start; flex-direction: column; }
+  .site-popup { padding: 12px; }
+  .site-popup-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 16px 16px 12px; }
+  .site-popup-dialog h2 { font-size: 22px; line-height: 1.3; }
+  .site-popup-body { margin-top: 8px; font-size: 14px; line-height: 1.45; }
+  .site-popup-panel { align-items: center; gap: 10px; margin-top: 10px; padding: 10px; }
+  .site-popup-covers { width: 88px; height: 92px; flex: 0 0 88px; }
+  .site-popup-covers img { width: 64px; }
+  .site-popup-covers .is-back { top: 8px; }
+  .site-popup-covers .is-front { top: 0; }
+  .site-popup-audience-title { font-size: 13px; }
+  .site-popup-audience ul { margin-top: 4px; }
+  .site-popup-audience li { gap: 6px; margin-top: 3px; font-size: 13px; line-height: 1.35; }
+  .site-popup-more { margin-top: 10px; padding: 10px 12px; }
+  .site-popup-foot { margin-top: 8px; gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .site-popup-dialog { animation: none; }
