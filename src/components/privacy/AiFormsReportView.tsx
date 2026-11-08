@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 
 import coverPolicy from "@/assets/reports/cover-policy-report.webp";
@@ -138,9 +137,6 @@ export function AiFormsReportView() {
               );
             })}
           </div>
-          <p className="rpt-platform">
-            <Link to={COPY.platformLink.to}>{COPY.platformLink.label}</Link>
-          </p>
         </div>
       </section>
     </article>

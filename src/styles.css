@@ -151,6 +151,7 @@
 
   html {
     font-family: var(--font-sans);
+    overflow-anchor: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -1813,8 +1814,8 @@ html {
 .rpt-info dd { margin: 4px 0 0; }
 .rpt-info a { color: #0B3A6E; font-weight: 700; }
 .rpt-books { display: grid; gap: 16px; margin-top: 20px; }
-.rpt-books article { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: start; padding: 16px; border: 1px solid #E2E8F0; border-radius: 8px; background: #fff; }
-.rpt-books img { width: 110px; height: auto; border: 1px solid #E2E8F0; border-radius: 4px; box-shadow: 0 4px 10px rgba(15, 23, 42, .08); }
+.rpt-books article { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; border: 1px solid #E2E8F0; border-radius: 8px; background: #fff; }
+.rpt-books img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid #E2E8F0; border-radius: 4px; box-shadow: 0 4px 10px rgba(15, 23, 42, .08); }
 .rpt-kicker { margin: 0; color: #0F766E; font-size: 13px; font-weight: 700; }
 .rpt-audience { margin: 6px 0 0; color: #374151; font-size: 14px; font-weight: 700; line-height: 1.5; }
 .rpt-meta { margin: 8px 0 0; color: #4B5563; font-size: 14px; line-height: 1.5; }
@@ -1827,8 +1828,6 @@ html {
   .rpt-row-body, .rpt-info { padding: 20px 24px 24px; }
   .rpt-info { grid-template-columns: 1fr 1fr; }
   .rpt-books { grid-template-columns: 1fr 1fr; }
-  .rpt-books article { grid-template-columns: 150px 1fr; }
-  .rpt-books img { width: 150px; }
 }
 @media (min-width: 1024px) {
   .rpt-hero { min-height: 560px; display: flex; align-items: center; }

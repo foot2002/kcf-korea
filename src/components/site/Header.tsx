@@ -101,8 +101,6 @@ export function Header() {
   const [mobileSite, setMobileSite] = useState<"foundation" | "privacy">(isPrivacy ? "privacy" : "foundation");
   const [openId, setOpenId] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [tabHidden, setTabHidden] = useState(false);
-  const [reduced, setReduced] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -119,14 +117,6 @@ export function Header() {
   }, [pathname, hash, isPrivacy, menu]);
 
   useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduced(media.matches);
-    sync();
-    media.addEventListener("change", sync);
-    return () => media.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
     const apply = () => {
@@ -136,19 +126,7 @@ export function Header() {
     const observer = new ResizeObserver(apply);
     observer.observe(header);
     return () => observer.disconnect();
-  }, [tabHidden, mobileOpen]);
-
-  useEffect(() => {
-    let last = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (y > last && y > 48) setTabHidden(true);
-      else if (y < last) setTabHidden(false);
-      last = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [mobileOpen]);
 
   useEffect(() => {
     if (!openId) return;
@@ -225,12 +203,7 @@ export function Header() {
 
   return (
     <header ref={headerRef} className="site-header sticky top-0 z-50 bg-white">
-      <div
-        className={`site-org-bar relative z-50 h-10 overflow-hidden border-b border-[#E2E8F0] bg-[#F3F5F8] lg:h-11 ${
-          tabHidden ? "!h-0 !border-b-0" : ""
-        } ${reduced ? "" : "transition-[height] duration-200"}`}
-        inert={tabHidden ? true : undefined}
-      >
+      <div className="site-org-bar relative z-50 h-10 overflow-hidden border-b border-[#E2E8F0] bg-[#F3F5F8] lg:h-11">
         <div className="h-full">
           <nav className="grid h-full grid-cols-2 lg:hidden" aria-label="기관 선택">
             <OrgTab to="/" current={!isPrivacy} site="foundation" compact>
@@ -334,11 +307,10 @@ export function Header() {
             </ul>
           </nav>
           <Link
-            to={isPrivacy ? "/privacy-center/security-services" : "/contact"}
-            hash={isPrivacy ? "apply" : undefined}
+            to={isPrivacy ? "/privacy-center/ai-forms-report" : "/contact"}
             className="relative z-50 hidden shrink-0 items-center gap-1.5 rounded-md bg-[var(--site-accent)] px-[18px] py-3 text-[15px] font-bold text-white lg:inline-flex"
           >
-            {isPrivacy ? "무상제공 신청" : "문의하기"}
+            {isPrivacy ? "기술백서 보기" : "문의하기"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
           <button
@@ -420,11 +392,10 @@ export function Header() {
           </div>
           <div className="border-t border-[#E2E8F0] px-4 py-4">
             <Link
-              to={mobileSite === "privacy" ? "/privacy-center/security-services" : "/contact"}
-              hash={mobileSite === "privacy" ? "apply" : undefined}
+              to={mobileSite === "privacy" ? "/privacy-center/ai-forms-report" : "/contact"}
               className={`flex h-12 items-center justify-center gap-1.5 rounded-md text-[15px] font-bold text-white ${mobileSite === "privacy" ? "bg-[#0F766E]" : "bg-[#0B3A6E]"}`}
             >
-              {mobileSite === "privacy" ? "무상제공 신청" : "문의하기"}
+              {mobileSite === "privacy" ? "기술백서 보기" : "문의하기"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <p className="mt-3 text-center text-[13px] text-[#475569]">02-501-2906 · cs@kcf-korea.org</p>
@@ -502,7 +473,7 @@ function OrgTab({
             current ? "bg-white text-[#0F766E]" : "bg-[#0F766E] text-white"
           }`}
         >
-          무상제공
+          백서발간
         </span>
       ) : null}
     </Link>

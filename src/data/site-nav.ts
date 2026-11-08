@@ -132,21 +132,20 @@ const PRIVACY_MEGA: Record<string, Omit<SiteNavItem, "label" | "to" | "badge">> 
     description: "검증된 수집 도구를 보급해 국민의 정보가 들어오는 첫 단계를 지킵니다.",
     children: [
       {
-        label: "무상제공 안내·신청",
+        label: "안내·신청",
         to: "/privacy-center/security-services",
         icon: "FileCheck",
-        badge: "상시 접수",
-        description: "CSAP 인증 온라인조사플랫폼을 공공기관·협단체·국회·언론사에 무상으로 제공합니다.",
+        badge: "예정",
+        description: "CSAP 인증 온라인조사플랫폼 안내입니다. 신청은 추후 받습니다.",
       },
       {
         label: "우수기관·SURE MARK",
         to: "/privacy-center/sure-mark",
         mark: true,
-        description: "2026 개인정보보호실천 우수기관 7곳과 인증서 진위확인, SURE MARK 자료실",
+        description: "인증서 진위확인과 SURE MARK 자료실",
       },
     ],
     shortcuts: [
-      { label: "실천선언", hash: "pledge" },
       { label: "신청 방법", hash: "apply" },
       { label: "CPO 특별 지원", hash: "cpo" },
       { label: "인증 구분 안내", hash: "criteria" },

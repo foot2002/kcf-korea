@@ -258,17 +258,7 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
             );
             return (
               <li key={step} className="flex flex-1 flex-col items-center gap-2 md:flex-row">
-                {index === 0 ? (
-                  <Link to="/privacy-center/security-services" hash="pledge" className="w-full underline-offset-2 hover:underline">
-                    {body}
-                  </Link>
-                ) : index === 1 ? (
-                  <Link to="/privacy-center/security-services" className="w-full underline-offset-2 hover:underline">
-                    {body}
-                  </Link>
-                ) : (
-                  body
-                )}
+                {body}
                 {index < EXCELLENCE.flow.length - 1 ? (
                   <>
                     <ChevronDown className="h-5 w-5 shrink-0 text-navy md:hidden" aria-hidden="true" />
@@ -316,16 +306,22 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
 
       <Section id="institutions">
         <h2 className="text-navy">{SURE_MARK_PAGE.institutionsHeading}</h2>
-        <p className="mt-2 text-[15px] font-semibold text-[#374151]">
-          {`${published.length}${SURE_MARK_PAGE.institutionsCountSuffix} · ${SURE_MARK_PAGE.selectedPrefix} ${selectedOn}`}
-        </p>
-        <ul className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {published.map((item) => (
-            <li key={item.certNo}>
-              <InstitutionCard item={item} />
-            </li>
-          ))}
-        </ul>
+        {published.length > 0 ? (
+          <>
+            <p className="mt-2 text-[15px] font-semibold text-[#374151]">
+              {`${published.length}${SURE_MARK_PAGE.institutionsCountSuffix} · ${SURE_MARK_PAGE.selectedPrefix} ${selectedOn}`}
+            </p>
+            <ul className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {published.map((item) => (
+                <li key={item.certNo}>
+                  <InstitutionCard item={item} />
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="mt-3 text-[15px] leading-relaxed text-[#374151]">선정 결과는 확정 후 공개합니다.</p>
+        )}
         <p className="mt-6 text-[14px] text-[#374151]">
           <a href="#verify" className="font-bold text-navy underline">
             {SURE_MARK_PAGE.verifyHint}
@@ -394,18 +390,17 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
       <Section id="verify">
         <h2 className="text-navy">{SURE_MARK_PAGE.nav.find((item) => item.id === "verify")?.label}</h2>
         <div className="mt-6 max-w-2xl">
-          <VerifyPanel initialCertNo={initialCertNo} institutions={institutions} />
+          <VerifyPanel initialCertNo={initialCertNo} institutions={published} />
         </div>
       </Section>
 
       <section className="border-t border-[#D1D5DB] bg-white">
         <div className="container-page grid gap-3 py-12 md:grid-cols-2 md:py-16">
           <Link
-            to="/privacy-center/security-services"
-            hash="pledge"
+            to="/privacy-center/ai-forms-report"
             className="flex items-center justify-between gap-3 rounded-md border border-[#D1D5DB] p-5 text-[16px] font-bold text-navy"
           >
-            {SURE_MARK_PAGE.footerPractice}
+            기술백서 보기
             <ChevronRight className="h-5 w-5 shrink-0" aria-hidden="true" />
           </Link>
           <Link
@@ -413,7 +408,7 @@ export function SureMarkView({ initialCertNo }: { initialCertNo: string }) {
             hash="apply"
             className="flex items-center justify-between gap-3 rounded-md border border-[#D1D5DB] p-5 text-[16px] font-bold text-navy"
           >
-            {SURE_MARK_PAGE.footerApply}
+            접수 안내
             <ChevronRight className="h-5 w-5 shrink-0" aria-hidden="true" />
           </Link>
         </div>

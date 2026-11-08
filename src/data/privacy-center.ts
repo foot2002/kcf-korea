@@ -15,9 +15,8 @@ export const PRIVACY_CENTER_PAGES: PrivacyNavItem[] = [
   {
     label: "인증도구 보급·확산",
     to: "/privacy-center/security-services",
-    badge: "무상제공",
     children: [
-      { label: "무상제공 안내·신청", to: "/privacy-center/security-services" },
+      { label: "안내·신청", to: "/privacy-center/security-services" },
       { label: "우수기관·SURE MARK", to: "/privacy-center/sure-mark" },
     ],
   },

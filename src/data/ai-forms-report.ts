@@ -1,9 +1,13 @@
 type RichPart = { text: string; em?: boolean };
 
 export const AI_FORMS_REPORT = {
-  metaTitle: "AI 시대 보안 백서 | 개인정보보호진흥원",
+  metaTitle: "AI 시대, 설문·신청서가 해킹의 문이 됩니다 | 개인정보보호진흥원",
   metaDescription:
     "설문·신청·수집 단계의 14개 해킹 침투경로와 대응 방안. 국민용 백서와 기술정책보고서를 무료로 내려받으세요.",
+  shareImage: "/og/og-ai-forms-report.png",
+  shareImageAlt: "AI 시대, 설문·신청서가 해킹의 문이 됩니다. 개인정보보호진흥원 국민용 백서와 기술정책보고서",
+  shareImageWidth: "1200",
+  shareImageHeight: "630",
   pagePath: "/privacy-center/ai-forms-report",
   menuLabel: "AI 시대 보안 백서",
   badgeUntil: "2026-12-31",

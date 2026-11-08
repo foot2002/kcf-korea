@@ -57,7 +57,7 @@ export const EXCELLENCE = {
     "본 선정은 개인정보보호 실천의 성과를 고취하고자 하는 것이며, 그 자체가 개인정보보호에 관한 어떠한 법률적·제도적 보장이 아닙니다.",
     "선정 이후 해당 기관에서 개인정보 관련 위반 사실이 관계기관 처분으로 확정되는 경우 선정 유지 여부를 재검토합니다.",
   ],
-  principle: "실천·우수기관은 재단 기준을 충족한 기관에 부여하며, 무상제공 플랫폼은 그 기준을 충족하는 방법 중 하나입니다.",
+  principle: "실천·우수기관은 재단 기준을 충족한 기관에 부여합니다. 선정 결과는 확정 후 공개합니다.",
   flow: ["실천선언", "인증도구 도입", "실천기관 게시", "우수기관 선정", "SURE MARK 활용"],
 };
 
@@ -84,7 +84,7 @@ function institution(certNo: string, name: string, reason: string): Institution 
     status: "유효",
     reason,
     certFile: `downloads/certificates/cert-${certNo}.pdf`,
-    published: true,
+    published: false,
   };
 }
 
@@ -115,7 +115,7 @@ export const SURE_MARK_PAGE = {
   title: "개인정보보호실천 우수기관 · SURE MARK",
   descriptionLead: "개인정보 보호를 실천하는 기관임을 국민에게 알리는 재단의 표시입니다.",
   metaTitle: "우수기관·SURE MARK | 개인정보보호진흥원",
-  back: "← 인증도구 보급·확산(무상제공 안내·신청)",
+  back: "← 인증도구 보급·확산",
   nav: [
     { id: "mark", label: "SURE MARK" },
     { id: "excellence", label: "선정 안내" },
@@ -152,7 +152,7 @@ export const SURE_MARK_PAGE = {
   notFound: "일치하는 인증번호가 없습니다. 인증번호를 다시 확인하거나 cs@kcf-korea.org로 문의해 주세요.",
   revoked: "이 인증은 회수되었습니다.",
   footerPractice: "우리 기관도 실천기관이 되려면",
-  footerApply: "무상제공 신청",
+  footerApply: "접수 안내",
   certFilePrefix: "개인정보보호실천우수기관_인증서_",
 } as const;
 

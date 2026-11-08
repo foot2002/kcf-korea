@@ -3,13 +3,11 @@ import { Link } from "@tanstack/react-router";
 import { BarChart3, ChevronDown, ChevronRight, FileDown, FileText, Handshake, Info, KeyRound, PenLine, ShieldCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { ApplyMethodTabs, CpoApplyForm, PledgeSubmitForm } from "@/components/forms/PublicForms";
+import { ApplyMethodTabs } from "@/components/forms/PublicForms";
 import { PartnerLogoGrid } from "@/components/privacy/home/HomePartners";
 import { FeatureSplit } from "@/components/site/FeatureSplit";
 import illOrgAccount from "@/assets/illustrations/ill-org-account.svg";
-import illPledge from "@/assets/illustrations/ill-pledge.svg";
 import illScattered from "@/assets/illustrations/ill-scattered-data.svg";
-import { usePledges } from "@/lib/content/load";
 import { PcMiniNav } from "@/components/privacy/privacy-ui";
 import {
   APPLY,
@@ -33,7 +31,6 @@ import {
   SURE_MARK_FOOTNOTE,
   VERIFIED,
 } from "@/data/free-platform";
-import { PLEDGE, PLEDGE_NUMERALS } from "@/data/privacy-pledge";
 import { CERT_SYSTEMS, SERVICE_SELECTION_CRITERIA } from "@/data/privacy-program";
 import { SURE_MARK } from "@/data/sure-mark";
 
@@ -115,112 +112,6 @@ function OfferMarkCell({ value }: { value: string }) {
   );
 }
 
-function PledgeBlock() {
-  const pledges = usePledges().filter((item) => item.published && item.name.trim());
-  const total = PLEDGE.items.length;
-  const [checked, setChecked] = useState<boolean[]>(() => PLEDGE.items.map(() => false));
-  const count = checked.filter(Boolean).length;
-  const ready = count === total && total > 0;
-
-  function toggle(index: number) {
-    setChecked((current) => current.map((value, itemIndex) => (itemIndex === index ? !value : value)));
-  }
-
-  return (
-    <div>
-      <div className="rounded-md border border-[#D1D5DB] bg-[#F3F4F6] p-5">
-        {PLEDGE.preamble.map((paragraph) => (
-          <p key={paragraph} className="mt-3 text-[15px] leading-relaxed text-[#374151] first:mt-0">
-            {paragraph}
-          </p>
-        ))}
-      </div>
-
-      <ol className="mt-6 grid gap-3">
-        {PLEDGE.items.map((item, index) => {
-          const inputId = `pledge-item-${index}`;
-          const numeral = PLEDGE_NUMERALS[index] ?? String(index + 1);
-          return (
-            <li key={item.title} className="rounded-md border border-[#D1D5DB] bg-white p-5">
-              <p className="text-[13px] font-bold text-[#0F766E]">{numeral}</p>
-              <h3 className="mt-1 text-[17px] font-bold text-navy">{item.title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-[#374151]">{item.body}</p>
-              <label htmlFor={inputId} className="mt-4 flex cursor-pointer items-start gap-3 text-[15px] text-[#111827]">
-                <input
-                  id={inputId}
-                  type="checkbox"
-                  checked={checked[index] ?? false}
-                  onChange={() => toggle(index)}
-                  className="mt-1 h-5 w-5 shrink-0 accent-[#0B3A6E]"
-                />
-                <span>
-                  {PLEDGE.checkLabel}
-                  <span className="sr-only"> — {item.title}</span>
-                </span>
-              </label>
-            </li>
-          );
-        })}
-      </ol>
-
-      <div className="mt-6">
-        <p id="pledge-progress" aria-live="polite" className="text-[15px] font-bold text-navy">
-          {count} / {total} {FREE_PLATFORM_PAGE.pledgeProgressSuffix}
-        </p>
-        <div
-          className="mt-2 h-2 overflow-hidden rounded-md bg-[#E5E7EB]"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={total}
-          aria-valuenow={count}
-          aria-labelledby="pledge-progress"
-        >
-          <div className="h-full bg-[#0F766E]" style={{ width: `${total === 0 ? 0 : (count / total) * 100}%` }} />
-        </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        {ready ? (
-          <a className="btn-primary-kcf" href={fileHref(PLEDGE.file)} download>
-            <FileDown className="h-4 w-4" aria-hidden="true" />
-            {FREE_PLATFORM_PAGE.pledgeDownload}
-          </a>
-        ) : (
-          <button type="button" className="btn-primary-kcf opacity-50" disabled aria-describedby="pledge-lock-note">
-            <FileDown className="h-4 w-4" aria-hidden="true" />
-            {FREE_PLATFORM_PAGE.pledgeDownload}
-          </button>
-        )}
-        <button type="button" className="btn-secondary-kcf" onClick={() => setChecked(PLEDGE.items.map(() => true))}>
-          {FREE_PLATFORM_PAGE.pledgeCheckAll}
-        </button>
-        <p className="text-[14px] leading-relaxed text-[#374151]">{PLEDGE.signNote}</p>
-      </div>
-      {ready ? <PledgeSubmitForm /> : (
-        <p id="pledge-lock-note" className="mt-3 text-[14px] leading-relaxed text-[#374151]">
-          {FREE_PLATFORM_PAGE.pledgeLocked}
-        </p>
-      )}
-
-      <div className="mt-10">
-        <h3 className="text-[17px] font-bold text-navy">{FREE_PLATFORM_PAGE.pledgeOrgsTitle}</h3>
-        {pledges.length > 0 ? (
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-            {pledges.map((item) => (
-              <li key={item.id} className="rounded-md border border-[#D1D5DB] bg-white px-4 py-3 text-[15px] text-[#111827]">
-                <span className="font-semibold text-navy">{item.name}</span>
-                {item.date ? <span className="mt-1 block text-[13px] text-[#374151]">{item.date}</span> : null}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-2 text-[15px] text-[#374151]">{FREE_PLATFORM_PAGE.pledgeOrgsEmpty}</p>
-        )}
-      </div>
-    </div>
-  );
-}
-
 export function SecurityServicesView() {
   const [moreCases, setMoreCases] = useState(false);
   const [criteriaOpen, setCriteriaOpen] = useState(false);
@@ -248,10 +139,6 @@ export function SecurityServicesView() {
             <div className="mt-6 flex flex-wrap gap-3">
               <a href="#apply-form" className="btn-primary-kcf">
                 {FREE_PLATFORM_PAGE.aboutApply}
-                <ChevronRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-              <a href="#pledge" className="btn-secondary-kcf">
-                {FREE_PLATFORM_PAGE.aboutPledge}
                 <ChevronRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
@@ -421,24 +308,12 @@ export function SecurityServicesView() {
         </div>
       </section>
 
-      <section id="pledge" className="scroll-mt-40 border-t border-[#D1D5DB] bg-[#F3F4F6]">
-        <div className="container-page py-12 md:py-16">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <h2 className="text-navy">{PLEDGE.title}</h2>
-            <img src={illPledge} alt="" aria-hidden="true" loading="lazy" className="mx-auto hidden max-h-[320px] w-auto lg:block" />
-          </div>
-          <div className="mt-6">
-            <PledgeBlock />
-          </div>
-        </div>
-      </section>
-
       <section id="apply" className="scroll-mt-40 border-t border-[#D1D5DB] bg-white">
         <div className="container-page py-12 md:py-16">
           <h2 className="text-navy">{FREE_PLATFORM_PAGE.applyTitle}</h2>
-          <ol className="mt-6 grid gap-3 md:grid-cols-4">
+          <ol className="mt-6 grid gap-3 md:grid-cols-3">
             {APPLY.steps.map((step, index) => {
-              const Icon = [FileText, PenLine, Handshake, KeyRound][index] ?? FileText;
+              const Icon = [FileText, Handshake, KeyRound][index] ?? FileText;
               return (
               <li key={step.no} className="relative flex flex-col">
                 <article className="h-full rounded-md border border-[#D1D5DB] bg-white p-4">
@@ -509,10 +384,8 @@ export function SecurityServicesView() {
           <h2 className="text-navy">{CPO_SUPPORT.title}</h2>
           <p className="mt-3 max-w-3xl text-[16px] leading-relaxed text-[#374151]">{CPO_SUPPORT.intro}</p>
           <LabelValueTable caption={FREE_PLATFORM_PAGE.cpoCaption} rows={CPO_SUPPORT.rows} />
-          <div className="mt-8">
-            <h3 className="text-[18px] font-bold text-navy">{FREE_PLATFORM_PAGE.cpoApply}</h3>
-            <div className="mt-4"><CpoApplyForm /></div>
-          </div>
+          <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-[#374151]">{FREE_PLATFORM_PAGE.cpoApplyNote}</p>
+          <a href="#apply-cpo" className="btn-primary-kcf mt-4">{FREE_PLATFORM_PAGE.cpoApply}</a>
         </div>
       </section>
 

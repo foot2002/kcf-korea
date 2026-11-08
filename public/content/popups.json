@@ -2,7 +2,7 @@
   {
     "id": "ai-forms-report-2026",
     "enabled": true,
-    "start": "2026-11-10",
+    "start": "2026-11-08",
     "end": "2026-12-31",
     "sites": ["foundation", "center"],
     "link": "/privacy-center/ai-forms-report"

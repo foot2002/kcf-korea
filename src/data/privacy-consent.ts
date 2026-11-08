@@ -52,15 +52,15 @@ const NOTICES: Record<PrivacyConsentVariant, PrivacyConsentNotice> = {
   },
   "free-apply": {
     title: "개인정보 수집·이용 동의 (필수)",
-    purpose: "온라인조사플랫폼 무상제공 신청 접수, 약정 진행, 계정 안내 및 운영 연락",
+    purpose: "온라인조사플랫폼 신청 접수, 약정 진행, 계정 안내 및 운영 연락",
     requiredItems: "기관·단체명, 구분, 대표자, 개인정보 보호책임자와 계정 관리자의 성명·직위·연락처·이메일",
-    optionalItems: "실천선언서 서명본, 남길 말",
+    optionalItems: "남길 말",
   },
   "cpo-apply": {
     title: "개인정보 수집·이용 동의 (필수)",
     purpose: "기업 CPO 특별 지원 신청 접수, 검토, 선정 안내 및 지원 연락",
-    requiredItems: "기업명, 대표자, CPO 성명·직위·연락처·이메일, 개인정보 수집 업무 설명, 실천선언 홍보 방식",
-    optionalItems: "실천선언서 서명본",
+    requiredItems: "기업명, 대표자, CPO 성명·직위·연락처·이메일, 개인정보 수집 업무 설명",
+    optionalItems: "",
   },
   "pledge-submit": {
     title: "개인정보 수집·이용 동의 (필수)",

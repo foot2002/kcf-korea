@@ -436,7 +436,7 @@ export const FOUNDATION_META_TITLE = "한국컨설팅산업재단 | 공익법인
 
 export const FOUNDATION_PUBLIC_BAND = `재정경제부 지정 공익법인 제${publicInterestCorporation.designationNo}호 · 기부금 영수증 발급 및 세제 혜택`;
 
-export const FOUNDATION_PRIVACY_RIBBON = "무상제공 상시 접수";
+export const FOUNDATION_PRIVACY_RIBBON = "기술백서 발간";
 
 const foundationFoundedYear = foundation.founded.slice(0, 4);
 const foundationEducationBadge = heroBadges.find((item) => item.includes("교육수료")) ?? "";
@@ -477,13 +477,13 @@ export const FOUNDATION_SLIDES: readonly HomeSlide[] = [
     id: "privacy",
     eyebrow: "부설 개인정보보호진흥원",
     eyebrowTone: "mint",
-    title: "정부인증 온라인조사플랫폼\n무상제공 · 상시 접수",
-    body: HERO.sub,
-    tab: "개인정보보호진흥원",
+    title: "AI 시대 보안 기술백서\n설문·신청서가 해킹의 문이 됩니다",
+    body: "국민의 정보가 기관으로 처음 들어오는 설문·신청·수집 단계의 해킹 경로와 대응 방안을 두 권의 보고서로 정리했습니다.",
+    tab: "기술백서",
     layout: "split",
     panel: "teal",
     visual: heroFreePlatform,
-    primary: { label: "진흥원으로 이동", to: "/privacy-center" },
+    primary: { label: "기술백서 보기", to: "/privacy-center/ai-forms-report" },
   },
 ];
 
@@ -498,9 +498,9 @@ export const FOUNDATION_QUICK_MENU = [
 
 export const FOUNDATION_PRIVACY_BANNER = {
   title: "개인정보보호진흥원",
-  lines: ["우수기관 7곳 선정", "무상제공 상시 접수"],
-  primary: { label: "우수기관 보기", to: "/privacy-center/sure-mark" },
-  secondary: { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply-form" },
+  lines: ["기술백서 발간", "AI 시대 보안 백서"],
+  primary: { label: "기술백서 보기", to: "/privacy-center/ai-forms-report" },
+  secondary: { label: "진흥원 안내", to: "/privacy-center", hash: undefined },
 } as const;
 
 export const CONTACT_TABLE_HEADERS = ["구분", "주소", "전화", "전자우편"] as const;
