@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { useRouterState } from "@tanstack/react-router";
+import { useEffect, useState, type ReactNode } from "react";
 
 import {
   CheckboxGroup,
@@ -12,10 +13,9 @@ import {
   TextInput,
 } from "@/components/forms/controls";
 import { InboxForm } from "@/components/forms/InboxForm";
-import { FREE_PLATFORM } from "@/data/free-platform";
+import { FREE_PLATFORM, FREE_PLATFORM_PAGE } from "@/data/free-platform";
 import { KOREA_REGIONS, MONITOR_INTERESTS, MONITOR_MODES, MONITOR_RULES } from "@/data/privacy-program";
 import {
-  CPO_PROMOTIONS,
   FORM_NAMES,
   FREE_ORG_KINDS,
   INQUIRY_TYPES,
@@ -23,6 +23,7 @@ import {
   contactSchema,
   cpoSchema,
   freeSchema,
+  freeSchemaSame,
   monitorSchema,
   pledgeSchema,
   type ContactInput,
@@ -33,7 +34,6 @@ import {
 } from "@/lib/forms/schema";
 
 const MAIL = "mailto:cs@kcf-korea.org";
-const pledgeFile = `${import.meta.env.BASE_URL}downloads/free-platform/kcf-privacy-pledge.docx`;
 
 function Grid({ children }: { children: ReactNode }) {
   return <div className="grid gap-4 md:grid-cols-2">{children}</div>;
@@ -53,13 +53,20 @@ export function FreeApplyForm() {
     adminPhone: "",
     adminEmail: "",
     note: "",
-    consentPledge: false,
-    consentPublish: false,
-    consentExclude: false,
     consentPrivacy: false,
   });
   const [same, setSame] = useState(false);
-  const set = <K extends keyof FreeInput>(key: K, value: FreeInput[K]) => setValues((current) => ({ ...current, [key]: value }));
+  const set = <K extends keyof FreeInput>(key: K, value: FreeInput[K]) =>
+    setValues((current) => {
+      const next = { ...current, [key]: value };
+      if (same && typeof value === "string") {
+        if (key === "dpoName") next.adminName = value;
+        if (key === "dpoTitle") next.adminTitle = value;
+        if (key === "dpoPhone") next.adminPhone = value;
+        if (key === "dpoEmail") next.adminEmail = value;
+      }
+      return next;
+    });
   const copySame = (checked: boolean) => {
     setSame(checked);
     if (checked) {
@@ -76,17 +83,17 @@ export function FreeApplyForm() {
   return (
     <InboxForm
       form={FORM_NAMES.free}
-      schema={freeSchema}
+      schema={same ? freeSchemaSame : freeSchema}
       values={values}
       initialStatus={STATUSES[FORM_NAMES.free][0]}
-      mailto={`${MAIL}?subject=${encodeURIComponent("[무상제공 신청] 기관명")}`}
+      mailto={`${MAIL}?subject=${encodeURIComponent("[온라인조사플랫폼 신청] 기관명")}`}
       mailtoLabel="이메일로 신청"
       submitLabel="온라인으로 신청"
       successNote="담당자가 확인 후 연락드립니다."
       steps={STATUSES[FORM_NAMES.free]}
-      fileMode="optional"
+      fileMode="none"
     >
-      {({ errors, file, setFile }) => (
+      {({ errors }) => (
         <>
           <fieldset className="grid gap-4">
             <legend id="free-org" className="text-[18px] font-bold text-navy">기관 정보</legend>
@@ -100,9 +107,8 @@ export function FreeApplyForm() {
             </Grid>
             <div>
               <p id="orgKind" className="text-[15px] font-bold text-[#111827]">구분<span className="text-[#B91C1C]" aria-hidden="true"> *</span><span className="sr-only"> (필수)</span></p>
-              <div className="mt-2"><RadioGroup name="orgKind" labelledBy="orgKind" value={values.orgKind} options={FREE_ORG_KINDS} invalid={Boolean(errors.orgKind)} onChange={(value) => set("orgKind", value as FreeInput["orgKind"])} /></div>
-              {errors.orgKind ? <p className="mt-1 text-[14px] text-[#B91C1C]">{errors.orgKind}</p> : null}
-              <p className="mt-2 text-[14px] text-[#374151]">기업 CPO 특별 지원은 <a href="#cpo" className="font-bold text-[#0B3A6E] underline">CPO 신청</a>으로 보내 주세요.</p>
+              <div className="mt-2"><RadioGroup name="orgKind" labelledBy="orgKind" describedBy={errors.orgKind ? "orgKind-error" : undefined} value={values.orgKind} options={FREE_ORG_KINDS} invalid={Boolean(errors.orgKind)} onChange={(value) => set("orgKind", value as FreeInput["orgKind"])} /></div>
+              {errors.orgKind ? <p id="orgKind-error" className="mt-1 text-[14px] text-[#B91C1C]">{errors.orgKind}</p> : null}
             </div>
           </fieldset>
           <fieldset className="grid gap-4">
@@ -118,26 +124,19 @@ export function FreeApplyForm() {
             <legend className="text-[18px] font-bold text-navy">플랫폼 계정 관리자</legend>
             <label className="flex items-center gap-2 text-[15px] text-[#111827]">
               <input type="checkbox" checked={same} onChange={(event) => copySame(event.target.checked)} className="h-4 w-4 accent-[#0B3A6E]" />
-              보호책임자와 같음
+              {FREE_PLATFORM_PAGE.sameAsDpo}
             </label>
-            <Grid>
+            {same ? <p className="text-[14px] leading-relaxed text-[#374151]">{FREE_PLATFORM_PAGE.sameAsDpoNote}</p> : <Grid>
               <FormField id="adminName" label="성명" required error={errors.adminName}>{(field) => <TextInput {...field} value={values.adminName} onChange={(value) => set("adminName", value)} />}</FormField>
               <FormField id="adminTitle" label="직위" required error={errors.adminTitle}>{(field) => <TextInput {...field} value={values.adminTitle} onChange={(value) => set("adminTitle", value)} />}</FormField>
               <FormField id="adminPhone" label="연락처" required error={errors.adminPhone}>{(field) => <TextInput {...field} type="tel" value={values.adminPhone} onChange={(value) => set("adminPhone", value)} />}</FormField>
               <FormField id="adminEmail" label="이메일" required error={errors.adminEmail}>{(field) => <TextInput {...field} type="email" value={values.adminEmail} onChange={(value) => set("adminEmail", value)} />}</FormField>
-            </Grid>
+            </Grid>}
           </fieldset>
-          <FormField id="pledgeFile" label="실천선언서 서명본" hint="지금 없으면 접수 후 이메일로 보내셔도 됩니다." error={errors.file}>
-            {(field) => <FileInput id={field.id} file={file} invalid={field.invalid} describedBy={field.describedBy} onChange={setFile} />}
-          </FormField>
-          <p><a className="font-bold text-[#0B3A6E] underline" href={pledgeFile} download>실천선언서 내려받기</a></p>
-          <FormField id="note" label="남길 말" error={errors.note}>
+          <FormField id="note" label="남길 말" optional hint={FREE_PLATFORM_PAGE.noteOptional} error={errors.note}>
             {(field) => <Textarea id={field.id} value={values.note} max={2000} invalid={field.invalid} describedBy={field.describedBy} onChange={(value) => set("note", value)} />}
           </FormField>
-          <CheckConsent checked={values.consentPledge} label="실천선언서를 함께 제출합니다" error={errors.consentPledge} onChange={(checked) => set("consentPledge", checked)} />
-          <CheckConsent checked={values.consentPublish} label="재단 홈페이지 '개인정보보호 실천기관' 게시에 동의합니다" error={errors.consentPublish} onChange={(checked) => set("consentPublish", checked)} />
-          <CheckConsent checked={values.consentExclude} label="개인정보 유출 사고가 발생하면 실천기관 게시에서 제외되는 것에 동의합니다" error={errors.consentExclude} onChange={(checked) => set("consentExclude", checked)} />
-          <ConsentBox id="free-privacy" variant="free-apply" checked={values.consentPrivacy} error={errors.consentPrivacy} onChange={(checked) => set("consentPrivacy", checked)} />
+          <ConsentBox id="free-privacy" name="consentPrivacy" variant="free-apply" checked={values.consentPrivacy} error={errors.consentPrivacy} onChange={(checked) => set("consentPrivacy", checked)} />
           <p className="text-[13px] text-[#374151]">{FREE_PLATFORM.contact.email}</p>
         </>
       )}
@@ -154,18 +153,16 @@ export function CpoApplyForm() {
     cpoPhone: "",
     cpoEmail: "",
     work: "",
-    promotion: "사내 공지",
-    consentPledge: false,
     consentPrivacy: false,
   });
   const set = <K extends keyof CpoInput>(key: K, value: CpoInput[K]) => setValues((current) => ({ ...current, [key]: value }));
   return (
-    <InboxForm form={FORM_NAMES.cpo} schema={cpoSchema} values={values} initialStatus={STATUSES[FORM_NAMES.cpo][0]} mailto={`${MAIL}?subject=${encodeURIComponent("[CPO 특별지원 신청] 기업명")}`} mailtoLabel="이메일로 신청" submitLabel="신청하기" successNote="담당자가 확인 후 연락드립니다." steps={STATUSES[FORM_NAMES.cpo]} fileMode="optional">
-      {({ errors, file, setFile }) => (
+    <InboxForm form={FORM_NAMES.cpo} schema={cpoSchema} values={values} initialStatus={STATUSES[FORM_NAMES.cpo][0]} mailto={`${MAIL}?subject=${encodeURIComponent("[CPO 특별지원 신청] 기업명")}`} mailtoLabel="이메일로 신청" submitLabel="신청하기" successNote="담당자가 확인 후 연락드립니다." steps={STATUSES[FORM_NAMES.cpo]} fileMode="none">
+      {({ errors }) => (
         <>
           <Grid>
             <FormField id="company" label="기업명" required error={errors.company}>{(field) => <TextInput {...field} value={values.company} onChange={(value) => set("company", value)} />}</FormField>
-            <FormField id="cpo-representative" label="대표자" required error={errors.representative}>{(field) => <TextInput {...field} value={values.representative} onChange={(value) => set("representative", value)} />}</FormField>
+            <FormField id="cpo-representative" label="대표자" required error={errors.representative}>{(field) => <TextInput {...field} name="representative" value={values.representative} onChange={(value) => set("representative", value)} />}</FormField>
             <FormField id="cpoName" label="CPO 성명" required error={errors.cpoName}>{(field) => <TextInput {...field} value={values.cpoName} onChange={(value) => set("cpoName", value)} />}</FormField>
             <FormField id="cpoTitle" label="직위" required error={errors.cpoTitle}>{(field) => <TextInput {...field} value={values.cpoTitle} onChange={(value) => set("cpoTitle", value)} />}</FormField>
             <FormField id="cpoPhone" label="연락처" required error={errors.cpoPhone}>{(field) => <TextInput {...field} type="tel" value={values.cpoPhone} onChange={(value) => set("cpoPhone", value)} />}</FormField>
@@ -174,14 +171,7 @@ export function CpoApplyForm() {
           <FormField id="work" label="개인정보 수집 업무 설명" required hint="예: 고객 설문, 이벤트 신청" error={errors.work}>
             {(field) => <Textarea id={field.id} value={values.work} max={500} invalid={field.invalid} describedBy={field.describedBy} onChange={(value) => set("work", value)} />}
           </FormField>
-          <div>
-            <p id="promotion" className="text-[15px] font-bold text-[#111827]">실천선언 홍보 방식<span className="text-[#B91C1C]" aria-hidden="true"> *</span><span className="sr-only"> (필수)</span></p>
-            <div className="mt-2"><RadioGroup name="promotion" labelledBy="promotion" value={values.promotion} options={CPO_PROMOTIONS} invalid={Boolean(errors.promotion)} onChange={(value) => set("promotion", value as CpoInput["promotion"])} /></div>
-            {errors.promotion ? <p className="mt-1 text-[14px] text-[#B91C1C]">{errors.promotion}</p> : null}
-          </div>
-          <FormField id="cpo-file" label="실천선언서 서명본" error={errors.file}>{(field) => <FileInput id={field.id} file={file} invalid={field.invalid} describedBy={field.describedBy} onChange={setFile} />}</FormField>
-          <CheckConsent checked={values.consentPledge} label="실천선언에 참여합니다" error={errors.consentPledge} onChange={(checked) => set("consentPledge", checked)} />
-          <ConsentBox id="cpo-privacy" variant="cpo-apply" checked={values.consentPrivacy} error={errors.consentPrivacy} onChange={(checked) => set("consentPrivacy", checked)} />
+          <ConsentBox id="cpo-privacy" name="consentPrivacy" variant="cpo-apply" checked={values.consentPrivacy} error={errors.consentPrivacy} onChange={(checked) => set("consentPrivacy", checked)} />
         </>
       )}
     </InboxForm>
@@ -288,21 +278,56 @@ export function ContactInquiryOnlineForm({ initialType }: { initialType?: string
 }
 
 export function ApplyMethodTabs() {
+  const hash = useRouterState({ select: (state) => state.location.hash });
+  const [audience, setAudience] = useState<"org" | "cpo" | null>(null);
   const [tab, setTab] = useState<"online" | "mail">("online");
+  useEffect(() => {
+    if (hash === "apply-cpo") setAudience("cpo");
+  }, [hash]);
+  const mailSubject = audience === "cpo" ? "[CPO 특별지원 신청] 기업명" : "[온라인조사플랫폼 신청] 기관명";
   return (
     <div id="apply-form" className="mt-8 scroll-mt-40">
-      <div role="tablist" aria-label="신청 방법" className="flex gap-2 border-b border-[#D1D5DB]">
-        {(["online", "mail"] as const).map((item) => (
-          <button key={item} type="button" role="tab" aria-selected={tab === item} className={`border-b-2 px-4 py-3 text-[15px] font-bold ${tab === item ? "border-[#0B3A6E] text-[#0B3A6E]" : "border-transparent text-[#374151]"}`} onClick={() => setTab(item)}>
-            {item === "online" ? "온라인으로 신청" : "서류로 제출(이메일)"}
-          </button>
-        ))}
+      <div id="apply-cpo" className="scroll-mt-40">
+        <h3 id="apply-who" className="text-[18px] font-bold text-navy">{FREE_PLATFORM_PAGE.applyWhoTitle}</h3>
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-[#374151]">{FREE_PLATFORM_PAGE.applyWhoLead}</p>
+        <div role="radiogroup" aria-labelledby="apply-who" className="mt-4 grid gap-3 md:grid-cols-2">
+          {FREE_PLATFORM_PAGE.applyWho.map((item) => {
+            const selected = audience === item.id;
+            return (
+              <label key={item.id} className={`flex cursor-pointer gap-3 rounded-md border bg-white p-4 ${selected ? "border-[#0B3A6E]" : "border-[#D1D5DB]"}`}>
+                <input
+                  type="radio"
+                  name="applyAudience"
+                  value={item.id}
+                  checked={selected}
+                  onChange={() => setAudience(item.id)}
+                  className="mt-1 h-4 w-4 shrink-0 accent-[#0B3A6E]"
+                />
+                <span>
+                  <span className="block text-[16px] font-bold text-[#111827]">{item.title}</span>
+                  <span className="mt-1 block text-[14px] leading-relaxed text-[#374151]">{item.text}</span>
+                </span>
+              </label>
+            );
+          })}
+        </div>
       </div>
-      <div className="mt-6">
-        {tab === "online" ? <FreeApplyForm /> : (
-          <a href={`${MAIL}?subject=${encodeURIComponent("[무상제공 신청] 기관명")}`} className="btn-primary-kcf">이메일로 서류 제출</a>
-        )}
-      </div>
+      {audience === null ? <p className="mt-4 text-[15px] text-[#374151]">{FREE_PLATFORM_PAGE.applyWhoPrompt}</p> : (
+        <>
+          <div role="tablist" aria-label="신청 방법" className="mt-6 flex gap-2 border-b border-[#D1D5DB]">
+            {(["online", "mail"] as const).map((item) => (
+              <button key={item} type="button" role="tab" aria-selected={tab === item} className={`border-b-2 px-4 py-3 text-[15px] font-bold ${tab === item ? "border-[#0B3A6E] text-[#0B3A6E]" : "border-transparent text-[#374151]"}`} onClick={() => setTab(item)}>
+                {item === "online" ? "온라인으로 신청" : "서류로 제출(이메일)"}
+              </button>
+            ))}
+          </div>
+          <div className="mt-6">
+            {tab === "mail" ? (
+              <a href={`${MAIL}?subject=${encodeURIComponent(mailSubject)}`} className="btn-primary-kcf">이메일로 서류 제출</a>
+            ) : audience === "org" ? <FreeApplyForm /> : <CpoApplyForm />}
+          </div>
+        </>
+      )}
       <p className="sr-only">{FREE_PLATFORM.poweredBy}</p>
     </div>
   );

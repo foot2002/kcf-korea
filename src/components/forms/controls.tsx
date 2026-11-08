@@ -12,6 +12,7 @@ export function FormField({
   id,
   label,
   required,
+  optional,
   hint,
   error,
   children,
@@ -19,6 +20,7 @@ export function FormField({
   id: string;
   label: string;
   required?: boolean;
+  optional?: boolean;
   hint?: string;
   error?: string;
   children: (props: { id: string; describedBy?: string; invalid: boolean }) => ReactNode;
@@ -35,6 +37,8 @@ export function FormField({
             <span className="text-[#B91C1C]" aria-hidden="true"> *</span>
             <span className="sr-only"> (필수)</span>
           </>
+        ) : optional ? (
+          <span className="ml-1 text-[13px] font-normal text-[#374151]">(선택)</span>
         ) : null}
       </label>
       {hint ? <p id={hintId} className="mt-1 text-[13px] leading-relaxed text-[#374151]">{hint}</p> : null}
@@ -48,6 +52,7 @@ export function TextInput(props: {
   id: string;
   value: string;
   invalid?: boolean;
+  name?: string;
   describedBy?: string;
   type?: string;
   autoComplete?: string;
@@ -56,6 +61,7 @@ export function TextInput(props: {
   return (
     <input
       id={props.id}
+      name={props.name ?? props.id}
       type={props.type ?? "text"}
       value={props.value}
       autoComplete={props.autoComplete}
@@ -71,6 +77,7 @@ export function Textarea(props: {
   id: string;
   value: string;
   max: number;
+  name?: string;
   invalid?: boolean;
   describedBy?: string;
   onChange: (value: string) => void;
@@ -79,6 +86,7 @@ export function Textarea(props: {
     <div>
       <textarea
         id={props.id}
+        name={props.name ?? props.id}
         value={props.value}
         maxLength={props.max}
         aria-invalid={props.invalid || undefined}
@@ -122,11 +130,12 @@ export function RadioGroup(props: {
   value: string;
   options: readonly string[];
   labelledBy: string;
+  describedBy?: string;
   invalid?: boolean;
   onChange: (value: string) => void;
 }) {
   return (
-    <div role="radiogroup" aria-labelledby={props.labelledBy} aria-invalid={props.invalid || undefined} className="grid gap-2">
+    <div role="radiogroup" aria-labelledby={props.labelledBy} aria-describedby={props.describedBy} aria-invalid={props.invalid || undefined} className="grid gap-2">
       {props.options.map((option) => (
         <label key={option} className="flex items-center gap-2 text-[15px] text-[#111827]">
           <input type="radio" name={props.name} value={option} checked={props.value === option} onChange={() => props.onChange(option)} className="h-4 w-4 accent-[#0B3A6E]" />
@@ -186,6 +195,7 @@ export function FileInput(props: {
         <span className="mt-1 text-[13px] text-[#374151]">PDF, JPG, PNG · 5MB 이하</span>
         <input
           id={props.id}
+          name="file"
           type="file"
           accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
           aria-invalid={props.invalid || undefined}
@@ -207,6 +217,7 @@ export function FileInput(props: {
 export function ConsentBox(props: {
   id: string;
   variant: PrivacyConsentVariant;
+  name?: string;
   checked: boolean;
   error?: string;
   onChange: (checked: boolean) => void;
@@ -237,6 +248,7 @@ export function ConsentBox(props: {
       <label className="mt-3 flex items-start gap-2 text-[15px] font-bold text-[#111827]">
         <input
           id={props.id}
+          name={props.name}
           type="checkbox"
           checked={props.checked}
           aria-invalid={Boolean(props.error) || undefined}

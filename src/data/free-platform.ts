@@ -44,9 +44,9 @@ export type FreePlatformHero = {
 };
 
 export const HERO: FreePlatformHero = {
-  eyebrow: "공익사업 · 상시 접수",
+  eyebrow: "공익사업 · 접수 예정",
   headline: "개인정보 유출, 수집하는 곳에서부터 시작합니다",
-  sub: "정부 클라우드 보안인증(CSAP)을 받은 온라인조사플랫폼을 공공기관·협단체·국회·언론사에 무상으로 제공합니다.",
+  sub: "정부 클라우드 보안인증(CSAP)을 받은 온라인조사플랫폼을 공공기관·협단체·국회·언론사에 안내합니다. 신청은 추후 받습니다.",
   stats: [
     { value: "149건", label: "공공기관 개인정보 수집 설문 모두 보안인증 없는 서비스" },
     { value: "98.7%", label: "안전조치 안내 미흡 (149건 중 147건)" },
@@ -267,7 +267,7 @@ export const OFFER: OfferRow[] = [
   {
     label: "참여 조건",
     value:
-      "「개인정보보호 실천선언서」 서명 제출 → 재단 홈페이지에 실천선언 기관으로 게시 (개인정보 유출 사고 발생 시 게시 제외, 재발 방지 조치 이행 후 재게시 협의)",
+      "신청 일정과 참여 조건은 접수 시작 때 안내합니다.",
   },
   { label: "표기 사항", value: `설문·신청서에 SURE MARK와 ${FREE_PLATFORM.poweredBy} 표기` },
   {
@@ -291,19 +291,18 @@ export type FreePlatformApply = {
 
 export const APPLY: FreePlatformApply = {
   steps: [
-    { no: 1, title: "신청서 제출", body: "무상제공 신청서를 작성합니다." },
-    { no: 2, title: "실천선언서 서명", body: "기관·단체장과 개인정보 보호책임자가 서명합니다." },
+    { no: 1, title: "신청서 제출", body: "신청서를 작성합니다. 접수는 예정되어 있습니다." },
     {
-      no: 3,
+      no: 2,
       title: "이용 약정",
       body: "처리 위탁, 보안관제·사고조사 협조, 종료 시 데이터 반환·파기 조항이 담긴 약정을 체결합니다.",
     },
-    { no: 4, title: "계정 개설", body: "기관 계정을 개설하고 이용 안내를 드립니다." },
+    { no: 3, title: "계정 개설", body: "기관 계정을 개설하고 이용 안내를 드립니다." },
   ],
   submit: "전자우편 cs@kcf-korea.org (스캔 또는 PDF)",
-  period: "상시 접수",
+  period: "접수 예정",
   note: "공공기관은 무상 사용 접수 등 내부 절차에 따릅니다.",
-  mailto: "mailto:cs@kcf-korea.org?subject=" + encodeURIComponent("[무상제공 신청] 기관명"),
+  mailto: "mailto:cs@kcf-korea.org?subject=" + encodeURIComponent("[온라인조사플랫폼 신청] 기관명"),
 };
 
 export type CpoSupportRow = { label: string; value: string };
@@ -319,18 +318,17 @@ export const CPO_SUPPORT: CpoSupport = {
     { label: "내용", value: "해당 기업 CPO에게 WiseON 1계정, 1년 무상 (설문·응답 수 제한 없음)" },
     {
       label: "조건",
-      value: "① 개인정보보호 실천선언 참여 ② 실천선언 참여 사실을 사내 공지 또는 언론 홍보로 알림",
+      value: "세부 조건은 접수 시작 때 안내합니다.",
     },
-    { label: "신청", value: "CPO 명의로 신청서와 실천선언서 제출 (세부 내용은 개별 안내)" },
+    { label: "신청", value: "CPO 명의 신청은 접수 시작 때 안내합니다." },
   ],
 };
 
 export type DownloadItem = { label: string; file: string };
 
 export const DOWNLOADS: DownloadItem[] = [
-  { label: "무상제공 신청서 (붙임 1)", file: "downloads/free-platform/kcf-free-platform-application.docx" },
-  { label: "개인정보보호 실천선언서 (붙임 2)", file: "downloads/free-platform/kcf-privacy-pledge.docx" },
-  { label: "WiseON 무상지원 사업 안내 (PDF)", file: "downloads/free-platform/wiseon-free-support-guide.pdf" },
+  { label: "신청서 (붙임 1)", file: "downloads/free-platform/kcf-free-platform-application.docx" },
+  { label: "온라인조사플랫폼 안내 (PDF)", file: "downloads/free-platform/wiseon-free-support-guide.pdf" },
 ];
 
 export type PressItem = { title: string; outlet: string; date: string; url: string };
@@ -395,15 +393,14 @@ export const ASSOCIATION_INTRO =
 export const CPO_MAILTO = `mailto:${FREE_PLATFORM.contact.email}?subject=${encodeURIComponent("[CPO 특별지원 신청] 기업명")}`;
 
 export const FREE_PLATFORM_PAGE = {
-  title: "정부인증 온라인조사플랫폼 무상제공",
+  title: "정부인증 온라인조사플랫폼",
   description:
-    "개인정보 보호의 첫 단계는 '수집'입니다. 기업의 공익 기부로, 개인정보 보호 실천에 동참하는 기관·단체에 인증받은 설문 도구를 무상으로 제공합니다.",
-  badge: "상시 접수",
+    "개인정보 보호의 첫 단계는 '수집'입니다. 인증받은 설문 도구 안내입니다. 신청은 추후 받습니다.",
+  badge: "접수 예정",
   nav: [
     { id: "about", label: "사업 안내" },
     { id: "verified", label: "인증·기능" },
     { id: "offer", label: "제공 내용" },
-    { id: "pledge", label: "실천선언" },
     { id: "apply", label: "신청 방법" },
     { id: "cpo", label: "CPO 지원" },
     { id: "criteria", label: "인증 구분" },
@@ -413,11 +410,30 @@ export const FREE_PLATFORM_PAGE = {
   aboutPledge: "실천선언",
   verifiedTitle: "인증·기능",
   offerTitle: "제공 내용",
-  offerCaption: "무상제공 내용",
+  offerCaption: "제공 내용",
   tableLabel: "항목",
   tableValue: "내용",
   markExampleAlt: "SURE MARK",
   applyTitle: "신청 방법",
+  applyWhoTitle: "신청 대상을 선택해 주세요",
+  applyWhoLead: "기관 신청과 기업 CPO 신청은 대상이 다릅니다. 해당하는 쪽을 고르면 그 신청서만 열립니다.",
+  applyWhoPrompt: "대상을 선택하면 신청서가 열립니다.",
+  applyWho: [
+    {
+      id: "org",
+      title: "공공기관 · 국회 · 언론사 · 협단체",
+      text: "국가·공공기관, 국회, 언론사, 협회를 포함한 협·단체가 기관 명의로 신청합니다.",
+    },
+    {
+      id: "cpo",
+      title: "기업 개인정보 보호책임자(CPO)",
+      text: "기업의 개인정보 보호책임자가 본인 명의로 신청합니다. 위의 기관 신청과 별도입니다.",
+    },
+  ],
+  sameAsDpo: "보호책임자와 같음",
+  sameAsDpoNote: "계정 관리자는 보호책임자와 같습니다. 아래 항목을 다시 입력하지 않아도 됩니다.",
+  noteOptional: "선택입니다. 비워 두셔도 신청할 수 있습니다.",
+  cpoApplyNote: "기업 CPO 신청서는 신청 방법에서 기업 개인정보 보호책임자(CPO)를 선택하면 열립니다.",
   receptionPrefix: "접수",
   submitPrefix: "제출",
   emailSubmit: "이메일로 제출하기",

@@ -30,10 +30,32 @@ export function InboxForm<T extends Record<string, unknown>>(props: {
   const [file, setFile] = useState<File | null>(null);
   const [receipt, setReceipt] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+  const summaryRef = useRef<HTMLDivElement>(null);
+  const focusKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
     void isFormsConfigured().then(setReady);
   }, []);
+
+  useEffect(() => {
+    const key = focusKeyRef.current;
+    if (!key) return;
+    focusKeyRef.current = null;
+    const form = formRef.current;
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    const target = form?.querySelector<HTMLElement>(`[name="${CSS.escape(key)}"]`) ?? summaryRef.current;
+    target?.scrollIntoView({ behavior, block: "center" });
+    target?.focus();
+  }, [errors]);
+
+  function focusField(key: string) {
+    const form = formRef.current;
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    const target = form?.querySelector<HTMLElement>(`[name="${CSS.escape(key)}"]`);
+    target?.scrollIntoView({ behavior, block: "center" });
+    target?.focus();
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,6 +68,8 @@ export function InboxForm<T extends Record<string, unknown>>(props: {
       const fileError = readFileGuard(file);
       if (fileError) next.file = fileError;
     }
+    const firstKey = Object.keys(next)[0];
+    if (firstKey) focusKeyRef.current = firstKey;
     setErrors(next);
     if (Object.keys(next).length > 0 || !parsed.success) return;
     setPending(true);
@@ -75,12 +99,24 @@ export function InboxForm<T extends Record<string, unknown>>(props: {
   if (!ready) return <MailtoFallback href={props.mailto} label={props.mailtoLabel} />;
   if (receipt !== null) return <FormSuccess receipt={receipt} note={props.successNote} steps={props.steps} />;
 
+  const errorItems = Object.entries(errors).filter((entry) => entry[1]);
+
   return (
-    <form onSubmit={(event) => void onSubmit(event)} noValidate className="grid gap-4">
-      <div aria-live="assertive" className="sr-only">
-        {banner}
-        {Object.values(errors).filter(Boolean).join(" ")}
-      </div>
+    <form ref={formRef} onSubmit={(event) => void onSubmit(event)} noValidate className="grid gap-4">
+      {errorItems.length > 0 ? (
+        <div ref={summaryRef} tabIndex={-1} role="alert" className="rounded-md border border-[#B91C1C] bg-white p-4 outline-none">
+          <p className="text-[15px] font-bold text-[#111827]">아래 항목을 확인해 주세요.</p>
+          <ul className="mt-2 grid gap-1">
+            {errorItems.map(([key, message]) => (
+              <li key={key}>
+                <button type="button" className="text-left text-[15px] font-bold text-[#9A3412] underline" onClick={() => focusField(key)}>
+                  {message}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       {banner ? (
         <p role="alert" className="rounded-[6px] border border-[#B91C1C] bg-white p-4 text-[15px] text-[#111827]">
           {banner}{" "}

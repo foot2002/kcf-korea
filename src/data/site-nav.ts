@@ -8,7 +8,9 @@ import heroWebinar from "@/assets/illustrations/hero-webinar.svg";
 import illMonitor from "@/assets/illustrations/ill-monitor.svg";
 import illOrgAccount from "@/assets/illustrations/ill-org-account.svg";
 import illPolicy from "@/assets/illustrations/ill-policy.svg";
+import { AI_FORMS_REPORT } from "@/data/ai-forms-report";
 import { PRIVACY_CENTER_PAGES } from "@/data/privacy-center";
+import { seoulToday } from "@/lib/seoul-date";
 
 export type SiteNavChild = {
   label: string;
@@ -111,6 +113,7 @@ const PRIVACY_MEGA: Record<string, Omit<SiteNavItem, "label" | "to" | "badge">> 
       { label: "국정감사", hash: "audit", icon: "Landmark", description: "국회 정무위원회 국정감사에서 인용된 조사" },
       { label: "개선 과제", hash: "policy", icon: "ListChecks", description: "조사에서 도출한 개선 과제" },
       { label: "SURE-CHECK 자가진단", to: "/privacy-center/sure-check", icon: "ScanSearch", description: "공개된 신청·설문 화면을 같은 기준으로 살피는 도구" },
+      { label: AI_FORMS_REPORT.menuLabel, to: AI_FORMS_REPORT.pagePath, icon: "FileText", description: "설문·신청·수집 단계의 14개 해킹 침투경로와 대응 방안" },
     ],
   },
   "/privacy-center/education": {
@@ -129,21 +132,20 @@ const PRIVACY_MEGA: Record<string, Omit<SiteNavItem, "label" | "to" | "badge">> 
     description: "검증된 수집 도구를 보급해 국민의 정보가 들어오는 첫 단계를 지킵니다.",
     children: [
       {
-        label: "무상제공 안내·신청",
+        label: "안내·신청",
         to: "/privacy-center/security-services",
         icon: "FileCheck",
-        badge: "상시 접수",
-        description: "CSAP 인증 온라인조사플랫폼을 공공기관·협단체·국회·언론사에 무상으로 제공합니다.",
+        badge: "예정",
+        description: "CSAP 인증 온라인조사플랫폼 안내입니다. 신청은 추후 받습니다.",
       },
       {
         label: "우수기관·SURE MARK",
         to: "/privacy-center/sure-mark",
         mark: true,
-        description: "2026 개인정보보호실천 우수기관 7곳과 인증서 진위확인, SURE MARK 자료실",
+        description: "인증서 진위확인과 SURE MARK 자료실",
       },
     ],
     shortcuts: [
-      { label: "실천선언", hash: "pledge" },
       { label: "신청 방법", hash: "apply" },
       { label: "CPO 특별 지원", hash: "cpo" },
       { label: "인증 구분 안내", hash: "criteria" },
@@ -238,5 +240,9 @@ export function isNavHrefCurrent(pathname: string, hash: string, href: string) {
 }
 
 export function navCards(item: SiteNavItem) {
-  return item.children?.length ? item.children : (item.cards ?? []);
+  const cards = item.children?.length ? item.children : (item.cards ?? []);
+  const showNew = seoulToday() <= AI_FORMS_REPORT.badgeUntil;
+  return cards.map((card) =>
+    card.to === AI_FORMS_REPORT.pagePath ? { ...card, badge: showNew ? "NEW" : undefined } : card,
+  );
 }

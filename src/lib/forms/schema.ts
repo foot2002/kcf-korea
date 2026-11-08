@@ -4,6 +4,33 @@ import { KOREA_REGIONS, MONITOR_INTERESTS, MONITOR_MODES } from "@/data/privacy-
 
 const required = "입력해 주세요.";
 
+function ask(label: string) {
+  return `${label} 입력을 해주세요.`;
+}
+
+function formatOf(label: string) {
+  return `${label} 형식을 확인해주세요.`;
+}
+
+function textField(label: string, max: number) {
+  return z.string().trim().min(1, ask(label)).max(max, `${max}자까지 입력할 수 있습니다.`);
+}
+
+function mailField(label: string) {
+  return z.string().trim().min(1, ask(label)).max(254, "254자까지 입력할 수 있습니다.").email(formatOf(label));
+}
+
+function telField(label: string) {
+  return z
+    .string()
+    .trim()
+    .min(1, ask(label))
+    .max(30, "30자까지 입력할 수 있습니다.")
+    .regex(/^[0-9+().\-\s]{8,30}$/, formatOf(label));
+}
+
+const privacyConsent = z.boolean().refine((value) => value, "개인정보 수집·이용 동의를 확인해주세요.");
+
 export const orgName = z.string().trim().min(1, required).max(100, "100자까지 입력할 수 있습니다.");
 export const personName = z.string().trim().min(1, required).max(50, "50자까지 입력할 수 있습니다.");
 export const emailField = z
@@ -78,35 +105,46 @@ export const RETENTION = {
 } as const;
 
 export const freeSchema = z.object({
-  orgName: orgName,
-  orgKind: z.enum(FREE_ORG_KINDS, { errorMap: () => ({ message: "구분을 선택해 주세요." }) }),
-  representative: personName,
-  dpoName: personName,
-  dpoTitle: personName,
-  dpoPhone: phoneField,
-  dpoEmail: emailField,
-  adminName: personName,
-  adminTitle: personName,
-  adminPhone: phoneField,
-  adminEmail: emailField,
+  orgName: textField("기관·단체명", 100),
+  orgKind: z.enum(FREE_ORG_KINDS, { errorMap: () => ({ message: "구분 선택을 해주세요." }) }),
+  representative: textField("대표자", 50),
+  dpoName: textField("개인정보 보호책임자 성명", 50),
+  dpoTitle: textField("개인정보 보호책임자 직위", 50),
+  dpoPhone: telField("개인정보 보호책임자 연락처"),
+  dpoEmail: mailField("개인정보 보호책임자 이메일"),
+  adminName: textField("계정 관리자 성명", 50),
+  adminTitle: textField("계정 관리자 직위", 50),
+  adminPhone: telField("계정 관리자 연락처"),
+  adminEmail: mailField("계정 관리자 이메일"),
   note: z.string().trim().max(2000, "2000자까지 입력할 수 있습니다."),
-  consentPledge: consentField,
-  consentPublish: consentField,
-  consentExclude: consentField,
-  consentPrivacy: consentField,
+  consentPrivacy: privacyConsent,
 });
 
+/** 계정 관리자를 보호책임자와 같게 둔 경우, 계정 관리자 칸은 다시 검사하지 않습니다. */
+export const freeSchemaSame = freeSchema
+  .extend({
+    adminName: z.string(),
+    adminTitle: z.string(),
+    adminPhone: z.string(),
+    adminEmail: z.string(),
+  })
+  .transform((data) => ({
+    ...data,
+    adminName: data.dpoName,
+    adminTitle: data.dpoTitle,
+    adminPhone: data.dpoPhone,
+    adminEmail: data.dpoEmail,
+  }));
+
 export const cpoSchema = z.object({
-  company: orgName,
-  representative: personName,
-  cpoName: personName,
-  cpoTitle: personName,
-  cpoPhone: phoneField,
-  cpoEmail: emailField,
-  work: z.string().trim().min(1, required).max(500, "500자까지 입력할 수 있습니다."),
-  promotion: z.enum(CPO_PROMOTIONS, { errorMap: () => ({ message: "홍보 방식을 선택해 주세요." }) }),
-  consentPledge: consentField,
-  consentPrivacy: consentField,
+  company: textField("기업명", 100),
+  representative: textField("대표자", 50),
+  cpoName: textField("CPO 성명", 50),
+  cpoTitle: textField("CPO 직위", 50),
+  cpoPhone: telField("CPO 연락처"),
+  cpoEmail: mailField("CPO 이메일"),
+  work: z.string().trim().min(1, ask("개인정보 수집 업무 설명")).max(500, "500자까지 입력할 수 있습니다."),
+  consentPrivacy: privacyConsent,
 });
 
 export const pledgeSchema = z.object({

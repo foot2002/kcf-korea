@@ -44,14 +44,13 @@ export const SLIDES: readonly HomeSlide[] = [
     eyebrow: HERO.eyebrow,
     title: HERO.headline.replace(", ", ",\n"),
     body: HERO.sub,
-    tab: "무상제공 상시 접수",
+    tab: "기술백서",
     layout: "visual",
     visual: heroFreePlatform,
     stats: HERO.stats,
     chips: [`CSAP 인증 · ${csapNumber}`, nisChip],
     mark: true,
-    primary: { label: "무상제공 신청하기", to: "/privacy-center/security-services", hash: "apply-form" },
-    secondary: { label: "실천선언 확인하기", to: "/privacy-center/security-services", hash: "pledge" },
+    primary: { label: "기술백서 보기", to: "/privacy-center/ai-forms-report" },
   },
   {
     id: "research",
@@ -77,8 +76,8 @@ export const SLIDES: readonly HomeSlide[] = [
 ];
 
 export const QUICK_MENU = [
-  { label: "무상제공 신청", to: "/privacy-center/security-services", hash: "apply-form", icon: "FileSignature" },
-  { label: "실천선언", to: "/privacy-center/security-services", hash: "pledge", icon: "ClipboardCheck" },
+  { label: "기술백서 보기", to: "/privacy-center/ai-forms-report", icon: "FileSignature" },
+  { label: "접수 안내", to: "/privacy-center/security-services", hash: "apply", icon: "ClipboardCheck" },
   { label: "SURE-CHECK 자가진단", to: "/privacy-center/sure-check", icon: "ScanSearch" },
   { label: "인증서 진위확인", to: "/privacy-center/sure-mark", hash: "verify", icon: "BadgeCheck" },
   { label: "웨비나 다시보기", to: "/privacy-center/education", icon: "PlayCircle" },
@@ -107,9 +106,9 @@ export const BUSINESSES = [
   {
     no: "03",
     title: "인증도구 보급·확산",
-    status: "무상제공 상시 접수",
+    status: "접수 예정",
     purpose: "검증된 수집 도구를 보급해 국민의 정보가 들어오는 첫 단계를 지킵니다.",
-    metric: "협단체 15곳 협약 · 우수기관 7곳 선정",
+    metric: "협단체 15곳 협약",
     to: "/privacy-center/security-services",
     icon: "ShieldCheck",
     highlight: true,
@@ -128,7 +127,7 @@ export const BUSINESSES = [
 export const FLOW = [
   { title: "진단", body: "SURE-CHECK로 공개된 수집 화면을 진단합니다." },
   { title: "교육", body: "법과 실무 대응을 교육합니다." },
-  { title: "보급", body: "검증된 수집 도구를 무상으로 보급합니다." },
+  { title: "보급", body: "검증된 수집 도구를 안내합니다." },
   { title: "감시", body: "국민과 함께 수집 현장을 살핍니다." },
 ];
 
@@ -136,7 +135,6 @@ export const ACHIEVEMENTS = [
   { date: "2026. 10. 13.", text: "국회 정무위원회 국정감사에서 실태조사 자료 인용" },
   { date: "2026. 10. 16.", text: "개인정보보호위원회, 외부 설문도구 이용 시 안전조치 준수 안내 발표" },
   { date: "2026", text: "협단체 15곳과 공동지원 협약" },
-  { date: "2026. 11. 6.", text: "개인정보보호실천 우수기관 7곳 선정" },
 ];
 
 export const ABOUT_NOTE =
@@ -223,13 +221,8 @@ export const PUBLICATION_EXTRAS = {
 
 export const DEFAULT_NOTICES = [
   {
-    date: "2026-11-06",
-    title: "2026 개인정보보호실천 우수기관 7개 기관 선정",
-    to: "/privacy-center/sure-mark",
-  },
-  {
     date: "2026-11-03",
-    title: "정부인증 온라인조사플랫폼 무상제공 사업 안내 (상시 접수)",
+    title: "정부인증 온라인조사플랫폼 안내 (접수 예정)",
     to: "/privacy-center/security-services",
   },
   {

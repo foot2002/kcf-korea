@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/site/Header";
+import { SitePopup } from "../components/site/SitePopup";
 import { SiteBanner } from "../components/site/SiteBanner";
 import { Footer } from "../components/site/Footer";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
@@ -161,6 +162,7 @@ function RootComponent() {
           <Outlet />
         </main>
         <Footer />
+        <SitePopup />
         <Toaster position="top-center" richColors closeButton />
       </div>
     </QueryClientProvider>

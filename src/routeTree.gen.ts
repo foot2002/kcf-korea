@@ -30,6 +30,7 @@ import { Route as PrivacyCenterRightsRouteImport } from './routes/privacy-center
 import { Route as PrivacyCenterResearchRouteImport } from './routes/privacy-center/research'
 import { Route as PrivacyCenterLawRouteImport } from './routes/privacy-center/law'
 import { Route as PrivacyCenterAssociationApplyRouteImport } from './routes/privacy-center/association-apply'
+import { Route as PrivacyCenterAiFormsReportRouteImport } from './routes/privacy-center/ai-forms-report'
 import { Route as PrivacyCenterSupportIndexRouteImport } from './routes/privacy-center/support/index'
 import { Route as PrivacyCenterRightsIndexRouteImport } from './routes/privacy-center/rights/index'
 import { Route as PrivacyCenterPublicationsIndexRouteImport } from './routes/privacy-center/publications/index'
@@ -149,6 +150,12 @@ const PrivacyCenterAssociationApplyRoute =
     path: '/privacy-center/association-apply',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PrivacyCenterAiFormsReportRoute =
+  PrivacyCenterAiFormsReportRouteImport.update({
+    id: '/privacy-center/ai-forms-report',
+    path: '/privacy-center/ai-forms-report',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PrivacyCenterSupportIndexRoute =
   PrivacyCenterSupportIndexRouteImport.update({
     id: '/privacy-center/support/',
@@ -219,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/history': typeof HistoryRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap': typeof SitemapRoute
+  '/privacy-center/ai-forms-report': typeof PrivacyCenterAiFormsReportRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -252,6 +260,7 @@ export interface FileRoutesByTo {
   '/history': typeof HistoryRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap': typeof SitemapRoute
+  '/privacy-center/ai-forms-report': typeof PrivacyCenterAiFormsReportRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -285,6 +294,7 @@ export interface FileRoutesById {
   '/history': typeof HistoryRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap': typeof SitemapRoute
+  '/privacy-center/ai-forms-report': typeof PrivacyCenterAiFormsReportRoute
   '/privacy-center/association-apply': typeof PrivacyCenterAssociationApplyRoute
   '/privacy-center/law': typeof PrivacyCenterLawRoute
   '/privacy-center/research': typeof PrivacyCenterResearchRoute
@@ -320,6 +330,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/privacy-policy'
     | '/sitemap'
+    | '/privacy-center/ai-forms-report'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -353,6 +364,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/privacy-policy'
     | '/sitemap'
+    | '/privacy-center/ai-forms-report'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -385,6 +397,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/privacy-policy'
     | '/sitemap'
+    | '/privacy-center/ai-forms-report'
     | '/privacy-center/association-apply'
     | '/privacy-center/law'
     | '/privacy-center/research'
@@ -419,6 +432,7 @@ export interface RootRouteChildren {
   HistoryRoute: typeof HistoryRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SitemapRoute: typeof SitemapRoute
+  PrivacyCenterAiFormsReportRoute: typeof PrivacyCenterAiFormsReportRoute
   PrivacyCenterAssociationApplyRoute: typeof PrivacyCenterAssociationApplyRoute
   PrivacyCenterLawRoute: typeof PrivacyCenterLawRoute
   PrivacyCenterResearchRoute: typeof PrivacyCenterResearchRoute
@@ -590,6 +604,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyCenterAssociationApplyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-center/ai-forms-report': {
+      id: '/privacy-center/ai-forms-report'
+      path: '/privacy-center/ai-forms-report'
+      fullPath: '/privacy-center/ai-forms-report'
+      preLoaderRoute: typeof PrivacyCenterAiFormsReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-center/support/': {
       id: '/privacy-center/support/'
       path: '/privacy-center/support'
@@ -686,6 +707,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistoryRoute: HistoryRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   SitemapRoute: SitemapRoute,
+  PrivacyCenterAiFormsReportRoute: PrivacyCenterAiFormsReportRoute,
   PrivacyCenterAssociationApplyRoute: PrivacyCenterAssociationApplyRoute,
   PrivacyCenterLawRoute: PrivacyCenterLawRoute,
   PrivacyCenterResearchRoute: PrivacyCenterResearchRoute,

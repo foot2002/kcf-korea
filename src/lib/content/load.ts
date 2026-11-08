@@ -25,18 +25,20 @@ import {
   parseMonitor,
   parseNotices,
   parsePledges,
+  parsePopups,
   parsePublications,
   parseSlides,
   parseStats,
   safeParse,
 } from "@/lib/content/parse";
-import type { BannerContent, ContentSlide, MonitorContent, NoticeItem, PledgeItem, PublicationContentItem, StatItem } from "@/lib/content/types";
+import type { BannerContent, ContentSlide, MonitorContent, NoticeItem, PledgeItem, PopupItem, PublicationContentItem, StatItem } from "@/lib/content/types";
 import bannerJson from "../../../public/content/banner.json";
 import educationJson from "../../../public/content/education.json";
 import institutionsJson from "../../../public/content/institutions.json";
 import monitorJson from "../../../public/content/monitor.json";
 import noticesJson from "../../../public/content/notices.json";
 import pledgesJson from "../../../public/content/pledges.json";
+import popupsJson from "../../../public/content/popups.json";
 import publicationsJson from "../../../public/content/publications.json";
 import slidesJson from "../../../public/content/slides.json";
 import statsJson from "../../../public/content/stats.json";
@@ -73,6 +75,7 @@ export const bundledStats = bundled(parseStats, statsJson, fallbackStats());
 export const bundledMonitor = bundled(parseMonitor, monitorJson, fallbackMonitor());
 export const bundledSlides = bundled(parseSlides, slidesJson, fallbackSlides());
 export const bundledBanner = bundled(parseBanner, bannerJson, fallbackBanner());
+export const bundledPopups = bundled(parsePopups, popupsJson, [] as PopupItem[]);
 
 function useRemote<T>(
   fileName: string,
@@ -132,4 +135,12 @@ export function useSlides(): ContentSlide[] {
 
 export function useBanner(): BannerContent {
   return useRemote("banner.json", bundledBanner, parseBanner, fallbackBanner);
+}
+
+function fallbackPopups(): PopupItem[] {
+  return [];
+}
+
+export function usePopups(): PopupItem[] {
+  return useRemote("popups.json", bundledPopups, parsePopups, fallbackPopups);
 }

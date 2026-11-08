@@ -104,9 +104,21 @@ export const CONTENT_FILES = {
   slides: "slides.json",
   banner: "banner.json",
   stats: "stats.json",
+  popups: "popups.json",
 } as const;
 
 export type ContentName = keyof typeof CONTENT_FILES;
+
+export type PopupSite = "foundation" | "center";
+
+export type PopupItem = {
+  id: string;
+  enabled: boolean;
+  start: string;
+  end: string;
+  sites: PopupSite[];
+  link: string;
+};
 
 export const SLIDE_IMAGE_OPTIONS: { id: SlideImageId; label: string }[] = [
   { id: "hero-free-platform", label: "무상제공 일러스트" },

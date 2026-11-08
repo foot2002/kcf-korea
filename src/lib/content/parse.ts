@@ -9,6 +9,8 @@ import type {
   MonitorStatus,
   NoticeItem,
   PledgeItem,
+  PopupItem,
+  PopupSite,
   PublicationContentItem,
   SlideImageId,
   StatItem,
@@ -177,6 +179,25 @@ export function parseBanner(value: unknown): BannerContent | null {
     end: text(value.end),
     published: value.published === true,
   };
+}
+
+export function parsePopups(value: unknown): PopupItem[] | null {
+  const items = Array.isArray(value) ? value : fileItems(value);
+  if (!items) return null;
+  return items.map((item) => {
+    if (!isRecord(item) || typeof item.id !== "string") throw new Error("popup");
+    const sites = Array.isArray(item.sites)
+      ? item.sites.filter((site): site is PopupSite => site === "foundation" || site === "center")
+      : [];
+    return {
+      id: item.id,
+      enabled: item.enabled === true,
+      start: text(item.start),
+      end: text(item.end),
+      sites,
+      link: text(item.link),
+    };
+  });
 }
 
 export function safeParse<T>(parse: (value: unknown) => T | null, value: unknown): T | null {

@@ -3,6 +3,34 @@
   "updatedAt": "2026-11-04T00:00:00.000Z",
   "items": [
     {
+      "slug": "whitepaper-ai-forms-2026",
+      "boardType": "보고서·자료",
+      "title": "AI 시대, 설문·신청서가 해킹의 문이 됩니다",
+      "date": "2026-11-10",
+      "source": "개인정보보호진흥원",
+      "url": "",
+      "file": "downloads/kcf-whitepaper-ai-forms-2026.pdf",
+      "thumbnail": "downloads/reports/cover-whitepaper.webp",
+      "summary": "국민용 백서. 발간번호 2026-11-02. 56쪽.",
+      "keywords": ["백서", "설문", "신청"],
+      "internalPath": "/privacy-center/ai-forms-report",
+      "published": true
+    },
+    {
+      "slug": "policy-report-ai-forms-2026",
+      "boardType": "보고서·자료",
+      "title": "AI 시대, 설문·신청·수집 단계의 보안 위협과 대응",
+      "date": "2026-11-10",
+      "source": "개인정보보호진흥원",
+      "url": "",
+      "file": "downloads/kcf-policy-report-ai-forms-2026.pdf",
+      "thumbnail": "downloads/reports/cover-policy-report.webp",
+      "summary": "기술정책보고서. 발간번호 2026-11-01. 64쪽.",
+      "keywords": ["기술정책보고서", "설문", "수집"],
+      "internalPath": "/privacy-center/ai-forms-report",
+      "published": true
+    },
+    {
       "slug": "press-2026-public-survey-final",
       "boardType": "보도자료",
       "title": "공공기관 홈페이지 1,347곳 전수조사 — 개인정보 수집 설문 149건, 모두 보안인증 없는 서비스 사용 (국정감사 공동 보도자료)",

@@ -22,6 +22,9 @@ const PAGES = [
   "/privacy-center/rights",
   "/privacy-center/publications",
   "/privacy-center/sure-check",
+  "/privacy-center/ai-forms-report",
+  "/?popup-preview=1",
+  "/privacy-center/?popup-preview=1",
   "/admin",
 ];
 
@@ -45,6 +48,9 @@ try {
       serious.push({ route, id: "page-load", impact: "critical", help: `페이지를 열지 못했습니다 (${response?.status() ?? "no response"})`, target: route });
       await page.close();
       continue;
+    }
+    if (route.includes("popup-preview")) {
+      await page.waitForSelector("[role='dialog']", { timeout: 4000 });
     }
     const results = await new AxeBuilder({ page }).analyze();
     for (const violation of results.violations) {

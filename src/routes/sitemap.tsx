@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { PageHero } from "@/components/site/PageHero";
-import { FOUNDATION_NAV, PRIVACY_NAV, childHref } from "@/data/site-nav";
+import { FOUNDATION_NAV, PRIVACY_NAV, childHref, navCards } from "@/data/site-nav";
 import { absoluteUrl } from "@/lib/site-url";
 
 export const Route = createFileRoute("/sitemap")({
@@ -70,9 +70,9 @@ function SitemapPage() {
                       </span>
                     ) : null}
                   </Link>
-                  {item.children?.length ? (
+                  {navCards(item).length ? (
                     <ul className="mt-2 space-y-1 border-l border-[#D1D5DB] pl-3">
-                      {item.children.map((child) => (
+                      {navCards(item).map((child) => (
                         <li key={`${item.to}-${child.label}`}>
                           <Link
                             to={child.to ?? item.to}
@@ -80,6 +80,7 @@ function SitemapPage() {
                             className="text-[15px] text-[#374151] hover:text-navy hover:underline"
                           >
                             {child.label}
+                            {child.badge ? <span className="ml-1 text-[12px] font-bold text-[#0F766E]">{child.badge}</span> : null}
                           </Link>
                         </li>
                       ))}

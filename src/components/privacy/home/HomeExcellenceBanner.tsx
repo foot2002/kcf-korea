@@ -6,6 +6,7 @@ import { useInstitutions } from "@/lib/content/load";
 
 export function HomeExcellenceBanner() {
   const published = useInstitutions().filter((item) => item.published).slice(0, 7);
+  if (published.length === 0) return null;
   return (
     <aside className="rounded-lg border border-[#D1D5DB] bg-white p-5">
       <div className="flex items-start gap-4">
