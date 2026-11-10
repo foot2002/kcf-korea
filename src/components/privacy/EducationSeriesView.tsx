@@ -1,29 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  ClipboardList,
-  Database,
-  FileText,
-  Play,
-  Scale,
-  Users,
-  Workflow,
-  type LucideIcon,
-} from "lucide-react";
+import { Download, Expand, FileText, Play, User } from "lucide-react";
 
+import heroWebinar from "@/assets/illustrations/hero-webinar.svg";
 import { PcMiniNav, PcSection } from "@/components/privacy/privacy-ui";
 import { EDUCATION_PAGE, type EducationItem, type EducationSession } from "@/data/privacy-program";
 import { useEducation } from "@/lib/content/load";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"] as const;
-
-const FIELD_ICONS: Record<string, LucideIcon> = {
-  법률: Scale,
-  업무흐름: Workflow,
-  정보수집: ClipboardList,
-  내부협업: Users,
-  시스템DB: Database,
-};
 
 type Playback = {
   youtubeId: string;
@@ -82,22 +66,18 @@ export function EducationSeries({ focusSlug }: { focusSlug?: string }) {
     );
   }
 
-  function play(next: Playback) {
-    setPlayback(next);
-    document.getElementById("replay")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
   return (
     <div className="education-page min-w-0">
       {!focusSlug && items.length > 1 ? <EducationList items={items} /> : null}
       <div className="education-minnav contents">
         <PcMiniNav items={EDUCATION_PAGE.nav} />
       </div>
-      <Replay item={current} playback={playback} onPlay={play} onClose={() => setPlayback(null)} />
-      <Sessions item={current} onPlay={play} />
+      <Replay item={current} onPlay={setPlayback} />
+      <Sessions item={current} onPlay={setPlayback} />
       <Materials item={current} />
       <About item={current} />
       <NextEducation />
+      {playback ? <LargePlayer playback={playback} onClose={() => setPlayback(null)} /> : null}
     </div>
   );
 }
@@ -125,69 +105,170 @@ function EducationList({ items }: { items: EducationItem[] }) {
   );
 }
 
-function Replay({
-  item,
-  playback,
-  onPlay,
-  onClose,
-}: {
-  item: EducationItem;
-  playback: Playback | null;
-  onPlay: (playback: Playback) => void;
-  onClose: () => void;
-}) {
+function Replay({ item, onPlay }: { item: EducationItem; onPlay: (playback: Playback) => void }) {
   const hasFullVideo = item.youtubeId.length > 0;
   return (
     <PcSection id="replay" variant="white">
       <div className="overflow-hidden rounded-lg bg-[#072A52] text-white">
-        {playback ? (
-          <div className="flex aspect-video min-h-[280px] flex-col md:min-h-0">
-            <div className="flex items-center justify-between gap-3 px-4 py-2">
-              <p className="truncate text-[14px] font-bold">{playback.title}</p>
-              <button type="button" onClick={onClose} className="shrink-0 rounded-md border border-white px-3 py-1 text-[14px] font-bold">
-                {EDUCATION_PAGE.closePlayer}
-              </button>
-            </div>
-            <iframe
-              className="min-h-0 w-full flex-1 border-0"
-              src={embedSrc(playback)}
-              title={`${playback.title} ${EDUCATION_PAGE.videoTitleSuffix}`}
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
+        <div className="flex aspect-video min-h-[420px] flex-col justify-center px-5 py-6 md:min-h-0 md:px-10">
+          <p className="text-[12px] font-bold tracking-wide text-[#5EEAD4]">{EDUCATION_PAGE.replayKicker}</p>
+          <h2 className="mt-3 max-w-3xl text-[1.35rem] font-bold leading-snug text-white md:text-[1.75rem]">{item.title}</h2>
+          <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-white">{item.subtitle}</p>
+          <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-[#E8EEF6]">{item.lawNote}</p>
+          <p className="mt-4 text-[15px] font-semibold text-white">
+            {formatKoreanDate(item.date)} {item.timeLabel} · {item.mode}
+          </p>
+          <p className="mt-2 text-[1.15rem] font-bold text-white">
+            {EDUCATION_PAGE.applicantsPrefix} {item.applicantsLabel}
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              disabled={!hasFullVideo}
+              onClick={() => onPlay({ youtubeId: item.youtubeId, startSec: null, title: item.title })}
+              className="rounded-md bg-white px-4 py-2.5 text-[15px] font-bold text-navy disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {EDUCATION_PAGE.watchAll}
+            </button>
+            <a href="#materials" className="rounded-md border border-white px-4 py-2.5 text-[15px] font-bold text-white">
+              {EDUCATION_PAGE.getMaterials}
+            </a>
           </div>
-        ) : (
-          <div className="flex aspect-video min-h-[420px] flex-col justify-center px-5 py-6 md:min-h-0 md:px-10">
-            <p className="text-[12px] font-bold tracking-wide text-[#5EEAD4]">{EDUCATION_PAGE.replayKicker}</p>
-            <h2 className="mt-3 max-w-3xl text-[1.35rem] font-bold leading-snug text-white md:text-[1.75rem]">{item.title}</h2>
-            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-white">{item.subtitle}</p>
-            <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-[#E8EEF6]">{item.lawNote}</p>
-            <p className="mt-4 text-[15px] font-semibold text-white">
-              {formatKoreanDate(item.date)} {item.timeLabel} · {item.mode}
-            </p>
-            <p className="mt-2 text-[1.15rem] font-bold text-white">
-              {EDUCATION_PAGE.applicantsPrefix} {item.applicantsLabel}
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                disabled={!hasFullVideo}
-                onClick={() => onPlay({ youtubeId: item.youtubeId, startSec: null, title: item.title })}
-                className="rounded-md bg-white px-4 py-2.5 text-[15px] font-bold text-navy disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {EDUCATION_PAGE.watchAll}
-              </button>
-              <a href="#materials" className="rounded-md border border-white px-4 py-2.5 text-[15px] font-bold text-white">
-                {EDUCATION_PAGE.getMaterials}
-              </a>
-              {hasFullVideo ? null : <p className="text-[14px] font-semibold text-white">{EDUCATION_PAGE.pendingVideo}</p>}
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </PcSection>
+  );
+}
+
+function LargePlayer({ playback, onClose }: { playback: Playback; onClose: () => void }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
+  function watchLarge() {
+    const stage = stageRef.current;
+    if (!stage) return;
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+      return;
+    }
+    void stage.requestFullscreen();
+  }
+
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#041E3D]/85 p-3 md:p-6" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${playback.title} ${EDUCATION_PAGE.videoTitleSuffix}`}
+        className="w-full max-w-6xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <p className="min-w-0 flex-1 truncate text-[15px] font-bold text-white">{playback.title}</p>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <button type="button" onClick={watchLarge} className="inline-flex items-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-[14px] font-bold text-navy">
+              <Expand className="h-4 w-4" aria-hidden="true" />
+              {EDUCATION_PAGE.watchLarge}
+            </button>
+            <a
+              href={watchHref(playback)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md border border-white px-3 py-1.5 text-[14px] font-bold text-white"
+            >
+              {EDUCATION_PAGE.watchOnYoutube}
+              <span className="sr-only"> ({EDUCATION_PAGE.newTab})</span>
+            </a>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              className="rounded-md border border-white px-3 py-1.5 text-[14px] font-bold text-white"
+            >
+              {EDUCATION_PAGE.closePlayer}
+            </button>
+          </div>
+        </div>
+        <div ref={stageRef} className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+          <iframe
+            className="h-full w-full border-0"
+            src={embedSrc(playback)}
+            title={`${playback.title} ${EDUCATION_PAGE.videoTitleSuffix}`}
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SessionPoster({ session, source, onPlay }: { session: EducationSession; source: Playback | null; onPlay: (playback: Playback) => void }) {
+  const thumb = session.poster
+    ? fileHref(session.poster)
+    : session.youtubeId
+      ? `https://i.ytimg.com/vi/${session.youtubeId}/hqdefault.jpg`
+      : heroWebinar;
+  const frame = (
+    <span className="block rounded-lg border border-[#072A52] bg-[#072A52] p-1.5">
+      <span className="relative block aspect-video overflow-hidden rounded-md bg-[#041E3D]">
+        <img src={thumb} alt="" className={`h-full w-full ${session.youtubeId || session.poster ? "object-cover" : "object-contain"}`} />
+        <span className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-inset ring-white/40" />
+        {session.durationLabel ? (
+          <span className="absolute right-2.5 top-2.5 rounded-sm bg-[#072A52] px-2 py-1 text-[13px] font-bold text-white">
+            {session.durationLabel}
+          </span>
+        ) : null}
+        {source ? null : (
+          <span className="absolute left-2.5 top-2.5 rounded-sm bg-[#072A52] px-2 py-1 text-[13px] font-bold text-white">
+            {EDUCATION_PAGE.pendingVideo}
+          </span>
+        )}
+        <span className="absolute inset-x-0 bottom-0 flex items-center gap-3 bg-[#072A52] px-3 py-2.5">
+          <span className="min-w-0 flex-1" aria-hidden="true">
+            <span className="block text-[12px] font-bold tracking-wide text-[#5EEAD4]">{session.no}</span>
+            <span className="mt-0.5 line-clamp-2 block text-[14px] font-bold leading-snug text-white">{session.title}</span>
+          </span>
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-white text-white">
+            <Play className="ml-0.5 h-5 w-5" aria-hidden="true" />
+          </span>
+        </span>
+      </span>
+      <span className="mt-1.5 block h-1 overflow-hidden rounded-full bg-white/25" aria-hidden="true">
+        <span className="block h-full w-1/4 bg-[#5EEAD4]" />
+      </span>
+    </span>
+  );
+
+  if (!source) return <div className="w-full shrink-0 lg:w-[46%] lg:max-w-[520px]">{frame}</div>;
+
+  return (
+    <a
+      href={watchHref(source)}
+      onClick={(event) => {
+        event.preventDefault();
+        onPlay(source);
+      }}
+      aria-label={`${session.title} ${EDUCATION_PAGE.playVideo}`}
+      className="block w-full shrink-0 cursor-pointer text-left lg:w-[46%] lg:max-w-[520px]"
+    >
+      {frame}
+    </a>
   );
 }
 
@@ -195,76 +276,48 @@ function Sessions({ item, onPlay }: { item: EducationItem; onPlay: (playback: Pl
   return (
     <PcSection id="sessions" variant="soft">
       <h2 className="text-[1.5rem] font-bold text-navy md:text-[1.75rem]">{EDUCATION_PAGE.sessionsTitle}</h2>
-      <div className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 md:grid md:grid-cols-3 md:overflow-visible xl:grid-cols-5">
+      <ul className="mt-6 flex flex-col gap-6">
         {item.sessions.map((session) => {
           const source = playbackFor(item, session);
-          const FieldIcon = FIELD_ICONS[session.field];
           return (
-            <article key={session.no} id={`session-${session.no}`} className="w-[80%] shrink-0 snap-start md:w-auto">
-              <button
-                type="button"
-                onClick={() => {
-                  if (source) onPlay(source);
-                }}
-                className="flex h-full w-full flex-col rounded-lg border border-[#D1D5DB] bg-white p-3 text-left"
-              >
-                <span className="relative block aspect-video overflow-hidden rounded-md bg-[#072A52]">
-                  {session.youtubeId ? (
-                    <img
-                      src={`https://i.ytimg.com/vi/${session.youtubeId}/hqdefault.jpg`}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span className="absolute inset-x-2 top-2 flex items-start justify-between text-white">
-                      <span className="text-[1.75rem] font-bold leading-none">{session.no}</span>
-                      {FieldIcon ? <FieldIcon className="h-5 w-5 shrink-0" aria-hidden="true" /> : null}
-                    </span>
-                  )}
-                  <span className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-navy">
-                    <Play className="h-5 w-5" aria-hidden="true" />
+            <li key={session.no} id={`session-${session.no}`}>
+              <article className="flex flex-col gap-5 rounded-lg border border-[#D1D5DB] bg-white p-4 md:p-6 lg:flex-row lg:items-stretch lg:gap-8">
+                <SessionPoster session={session} source={source} onPlay={onPlay} />
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <span className="inline-flex w-fit rounded-sm border border-[#0F766E] px-2 py-0.5 text-[13px] font-bold text-[#0F766E]">
+                    {session.field}
                   </span>
-                  <span
-                    className={`absolute right-2 rounded-sm bg-[#072A52] px-1.5 py-0.5 text-[12px] font-bold text-white ${source ? "bottom-2" : "bottom-8"}`}
-                  >
-                    {session.durationLabel}
-                  </span>
-                  {source ? null : (
-                    <span className="absolute inset-x-0 bottom-0 bg-[#072A52] px-2 py-1 text-center text-[12px] font-bold text-white">
-                      {EDUCATION_PAGE.pendingVideo}
-                    </span>
-                  )}
-                </span>
-                <span className="mt-3 inline-flex w-fit rounded-sm border border-[#0F766E] px-2 py-0.5 text-[12px] font-bold text-[#0F766E]">
-                  {session.field}
-                </span>
-                <span className="mt-2 line-clamp-2 text-[15px] font-bold leading-snug text-navy">{session.title}</span>
-                <span className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-[#374151]">{session.summary}</span>
-                <span className="mt-auto block pt-3">
-                  {session.logo ? (
-                    <img src={session.logo} alt="" className="h-5 w-auto max-w-full object-contain object-left" />
+                  <h3 className="mt-3 text-[1.35rem] font-bold leading-snug text-navy md:text-[1.6rem]">{session.title}</h3>
+                  <p className="mt-3 text-[16px] leading-relaxed text-[#111827]">{session.summary}</p>
+                  <p className="mt-4 flex items-start gap-2 text-[15px] font-semibold leading-snug text-[#111827]">
+                    <User className="mt-0.5 h-4 w-4 shrink-0 text-[#0F766E]" aria-hidden="true" />
+                    <span>{session.speakerLabel || session.speaker}</span>
+                  </p>
+                  {session.materialFile ? (
+                    <div className="mt-5 lg:mt-auto lg:pt-6">
+                      <a className="btn-secondary-kcf" href={fileHref(session.materialFile)} download>
+                        <Download className="h-4 w-4" aria-hidden="true" />
+                        {EDUCATION_PAGE.downloadMaterial}
+                      </a>
+                    </div>
                   ) : null}
-                  <span className="mt-1 block text-[13px] font-semibold leading-snug text-[#111827]">{session.speaker}</span>
-                </span>
-                <span className="mt-1 text-[13px] tabular-nums text-[#374151]">
-                  {session.start}~{session.end}
-                </span>
-              </button>
-              {source ? (
-                <a
-                  href={watchHref(source)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-block text-[13px] font-bold text-navy underline"
-                >
-                  {EDUCATION_PAGE.watchOnYoutube}
-                  <span className="sr-only"> ({EDUCATION_PAGE.newTab})</span>
-                </a>
-              ) : null}
-            </article>
+                  {source ? (
+                    <a
+                      href={watchHref(source)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block text-[14px] font-bold text-navy underline"
+                    >
+                      {EDUCATION_PAGE.watchOnYoutube}
+                      <span className="sr-only"> ({EDUCATION_PAGE.newTab})</span>
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            </li>
           );
         })}
-      </div>
+      </ul>
       <p className="mt-4 text-[13px] leading-relaxed text-[#4B5563]">{item.vendorNotice}</p>
     </PcSection>
   );
@@ -298,7 +351,7 @@ function Materials({ item }: { item: EducationItem }) {
 }
 
 function About({ item }: { item: EducationItem }) {
-  const logoBySpeaker = new Map(item.sessions.map((session) => [session.speaker, session.logo]));
+  const sessionBySpeaker = new Map(item.sessions.map((session) => [session.speaker, session]));
   return (
     <PcSection id="about" variant="soft">
       <h2 className="text-[1.5rem] font-bold text-navy md:text-[1.75rem]">{EDUCATION_PAGE.nav[3].label}</h2>
@@ -319,11 +372,18 @@ function About({ item }: { item: EducationItem }) {
           <p className="text-[15px] font-bold text-navy">{EDUCATION_PAGE.organizerLabel}</p>
           <ul className="mt-2 flex flex-wrap items-center gap-4">
             {item.organizers.map((name) => {
-              const logo = logoBySpeaker.get(name);
+              const session = sessionBySpeaker.get(name);
+              const logo = session?.logo;
               return (
                 <li key={name} className="flex items-center">
                   {logo ? (
-                    <img src={logo} alt={name} className="h-5 w-auto max-w-[120px] object-contain" />
+                    session.logoOnDark ? (
+                      <span className="inline-flex items-center rounded-md bg-[#072A52] px-2.5 py-1.5">
+                        <img src={logo} alt={name} className="h-5 w-auto max-w-[140px] object-contain" />
+                      </span>
+                    ) : (
+                      <img src={logo} alt={name} className="h-5 w-auto max-w-[120px] object-contain" />
+                    )
                   ) : (
                     <span className="text-[14px] font-semibold text-[#111827]">{name}</span>
                   )}

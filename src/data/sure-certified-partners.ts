@@ -72,8 +72,8 @@ export const SURE_CERTIFIED_PARTNERS: readonly SureCertifiedPartner[] = [
   },
   {
     id: "fasoo",
-    name: "파수",
-    nameEn: "Fasoo",
+    name: "파수AI",
+    nameEn: "Fasoo AI",
     serviceName: "Fasoo AI-R Privacy",
     category: "데이터 보안",
     specialty: "개인정보 비식별·문서보안",

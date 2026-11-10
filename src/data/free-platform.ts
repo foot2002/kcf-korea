@@ -451,9 +451,9 @@ export const FREE_PLATFORM_PAGE = {
   pledgeOrgsTitle: "실천선언 참여 기관",
   pledgeOrgsEmpty: "게시 준비 중입니다.",
   sourcePrefix: "출처",
-  webinarTitle: "외부 정보수집의 보안 공백과 WiseON 적용 (03 세션)",
+  webinarTitle: "외부 정보수집의 보안 공백과 WiseON 적용 (04 세션)",
   webinarTo: "/privacy-center/education",
-  webinarHash: "session-03",
+  webinarHash: "session-04",
   excellenceLabel: "우수기관·SURE MARK 보기",
   excellenceTo: "/privacy-center/sure-mark",
 } as const;

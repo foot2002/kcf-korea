@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import kcfMark from "@/assets/kcf-mark.png";
 import fasooLogo from "@/assets/privacy/logos/fasoo.png";
 import pnpLogo from "@/assets/privacy/logos/pnp.png";
 import tigrisLogo from "@/assets/privacy/logos/tigris.svg";
@@ -45,6 +46,7 @@ import statsJson from "../../../public/content/stats.json";
 
 const LOGOS: Record<string, string> = {
   yulchon: yulchonLogo,
+  kcf: kcfMark,
   fasoo: fasooLogo,
   wisein: wiseinLogo,
   tigris: tigrisLogo,

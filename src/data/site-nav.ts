@@ -122,7 +122,7 @@ const PRIVACY_MEGA: Record<string, Omit<SiteNavItem, "label" | "to" | "badge">> 
     description: "강화된 개인정보보호법 대응 웨비나 다시보기와 자료",
     cards: [
       { label: "다시보기", hash: "replay", icon: "Play", description: "웨비나 다시보기" },
-      { label: "세션별 보기", hash: "sessions", icon: "List", description: "법률·업무흐름·정보수집·내부협업·시스템DB" },
+      { label: "세션별 보기", hash: "sessions", icon: "List", description: "법률·실무·업무흐름·정보수집·거버넌스·시스템DB" },
       { label: "자료 내려받기", hash: "materials", icon: "Download", description: "세션 자료 내려받기" },
     ],
   },
